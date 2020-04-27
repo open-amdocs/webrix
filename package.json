@@ -34,6 +34,7 @@
     "react-dom": "16.13.1"
   },
   "dependencies": {
+    "nyc": "15.0.1",
     "react": "16.13.1"
   },
   "repository": {
@@ -42,7 +43,7 @@
   },
   "scripts": {
     "build": "babel --config-file ./babel.config.json ./src --out-dir ./build",
-    "test": "mocha \"src/**/*.test.js\"",
+    "test": "nyc --reporter=lcov mocha \"src/**/*.test.js\"",
     "lint": "eslint --ext=js --ext=jsx src/"
   }
 }

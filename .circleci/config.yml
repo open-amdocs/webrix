@@ -24,8 +24,8 @@ jobs:
           steps:
             - run: npm install
             - run: npm test
-      - store_test_results:
-          path: test-results
+      - store_artifacts:
+          path: ./coverage/lcov.info
 
 workflows:
     build-and-test:
