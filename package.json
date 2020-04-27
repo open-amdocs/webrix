@@ -1,7 +1,42 @@
 {
   "name": "webrix",
   "version": "0.1.0",
-  "description": "",
-  "devDependencies": {},
-  "dependencies": {}
+  "license": "Apache-2.0",
+  "description": "A set of React logical components for faster web development",
+  "keywords": [
+    "react",
+    "ui",
+    "library",
+    "components",
+    "web"
+  ],
+  "devDependencies": {
+    "@babel/cli": "7.8.4",
+    "@babel/core": "7.9.0",
+    "@babel/plugin-proposal-class-properties": "7.8.3",
+    "@babel/plugin-proposal-decorators": "7.8.3",
+    "@babel/plugin-proposal-export-default-from": "7.8.3",
+    "@babel/plugin-proposal-function-bind": "7.8.3",
+    "@babel/plugin-transform-runtime": "7.9.0",
+    "@babel/preset-env": "7.9.5",
+    "@babel/preset-react": "7.9.4",
+    "@babel/register": "7.9.0",
+    "chai": "4.2.0",
+    "cross-env": "7.0.2",
+    "enzyme": "3.11.0",
+    "enzyme-adapter-react-16": "1.15.2",
+    "mocha": "7.1.2",
+    "react-dom": "^16.13.1"
+  },
+  "dependencies": {
+    "react": "16.13.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/open-amdocs/webrix.git"
+  },
+  "scripts": {
+    "build": "babel --config-file ./babel.config.json ./src --out-dir ./build",
+    "test": "mocha \"src/**/*.test.js\""
+  }
 }

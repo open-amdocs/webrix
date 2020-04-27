@@ -1,0 +1,3 @@
+--require test/register.js
+--require test/setup.js
+--exit
