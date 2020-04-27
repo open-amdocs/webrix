@@ -1,6 +1,8 @@
 import React from 'react';
 import './HelloWorld.scss';
 
-export default () => (
+const HelloWorld = () => (
     <div className='hello-world'>Hello World!</div>
 );
+
+export default HelloWorld;

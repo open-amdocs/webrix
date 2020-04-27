@@ -1,0 +1,63 @@
+{
+  "extends": ["eslint:recommended", "plugin:react/recommended"],
+  "parser": "babel-eslint",
+  "parserOptions": {
+    "ecmaVersion": 6,
+    "sourceType": "module",
+    "ecmaFeatures": {
+      "classes": true,
+      "modules": true,
+      "jsx": true,
+      "legacyDecorators": true
+    }
+  },
+  "env": {
+    "browser": true,
+    "es6": true,
+    "mocha": true,
+    "node": true
+  },
+  "plugins": [
+    "react",
+    "react-hooks"
+  ],
+  "settings": {
+    "react": {
+      "version": "detect"
+    }
+  },
+  "rules": {
+    "no-console": ["error", { "allow": ["warn", "error"] }],
+    "max-params": ["error", 5],
+    "max-lines": ["error", {"max": 200, "skipComments": true, "skipBlankLines": true}],
+    "max-lines-per-function": ["error", { "max": 30, "skipComments": true, "skipBlankLines": true }],
+    "complexity": ["error", { "max": 7 }],
+    "comma-dangle": ["error", {
+      "arrays": "always-multiline",
+      "objects": "always-multiline",
+      "imports": "always-multiline",
+      "exports": "always-multiline",
+      "functions": "ignore"
+    }],
+    "no-nested-ternary": ["error"],
+    "indent": ["error", 4],
+    "quotes": ["error", "single", { "avoidEscape": true }],
+    "jsx-quotes": ["error", "prefer-single"]
+  },
+  "overrides": [{
+    "files": ["*.jsx"],
+    "rules": {
+      "max-lines-per-function": ["error", { "max": 40, "skipComments": true, "skipBlankLines": true }]
+    }
+  },{
+    "files": ["*.test.js"],
+    "rules": {
+      "max-lines": 0,
+      "max-lines-per-function": 0,
+      "react/display-name": 0,
+      "no-nested-ternary": 0,
+      "complexity": 0,
+      "react/prop-types": 0
+    }
+  }]
+}
