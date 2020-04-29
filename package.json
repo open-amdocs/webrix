@@ -3,6 +3,8 @@
   "version": "0.1.0",
   "license": "Apache-2.0",
   "description": "A set of React logical components for faster web development",
+  "main": "build/HelloWorld.js",
+  "files": ["build/**/*"],
   "keywords": [
     "react",
     "ui",
@@ -31,10 +33,10 @@
     "eslint-plugin-react": "7.19.0",
     "eslint-plugin-react-hooks": "3.0.0",
     "mocha": "7.1.2",
+    "nyc": "15.0.1",
     "react-dom": "16.13.1"
   },
-  "dependencies": {
-    "nyc": "15.0.1",
+  "peerDependencies": {
     "react": "16.13.1"
   },
   "repository": {
@@ -43,7 +45,7 @@
   },
   "scripts": {
     "build": "babel --config-file ./babel.config.json ./src --out-dir ./build",
-    "test": "nyc --reporter=lcov mocha \"src/**/*.test.js\"",
+    "test": "nyc mocha \"src/**/*.test.js\"",
     "lint": "eslint --ext=js --ext=jsx src/"
   }
 }
