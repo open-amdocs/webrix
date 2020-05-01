@@ -1,16 +1,19 @@
 {
   "name": "webrix",
-  "version": "0.1.0",
-  "license": "Apache-2.0",
   "description": "A set of React logical components for faster web development",
-  "main": "build/HelloWorld.js",
-  "files": ["build/**/*"],
   "keywords": [
     "react",
     "ui",
     "library",
     "components",
     "web"
+  ],
+  "version": "0.1.0",
+  "bugs": "https://github.com/open-amdocs/webrix/issues",
+  "license": "Apache-2.0",
+  "main": "build/HelloWorld.js",
+  "files": [
+    "build/**/*"
   ],
   "devDependencies": {
     "@babel/cli": "7.8.4",
@@ -30,6 +33,7 @@
     "enzyme-adapter-react-16": "1.15.2",
     "eslint": "6.8.0",
     "eslint-plugin-import": "2.20.2",
+    "eslint-plugin-notice": "^0.9.10",
     "eslint-plugin-react": "7.19.0",
     "eslint-plugin-react-hooks": "3.0.0",
     "mocha": "7.1.2",

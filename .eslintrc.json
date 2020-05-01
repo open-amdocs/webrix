@@ -19,7 +19,8 @@
   },
   "plugins": [
     "react",
-    "react-hooks"
+    "react-hooks",
+    "notice"
   ],
   "settings": {
     "react": {
@@ -42,7 +43,8 @@
     "no-nested-ternary": ["error"],
     "indent": ["error", 4],
     "quotes": ["error", "single", { "avoidEscape": true }],
-    "jsx-quotes": ["error", "prefer-single"]
+    "jsx-quotes": ["error", "prefer-single"],
+    "notice/notice":["error", {"templateFile":"notice.js"}]
   },
   "overrides": [{
     "files": ["*.jsx"],
@@ -57,7 +59,8 @@
       "react/display-name": 0,
       "no-nested-ternary": 0,
       "complexity": 0,
-      "react/prop-types": 0
+      "react/prop-types": 0,
+      "notice/notice": 0
     }
   }]
 }
