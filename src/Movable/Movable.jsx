@@ -16,6 +16,7 @@
 
 import React, {forwardRef, memo} from 'react';
 import PropTypes from 'prop-types';
+import {noop} from 'utility/memory';
 
 export const track = ({onBeginMove, onMove, onEndMove}) => {
 
@@ -71,9 +72,9 @@ Movable.propTypes = {
 };
 
 Movable.defaultProps = {
-    onBeginMove:  () => null,
-    onMove:  () => null,
-    onEndMove:  () => null,
+    onBeginMove: noop,
+    onMove: noop,
+    onEndMove: noop,
 };
 
 export default memo(Movable);
