@@ -31,6 +31,8 @@ jobs:
     build:
       docker:
         - image: 'circleci/node:latest'
+      executor:
+        name: node/default
       steps:
         - checkout
         - run:
