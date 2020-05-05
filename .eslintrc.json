@@ -45,12 +45,17 @@
     "quotes": ["error", "single", { "avoidEscape": true }],
     "jsx-quotes": ["error", "prefer-single"],
     "prefer-const": ["error"],
-    "notice/notice":["error", {"templateFile":"notice.js"}]
+    "notice/notice": ["error", {"templateFile":"notice.js"}]
   },
   "overrides": [{
     "files": ["*.jsx"],
     "rules": {
       "max-lines-per-function": ["error", { "max": 40, "skipComments": true, "skipBlankLines": true }]
+    }
+  },{
+    "files": ["index.js"],
+    "rules": {
+      "notice/notice": 0
     }
   },{
     "files": ["*.test.js"],
