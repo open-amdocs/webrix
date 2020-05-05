@@ -28,17 +28,17 @@ jobs:
       - codecov/upload:
           file: ./coverage/lcov.info
 
-    build:
-      docker:
-        - image: 'circleci/node:latest'
-      executor:
-        name: node/default
-      steps:
-        - checkout
-        - node/with-cache:
-            steps:
-              - run: npm install
-              - run: npm run semantic-release || true
+  build:
+    docker:
+      - image: 'circleci/node:latest'
+    executor:
+      name: node/default
+    steps:
+      - checkout
+      - node/with-cache:
+          steps:
+            - run: npm install
+            - run: npm run semantic-release || true
 
 workflows:
     build-and-test:
