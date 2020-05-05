@@ -28,8 +28,21 @@ jobs:
       - codecov/upload:
           file: ./coverage/lcov.info
 
+    build:
+      docker:
+        - image: 'circleci/node:latest'
+      steps:
+        - checkout
+        - run:
+            name: install
+            command: npm install
+        - run:
+            name: release
+            command: npm run semantic-release || true
+
 workflows:
     build-and-test:
       jobs:
         - lint
         - test
+        - build

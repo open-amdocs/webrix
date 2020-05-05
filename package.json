@@ -8,7 +8,7 @@
     "components",
     "web"
   ],
-  "version": "0.1.0",
+  "version": "0.0.0-development",
   "bugs": "https://github.com/open-amdocs/webrix/issues",
   "license": "Apache-2.0",
   "main": "build/HelloWorld.js",
@@ -39,7 +39,8 @@
     "mocha": "7.1.2",
     "nyc": "15.0.1",
     "react": "16.13.1",
-    "react-dom": "16.13.1"
+    "react-dom": "16.13.1",
+    "semantic-release": "^17.0.7"
   },
   "peerDependencies": {
     "react": "16.13.1"
@@ -51,6 +52,7 @@
   "scripts": {
     "build": "babel --config-file ./babel.config.json ./src --out-dir ./build",
     "test": "nyc mocha \"src/**/*.test.js\"",
-    "lint": "eslint --ext=js --ext=jsx src/"
+    "lint": "eslint --ext=js --ext=jsx src/",
+    "semantic-release": "semantic-release"
   }
 }
