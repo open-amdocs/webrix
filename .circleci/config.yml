@@ -35,12 +35,10 @@ jobs:
         name: node/default
       steps:
         - checkout
-        - run:
-            name: install
-            command: npm install
-        - run:
-            name: release
-            command: npm run semantic-release || true
+        - node/with-cache:
+            steps:
+              - run: npm install
+              - run: npm run semantic-release || true
 
 workflows:
     build-and-test:
