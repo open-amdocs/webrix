@@ -20,7 +20,7 @@ describe('<Movable/>', () => {
             const preventDefault = sinon.spy();
             const wrapper = mount(<Movable onBeginMove={handleOnBeginMove}/>);
 
-            document.addEventListener.reset();
+            document.addEventListener.resetHistory();
             wrapper.simulate('mousedown', {stopPropagation, preventDefault});
             expect(handleOnBeginMove.calledOnce).to.eql(true);
             expect(document.addEventListener.callCount).to.eql(2);
