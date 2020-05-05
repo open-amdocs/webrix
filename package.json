@@ -27,6 +27,7 @@
     "@babel/preset-react": "7.9.4",
     "@babel/register": "7.9.0",
     "babel-eslint": "10.1.0",
+    "babel-plugin-module-resolver": "^4.0.0",
     "chai": "4.2.0",
     "cross-env": "7.0.2",
     "enzyme": "3.11.0",
@@ -38,12 +39,12 @@
     "eslint-plugin-react-hooks": "4.0.0",
     "jsdom": "16.2.2",
     "mocha": "7.1.2",
-    "prop-types": "15.7.2",
     "nyc": "15.0.1",
+    "prop-types": "15.7.2",
     "react": "16.13.1",
     "react-dom": "16.13.1",
-    "sinon": "9.0.2",
-    "semantic-release": "17.0.7"
+    "semantic-release": "17.0.7",
+    "sinon": "9.0.2"
   },
   "peerDependencies": {
     "react": "16.13.1"
