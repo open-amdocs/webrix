@@ -36,6 +36,7 @@
     "eslint-plugin-notice": "^0.9.10",
     "eslint-plugin-react": "7.19.0",
     "eslint-plugin-react-hooks": "3.0.0",
+    "jsdom": "15.1.1",
     "mocha": "7.1.2",
     "prop-types": "15.7.2",
     "nyc": "15.0.1",
