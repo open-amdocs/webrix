@@ -28,7 +28,7 @@ jobs:
       - codecov/upload:
           file: ./coverage/lcov.info
 
-  build:
+  release:
     docker:
       - image: 'circleci/node:latest'
     executor:
@@ -45,4 +45,10 @@ workflows:
       jobs:
         - lint
         - test
-        - build
+        - release
+            requires:
+              - lint
+              - test
+            filters:
+              branches:
+                only: master

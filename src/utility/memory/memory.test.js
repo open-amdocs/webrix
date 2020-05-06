@@ -1,4 +1,4 @@
-import {noop} from "./memory";
+import {noop} from './memory';
 import {expect} from 'chai';
 
 describe('memory', () => {
