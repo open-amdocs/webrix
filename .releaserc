@@ -1,0 +1,6 @@
+{
+  "dryRun": true,
+  "branches": [
+    {"name":  "0.x", "range": "0.x", "channel": "1.x", "prerelease": true}
+  ]
+}
