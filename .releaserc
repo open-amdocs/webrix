@@ -1,5 +1,4 @@
 {
-  "dryRun": true,
   "branches": [
     {"name": "master"},
     {"name": "beta", "prerelease": true},
