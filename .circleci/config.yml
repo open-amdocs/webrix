@@ -49,6 +49,3 @@ workflows:
             requires:
               - lint
               - test
-            filters:
-              branches:
-                only: master
