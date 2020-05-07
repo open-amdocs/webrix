@@ -2,6 +2,6 @@
   "dryRun": true,
   "branches": [
     {"name": "master"},
-    {"name":  "0.x", "range": "0.x", "channel": "0.x", "prerelease": true}
+    {"name":  "1.x", "range": "1.x", "channel": "1.x", "prerelease": true}
   ]
 }
