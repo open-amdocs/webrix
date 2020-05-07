@@ -38,7 +38,7 @@ jobs:
       - node/with-cache:
           steps:
             - run: npm install
-            - run: npm run release:alpha || true
+            - run: npm run release || true
 
 workflows:
     build-and-test:

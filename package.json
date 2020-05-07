@@ -57,7 +57,6 @@
     "build": "babel --config-file ./babel.config.json ./src --out-dir ./build",
     "test": "nyc mocha \"src/**/*.test.js\"",
     "lint": "eslint --ext=js --ext=jsx src/",
-    "release": "semantic-release",
-    "release:alpha": "semantic-release --branch alpha"
+    "release": "semantic-release"
   }
 }
