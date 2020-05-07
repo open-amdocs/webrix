@@ -11,7 +11,7 @@
   "version": "0.0.0-development",
   "bugs": "https://github.com/open-amdocs/webrix/issues",
   "license": "Apache-2.0",
-  "main": "build/HelloWorld.js",
+  "main": "build/index.js",
   "files": [
     "build/**/*"
   ],
