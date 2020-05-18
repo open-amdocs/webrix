@@ -1,9 +1,5 @@
-<p align="center">
-  <img alt="Webrix logo" src="https://github.com/open-amdocs/webrix-docs/raw/master/src/resources/images/webrix-logo-dark.png">
-</p>
-
----
-
+![Webrix logo](https://github.com/open-amdocs/webrix-docs/raw/master/src/resources/images/webrix-logo-dark.png)
+  
 [![GitHub license](https://img.shields.io/badge/license-Apache%202-blue)](https://github.com/open-amdocs/webrix/blob/master/LICENSE)
 [![CircleCI Status](https://circleci.com/gh/open-amdocs/webrix.svg?style=shield&circle-token=:circle-token)](https://circleci.com/gh/open-amdocs/webrix)
 [![codecov](https://codecov.io/gh/open-amdocs/webrix/branch/master/graph/badge.svg)](https://codecov.io/gh/open-amdocs/webrix)
