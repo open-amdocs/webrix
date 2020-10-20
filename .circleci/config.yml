@@ -38,7 +38,8 @@ jobs:
       - node/with-cache:
           steps:
             - run: npm install
-            - run: npm run build
+            - run: npm run build:development
+            - run: npm run build:production
             - run: npm run release || true
 
 workflows:
