@@ -1,0 +1,62 @@
+$size: 20px;
+$offset: $size / -2;
+
+.resizable {
+  position: absolute;
+  width: $size;
+  height: $size;
+
+  &.right-resizer {
+    right: $offset;
+    top: 0;
+    height: 100%;
+    cursor: ew-resize;
+  }
+
+  &.left-resizer {
+    left: $offset;
+    top: 0;
+    height: 100%;
+    cursor: ew-resize;
+  }
+
+  &.bottom-resizer {
+    bottom: $offset;
+    width: 100%;
+    cursor: ns-resize;
+  }
+
+  &.top-resizer {
+    top: $offset;
+    width: 100%;
+    cursor: ns-resize;
+  }
+
+  &.bottom-right-resizer {
+    right: $offset;
+    bottom: $offset;
+    z-index: 1;
+    cursor: nwse-resize;
+  }
+
+  &.bottom-left-resizer {
+    left: $offset;
+    bottom: $offset;
+    z-index: 1;
+    cursor: nesw-resize;
+  }
+
+  &.top-left-resizer {
+    left: $offset;
+    top: $offset;
+    z-index: 1;
+    cursor: nwse-resize;
+  }
+
+  &.top-right-resizer {
+    right: $offset;
+    top: $offset;
+    z-index: 1;
+    cursor: nesw-resize;
+  }
+}
