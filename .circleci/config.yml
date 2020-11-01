@@ -39,8 +39,8 @@ jobs:
           steps:
             - run: npm install
             - run: npm rebuild node-sass
-            - run: npm run build:development
-            - run: npm run build:production
+            - run: npm run build:cjs
+            - run: npm run build:umd
             - run: npm run release || true
 
 workflows:
