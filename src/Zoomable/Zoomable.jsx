@@ -17,7 +17,6 @@
 import React, {memo, forwardRef} from 'react';
 import classNames from 'classnames';
 import {propTypes, defaultProps} from './Zoomable.props';
-import './Zoomable.scss';
 
 export const Zoomable = forwardRef(({zoom, style, className, ...props}, ref) => (
     <div {...props}
