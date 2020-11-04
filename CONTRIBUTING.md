@@ -22,7 +22,7 @@ Below are the steps to create a pull request:
 1. Fork the repository.
 2. Clone the fork to your local machine and add upstream remote:
 ```
-git clone git@github.com:<yourname>/webrix.git
+git clone git@github.com:open-amdocs/webrix.git
 cd webrix
 git remote add upstream git@github.com:open-amdocs/webrix.git
 ```
