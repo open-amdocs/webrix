@@ -9,7 +9,8 @@
         ["module-resolver", {
             "root": ["./src"],
             "alias": {
-                "utility": "./src/utility"
+                "utility": "./src/utility",
+                "tools": "./src/tools"
             }
         }]
     ]

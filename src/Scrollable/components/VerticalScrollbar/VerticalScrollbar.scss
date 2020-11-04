@@ -1,0 +1,18 @@
+.scrollbar {
+  .vertical-scrollbar-track {
+    position: absolute;
+    width: 12px;
+    height: 100%;
+    right: 0;
+    top: 0;
+
+    .scrollbar-thumb {
+      right: 0;
+
+      .scrollbar-thumb-inner {
+        width: 6px;
+        height: 100%;
+      }
+    }
+  }
+}

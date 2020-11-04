@@ -1,6 +1,7 @@
 import {configure} from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import {JSDOM} from 'jsdom';
+import sinon from 'sinon';
 
 configure({adapter: new Adapter()});
 
@@ -12,3 +13,7 @@ const dom = new JSDOM(
 global.window = dom.window;
 global.document = dom.window.document;
 global.Element = dom.window.Element;
+global.window.ResizeObserver = class {
+    disconnect = sinon.spy();
+    observe = sinon.spy();
+};
