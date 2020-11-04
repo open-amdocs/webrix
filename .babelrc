@@ -10,6 +10,7 @@
             "root": ["./src"],
             "alias": {
                 "utility": "./src/utility",
+                "hooks": "./src/hooks",
                 "tools": "./src/tools"
             }
         }]
