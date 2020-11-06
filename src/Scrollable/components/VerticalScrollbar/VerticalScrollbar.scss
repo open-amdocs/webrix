@@ -8,6 +8,7 @@
 
     .scrollbar-thumb {
       right: 0;
+      box-sizing: border-box;
 
       .scrollbar-thumb-inner {
         width: 6px;
