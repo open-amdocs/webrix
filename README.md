@@ -7,4 +7,50 @@
 [![semantic-release](https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg)](https://github.com/semantic-release/semantic-release)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/open-amdocs/webrix/blob/master/CONTRIBUTING.md)
 
-Powerful building blocks for React-based web applications. Documentation coming soon!
+Powerful building blocks for React-based web applications.
+
+For the full documentation, API overview and live examples, visit the official [Webrix documentation site](http://webrix.amdocs.com).
+
+### What Is Webrix?
+
+Webrix is a set of small, single-purpose components, each aimed at overcoming a specific UI challenge.
+It's not a component bank, but rather a set of components with which you can build your own component bank, whether it's basic or highly complex.
+
+### Installation
+
+You can install Webrix with `npm` (or `yarn` if you prefer).
+
+```bash
+# With npm
+npm i webrix
+
+# With yarn
+yarn add webrix
+```
+
+Webrix requires has peer dependencies for `react`, `react-dom` and `prop-types`, so be sure to install them as well:
+
+```bash
+npm i react react-dom prop-types
+```
+
+### Usage
+
+Webrix components can be imported using named imports:
+
+```js
+import {Movable} from 'webrix';
+
+<Movable {...props}/>
+```
+
+### Components
+
+* [Movable](http://webrix.amdocs.com/docs/components/movable)
+* [Stackable](http://webrix.amdocs.com/docs/components/stackable)
+* [Pannable](http://webrix.amdocs.com/docs/components/pannable)
+* [Resizable](http://webrix.amdocs.com/docs/components/resizable)
+* [Poppable](http://webrix.amdocs.com/docs/components/poppable)
+* [Zoomable](http://webrix.amdocs.com/docs/components/zoomable)
+* [Scrollable](http://webrix.amdocs.com/docs/components/scrollable)
+* [Collapsible](http://webrix.amdocs.com/docs/components/collapsible)
