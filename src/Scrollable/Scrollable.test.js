@@ -42,8 +42,17 @@ describe('<Scrollable/>', () => {
         it('componentDidUpdate()', () => {
             const s = new Scrollable({scrollOnDOMChange: false});
             s.container = {current: {scrollTop: 0}};
-            s.componentDidUpdate(null, null, 50);
+            s.componentDidUpdate(null, null, {scrollTop: 50, scrollLeft: 50});
             expect(s.container.current.scrollTop).to.eql(50);
+            expect(s.container.current.scrollLeft).to.eql(50);
+
+            // Should call updateScrollbars()
+            s.container = {current: {scrollHeight: 50}};
+            s.updateScrollbars = sinon.spy();
+            s.componentDidUpdate(null, null, {scrollHeight: 50});
+            expect(s.updateScrollbars.callCount).to.eql(0);
+            s.componentDidUpdate(null, null, {scrollHeight: 100});
+            expect(s.updateScrollbars.callCount).to.eql(1);
         });
 
         it('ResizeUpdate', () => {

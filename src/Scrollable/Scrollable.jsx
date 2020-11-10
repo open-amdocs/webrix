@@ -35,14 +35,15 @@ export default class Scrollable extends React.PureComponent {
     }
 
     getSnapshotBeforeUpdate() {
-        return this.container.current.scrollTop;
+        const {scrollTop, scrollLeft, scrollHeight, scrollWidth} = this.container.current;
+        return {scrollTop, scrollLeft, scrollHeight, scrollWidth};
     }
 
     componentDidMount() {
         this.updateScrollbars();
     }
 
-    componentDidUpdate(prevProps, prevState, scrollTop) {
+    componentDidUpdate(prevProps, prevState, {scrollTop, scrollLeft, scrollHeight, scrollWidth}) {
         if (!this.props.scrollOnDOMChange) {
             // Sometimes DOM changes trigger a scroll by the browser.
             // On the other hand, we sometimes use the onScroll event to
@@ -55,6 +56,14 @@ export default class Scrollable extends React.PureComponent {
             // was done by the browser, and not the user, and therefore
             // we apply the scrollTop from the snapshot.
             this.container.current.scrollTop = scrollTop;
+            this.container.current.scrollLeft = scrollLeft;
+        }
+
+        // While the <ResizeObserver/> observes dimension changes on the container,
+        // this part observes changes to the dimensions of the content.
+        if (scrollHeight !== this.container.current.scrollHeight ||
+            scrollWidth !== this.container.current.scrollWidth) {
+            this.updateScrollbars();
         }
     }
 
