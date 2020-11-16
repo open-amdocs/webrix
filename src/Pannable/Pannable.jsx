@@ -15,6 +15,7 @@
  */
 
 import React, {forwardRef, useCallback, useRef} from 'react';
+import {copyComponentRef} from 'utility/react';
 import Movable from '../Movable';
 import Scrollable from '../Scrollable';
 import {propTypes, defaultProps} from './Pannable.props';
@@ -22,6 +23,7 @@ import './Pannable.scss';
 
 export const Pannable = forwardRef(({children}, ref) => {
     const scrollRef = useRef();
+    const pannableRef = useRef();
     const initial = { top: 0, left: 0 };
 
     const handleOnBeginMove = useCallback(() => {
@@ -30,7 +32,7 @@ export const Pannable = forwardRef(({children}, ref) => {
         const scrollbar = scrollRef.current.container.current;
         initial.top = scrollbar.scrollTop;
         initial.left = scrollbar.scrollLeft;
-        ref?.current.classList.add('dragging');
+        pannableRef.current.classList.add('dragging');
     }, [initial.top, initial.left]);
 
     const handleOnMove = useCallback(({ dx, dy}) => {
@@ -41,11 +43,11 @@ export const Pannable = forwardRef(({children}, ref) => {
     }, [initial.top, initial.left]);
 
     const handleOnEndMove = useCallback(() => {
-        ref?.current.classList.remove('dragging');
+        pannableRef.current.classList.remove('dragging');
     });
 
     return (
-        <div className='pannable' ref={ref}>
+        <div className='pannable' ref={copyComponentRef(ref, pannableRef)}>
             <Scrollable ref={scrollRef}>
                 <Movable
                     className='movable'

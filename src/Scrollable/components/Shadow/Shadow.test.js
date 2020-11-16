@@ -18,8 +18,8 @@ import React from 'react';
 import {shallow, mount} from 'enzyme';
 import {expect} from 'chai';
 import sinon from 'sinon';
-import {ScrollShadow} from './Shadow';
-import * as utils from './Shadow.utils';
+import {ScrollShadow, __RewireAPI__ as rewireAPI} from './Shadow';
+import {getShadowCoefficient, getBoxShadow} from './Shadow.utils';
 import {SHADOW_THRESHOLD} from './Shadow.constants';
 
 describe('<Scrollbar.Shadow/>', () => {
@@ -34,23 +34,22 @@ describe('<Scrollbar.Shadow/>', () => {
 
     describe('Events', () => {
         it('should render a Scrollbar', () => {
-            const spy = sinon.spy(utils, 'getBoxShadow');
+            const spy = sinon.spy();
+            rewireAPI.__Rewire__('getBoxShadow', spy);
             const wrapper = mount(<ScrollShadow><div className='child' onScroll={() => null}/></ScrollShadow>);
             wrapper.find('.child').props().onScroll({});
             expect(spy.callCount).to.eql(1);
-            spy.restore();
+            rewireAPI.__ResetDependency__('getBoxShadow');
         });
     });
 
     describe('Utils', () => {
         it('getShadowCoefficient()', () => {
-            const {getShadowCoefficient} = utils;
             expect(getShadowCoefficient(0)).to.eql(0);
             expect(getShadowCoefficient(30)).to.eql(30 / SHADOW_THRESHOLD);
             expect(getShadowCoefficient(SHADOW_THRESHOLD + 10)).to.eql(1);
         });
         it('getBoxShadow()', () => {
-            const {getBoxShadow} = utils;
             const boxshadow = getBoxShadow({scrollTop: 0, scrollLeft: 0, scrollHeight: 100, scrollWidth: 100, clientHeight: 100, clientWidth: 100});
             expect(boxshadow.split(',').length).to.eql(32);
         });
