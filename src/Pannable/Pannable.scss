@@ -1,0 +1,25 @@
+.pannable {
+  height: 100%;
+  cursor: grab;
+  cursor: -moz-grab;
+  cursor: -webkit-grab;
+
+  &.dragging {
+    cursor: grabbing;
+    cursor: -moz-grabbing;
+    cursor: -webkit-grabbing;
+  }
+
+  .scrollbar {
+    height: 100%;
+
+    .scrollbar-inner {
+      height: 100%;
+
+      .movable {
+        height: 100%;
+        width: 100%;
+      }
+    }
+  }
+}
