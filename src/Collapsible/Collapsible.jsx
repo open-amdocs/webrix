@@ -20,7 +20,7 @@ import {usePrevious} from 'hooks';
 import {propTypes, defaultProps} from './Collapsible.props';
 import './Collapsible.scss';
 
-export const Collapsible = ({expanded, children, duration, onTransitionEnd}) => {
+export const Collapsible = ({expanded, children, duration, onTransitionEnd, ...props}) => {
     const [{motion, height}, setState] = useState({motion: '', height: expanded ? 'auto' : 0});
     const hasChildren = !!React.Children.count(children);
     const timeout = useRef(), content = useRef();
@@ -49,10 +49,11 @@ export const Collapsible = ({expanded, children, duration, onTransitionEnd}) => 
                 }, expanded ? 0 : duration);
             }, expanded ? duration : 0);
         }
+        return () => clearTimeout(timeout.current);
     });
 
     return (
-        <div className={classNames('collapsible', motion, {expanded})}>
+        <div {...props} className={classNames('collapsible', motion, {expanded}, props.className)}>
             {hasChildren && (
                 <div
                     className='content-wrapper'
