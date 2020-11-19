@@ -12,7 +12,10 @@
   "bugs": "https://github.com/open-amdocs/webrix/issues",
   "homepage": "http://webrix.amdocs.com",
   "license": "Apache-2.0",
-  "main": "index.js",
+  "main": "build/cjs/index.js",
+  "exports": {
+    "./components/": "./build/cjs/components"
+  },
   "files": [
     "build/**/*"
   ],
@@ -68,6 +71,9 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/open-amdocs/webrix.git"
+  },
+  "engines" : {
+    "node" : ">=13.0"
   },
   "scripts": {
     "dev": "rollup --config rollup/rollup.dev.js --watch",

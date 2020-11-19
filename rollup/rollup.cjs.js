@@ -1,4 +1,3 @@
-import {terser} from 'rollup-plugin-terser';
 import base from './rollup.base';
 import postcss from 'rollup-plugin-postcss';
 
@@ -6,25 +5,16 @@ export default [
     {
         ...base,
         output: {
-            file: 'build/webrix.cjs.js',
+            dir: 'build/cjs',
             format: 'cjs',
+            preserveModules: true,
+            preserveModulesRoot: 'src',
             sourcemap: true,
+            exports: 'named',
         },
         plugins: [
             ...base.plugins(),
             postcss({sourceMap: true}),
-        ],
-    },
-    {
-        ...base,
-        output: {
-            file: 'build/webrix.cjs.min.js',
-            format: 'cjs',
-            plugins: [terser()]
-        },
-        plugins: [
-            ...base.plugins(),
-            postcss({minimize: true}),
         ],
     }
 ];
