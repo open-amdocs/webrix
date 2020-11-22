@@ -44,7 +44,7 @@ jobs:
             - run:
                 name: Copy files and relesae
                 command: |
-                  cp package.json ./build
+                  cp package.json README.md LICENSE ./build
                   cd ./build
                   npm run release
 
