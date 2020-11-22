@@ -17,3 +17,5 @@ global.window.ResizeObserver = class {
     disconnect = sinon.spy();
     observe = sinon.spy();
 };
+
+global.DOMRect = function (x, y, width, height) {this.x = x; this.y = y; this.left = x; this.top = y; this.width = width; this.height = height; this.bottom = y + height; this.right = x + width;};
