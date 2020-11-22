@@ -5,7 +5,7 @@ export default [
     {
         ...base,
         output: {
-            dir: 'build/cjs',
+            dir: 'build',
             format: 'cjs',
             preserveModules: true,
             preserveModulesRoot: 'src',

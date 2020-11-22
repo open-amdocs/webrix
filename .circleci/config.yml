@@ -41,7 +41,13 @@ jobs:
             - run: npm rebuild node-sass
             - run: npm run build:cjs
             - run: npm run build:umd
-            - run: npm run release || true
+            - run:
+                name: Copy files and relesae
+                shell: bash.exe
+                command: |
+                  cp package.json ./build
+                  cd /build
+                  npm run release
 
 workflows:
     build-and-test:
