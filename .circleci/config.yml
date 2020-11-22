@@ -54,7 +54,4 @@ workflows:
       jobs:
         - lint
         - test
-        - release:
-            requires:
-              - lint
-              - test
+        - release
