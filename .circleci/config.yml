@@ -45,7 +45,7 @@ jobs:
                 name: Copy files and relesae
                 command: |
                   cp package.json ./build
-                  cd /build
+                  cd ./build
                   npm run release
 
 workflows:
