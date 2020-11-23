@@ -20,7 +20,6 @@ describe('<Handle/>', () => {
                     <Handle>Foo</Handle>
                 </AdjustableContext.Provider>
             );
-            console.log(wrapper.debug());
             wrapper.find('.poppable-movable').first().prop('onMove')({dx: 10, dy: 10});
             expect(setBoundingRect.callCount).to.eql(1);
             expect(setBoundingRect.calledWith({top: 10, left: 10})).to.eql(true);
