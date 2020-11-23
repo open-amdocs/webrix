@@ -39,7 +39,7 @@ import OverrideContext from './useClickOutside.context';
  *
  * @param {Function} callback
  */
-const useClickOutside = callback => {
+export const useClickOutside = callback => {
     const isClickedInside = useRef(false);
     const isClickedOutside = useContext(OverrideContext);
 
@@ -87,5 +87,3 @@ ClickOutsideOverride.propTypes = {
     condition: func,
     children: node,
 };
-
-export default useClickOutside;
