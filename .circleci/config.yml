@@ -42,13 +42,13 @@ jobs:
             - run: npm run build:cjs
             - run: npm run build:umd
             - run:
-                name: Copy files and relesae
+                name: copy files
                 command: |
                   cp package.json README.md LICENSE ./build
                   cd ./build
                   mv node_modules external
                   find . -type f | xargs sed -i  's/node_modules/external/g'
-                  npm run release
+            - run: npm run release
 
 workflows:
     build-and-test:
