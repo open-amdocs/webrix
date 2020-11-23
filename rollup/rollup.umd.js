@@ -12,7 +12,7 @@ export default [
     {
         ...base,
         output: {
-            file: 'build/webrix.umd.js',
+            file: 'build/umd/webrix.umd.js',
             format: 'umd',
             name: 'Webrix',
             globals,
@@ -25,7 +25,7 @@ export default [
     {
         ...base,
         output: {
-            file: 'build/webrix.umd.min.js',
+            file: 'build/umd/webrix.umd.min.js',
             format: 'umd',
             plugins: [terser()],
             name: 'Webrix',

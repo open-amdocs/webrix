@@ -1,0 +1,30 @@
+.poppable-arrow {
+  position: fixed;
+  border: 10px solid transparent;
+
+  &::before {
+    content: '';
+    position: absolute;
+    border: 10px solid transparent;
+  }
+
+  &.left::before {
+    top: -10px;
+    left: -9px;
+  }
+
+  &.right::before {
+    top: -10px;
+    right: -9px;
+  }
+
+  &.up::before {
+    top: -9px;
+    right: -10px;
+  }
+
+  &.down::before {
+    top: -11px;
+    right: -10px;
+  }
+}

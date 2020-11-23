@@ -1,7 +1,3 @@
-export Collapsible from './Collapsible';
-export Movable from './Movable';
-export Resizable from './Resizable';
-export Scrollable from './Scrollable';
-export Stackable from './Stackable';
-export Zoomable from './Zoomable';
-export Pannable from './Pannable';
+export * as components from './components';
+export * as hooks from './hooks';
+export * as tools from './tools';

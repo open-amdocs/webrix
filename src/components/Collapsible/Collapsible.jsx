@@ -32,7 +32,6 @@ export const Collapsible = ({expanded, children, duration, onTransitionEnd, ...p
     }, [onTransitionEnd]);
 
     useEffect(() => {
-        const hasChildren = !!React.Children.count(children);
         if (hasChildren && expanded !== prevExpanded) {
             setState({height: content.current.clientHeight, motion: expanded ? 'expanding' : 'collapsing'});
             clearTimeout(timeout.current);
@@ -50,7 +49,7 @@ export const Collapsible = ({expanded, children, duration, onTransitionEnd, ...p
             }, expanded ? duration : 0);
         }
         return () => clearTimeout(timeout.current);
-    });
+    }, [hasChildren, expanded, setState, duration]);
 
     return (
         <div {...props} className={classNames('collapsible', motion, {expanded}, props.className)}>

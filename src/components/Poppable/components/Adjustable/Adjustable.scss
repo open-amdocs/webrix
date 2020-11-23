@@ -1,0 +1,26 @@
+.poppable {
+  .poppable-movable {
+    cursor: all-scroll;
+  }
+
+  .icon-button {
+    margin-left: auto;
+
+    & + .icon-button {
+      margin-left: 5px;
+    }
+
+    &.icon-button-tack {
+      padding: 2px;
+    }
+
+    &.icon-button-maximize-screen,
+    &.icon-button-minimize-screen {
+      padding: 3px;
+    }
+
+    &.icon-button-times {
+      padding: 4px;
+    }
+  }
+}
