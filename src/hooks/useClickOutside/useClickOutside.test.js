@@ -4,7 +4,7 @@ import {act} from 'react-dom/test-utils';
 import sinon from 'sinon';
 import {expect} from 'chai';
 import {mount} from 'enzyme';
-import useClickOutside from './useClickOutside';
+import {useClickOutside} from './useClickOutside';
 import {getZindex, isAbove} from './clickOutside.utils';
 
 const Elem = () => {
