@@ -10,7 +10,7 @@
   ],
   "version": "0.0.0-development",
   "bugs": "https://github.com/open-amdocs/webrix/issues",
-  "homepage": "http://webrix.amdocs.com",
+  "homepage": "https://webrix.amdocs.com",
   "license": "Apache-2.0",
   "main": "build/cjs/index.js",
   "dependencies": {
