@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+import cls from 'classnames';
 import {getType} from 'utility/types';
 import {getRelativePosition, contained} from 'utility/rect';
 
@@ -98,7 +99,11 @@ export const getPlacement = ({tbr, cbr, rbr, wbr}, placements, desired, overflow
 };
 
 /**
- * get the relative locations from the reference element
+ * Get the cardinal directions of the target in relation to the reference.
+ * The directions are calculated by comparing the center points of the two rects.
+ * For example, if the center point of the reference is directly above the center
+ * point of the target, the target will receive a 'south' class, since it is south
+ * of the reference.
  *
  * @param {Object} tbr Target Bounding Rect
  * @param {Object} rbr Reference Bounding Rect
@@ -110,3 +115,14 @@ export const getPositionClass = (tbr, rbr) => getRelativePosition(tbr, rbr).redu
         ['north', '', 'south'],
     ][i][cur + 1]
 ), '');
+
+export const getFoobar = (tbr, rbr) => ({
+    vbefore: tbr.bottom < rbr.top,
+    vafter: rbr.bottom < tbr.top,
+    hbefore: tbr.right < rbr.left,
+    hafter: rbr.right < tbr.left,
+});
+
+export const getClassNames = (tbr, rbr) => (
+    cls(getPositionClass(tbr, rbr), getFoobar(tbr, rbr))
+);

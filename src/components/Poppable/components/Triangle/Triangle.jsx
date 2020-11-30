@@ -15,13 +15,28 @@
  */
 
 import React, {useContext} from 'react';
-import {isEmpty} from 'utility/types';
-import Arrow from '../../Arrow/Arrow';
-import AdjustableContext from '../Adjustable.context';
+import {number} from 'prop-types';
+import PoppableContext from '../../Poppable.context';
+import {ready, getLeft, getTop} from './Triangle.utils';
+import './Triangle.scss';
 
-const AdjustableArrow = () => {
-    const {boundingRect} = useContext(AdjustableContext);
-    return isEmpty(boundingRect) ? <Arrow/> : null;
+const Arrow = ({size}) => {
+    const {tbr, rbr} = useContext(PoppableContext);
+    return !ready(tbr, rbr) ? null : (
+        <div className='poppable-triangle' style={{
+            top: getTop(tbr, rbr, size),
+            left: getLeft(tbr, rbr, size),
+            borderWidth: size,
+        }}/>
+    );
 };
 
-export default AdjustableArrow;
+Arrow.propTypes = {
+    size: number,
+};
+
+Arrow.defaultProps = {
+    size: 0,
+}
+
+export default Arrow;

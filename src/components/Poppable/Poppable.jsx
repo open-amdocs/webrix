@@ -21,7 +21,7 @@ import {copyComponentRef} from 'utility/react';
 import puppet from 'tools/Puppeteer/Puppet.hoc';
 import Puppeteer from 'tools/Puppeteer/Puppeteer';
 import {usePosition, useBoundingRects} from './Poppable.hooks';
-import {getPositionClass} from './Poppable.utils';
+import {getClassNames} from './Poppable.utils';
 import PoppableContext from './Poppable.context';
 import {propTypes, defaultProps} from './Poppable.props';
 
@@ -33,7 +33,7 @@ export const Poppable = forwardRef(({children, container, reference, placements,
 
     return (
         <Puppeteer.Break namespace='poppable'>
-            <Stackable {...props} className={classNames('poppable', className, getPositionClass(rects.tbr, rects.rbr))} style={{...style, ...placement}}
+            <Stackable {...props} className={classNames('poppable', className, getClassNames(rects.tbr, rects.rbr))} style={{...style, ...placement}}
                 ref={copyComponentRef(ref, target)} parent={reference} onContextMenu={handleOnContextMenu}>
                 <PoppableContext.Provider value={rects}>
                     {children}

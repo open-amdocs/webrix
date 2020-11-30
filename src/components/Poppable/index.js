@@ -17,10 +17,12 @@
 import Context from './Poppable.context';
 import Poppable from './Poppable.stateful';
 import ManualPoppable from './Poppable';
+import Triangle from './components/Triangle/Triangle';
 // import AdjustablePoppable from './components/Adjustable';
 
 Poppable.Context = Context;
 Poppable.Manual = ManualPoppable;
+Poppable.Triangle = Triangle;
 // Poppable.Adjustable = AdjustablePoppable;
 
 export default Poppable;
