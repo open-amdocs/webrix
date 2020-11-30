@@ -109,20 +109,24 @@ export const getPlacement = ({tbr, cbr, rbr, wbr}, placements, desired, overflow
  * @param {Object} rbr Reference Bounding Rect
  * @returns string with locations
  */
-export const getPositionClass = (tbr, rbr) => getRelativePosition(tbr, rbr).reduce((acc, cur, i) => (
+export const getCardinalPosition = (tbr, rbr) => getRelativePosition(tbr, rbr).reduce((acc, cur, i) => (
     acc + (acc.length ? ' ' : '') + [
         ['west', '', 'east'],
         ['north', '', 'south'],
     ][i][cur + 1]
 ), '');
 
-export const getFoobar = (tbr, rbr) => ({
-    vbefore: tbr.bottom < rbr.top,
-    vafter: rbr.bottom < tbr.top,
-    hbefore: tbr.right < rbr.left,
-    hafter: rbr.right < tbr.left,
-});
-
+/**
+ *
+ * @param tbr
+ * @param rbr
+ * @returns {string}
+ */
 export const getClassNames = (tbr, rbr) => (
-    cls(getPositionClass(tbr, rbr), getFoobar(tbr, rbr))
+    cls(getCardinalPosition(tbr, rbr), {
+        vbefore: tbr.bottom < rbr.top,
+        vafter: rbr.bottom < tbr.top,
+        hbefore: tbr.right < rbr.left,
+        hafter: rbr.right < tbr.left,
+    })
 );

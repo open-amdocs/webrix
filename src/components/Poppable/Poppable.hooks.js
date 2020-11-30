@@ -52,7 +52,7 @@ export const usePosition = ({target, container, reference, placements, default: 
         const _placements = placements(rbr, tbr);
         const desired = _placements[_default];
         const newPosition = getPlacement({tbr, cbr, rbr, wbr}, _placements, desired, overflow);
-        if(!tbr || newPosition.top !== tbr.top || newPosition.left !== tbr.left) {
+        if (!tbr || newPosition.top !== tbr.top || newPosition.left !== tbr.left) {
             onPlacement(newPosition);
         }
     });
