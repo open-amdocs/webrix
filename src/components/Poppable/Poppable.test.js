@@ -4,6 +4,7 @@ import {expect} from 'chai';
 import Poppable from './Poppable';
 import defaultOverflow from './Poppable.overflow';
 import {sortPlacements, filterPlacements, getPlacement, getBoundingRects, refsReady} from './Poppable.utils';
+import {vbefore, vcenter, vafter, hbefore, hcenter, hafter} from './Poppable.placements';
 import {HIDDEN_PLACEMENT} from './Poppable.constants';
 
 describe('<Poppable/>', () => {
@@ -77,5 +78,14 @@ describe('<Poppable/>', () => {
                 wbr: new DOMRect(0, 0, 120, 120),
             })).to.eql({top: 0, left: 0});
         });
+    });
+
+    it('Placements', () => {
+        expect(vbefore(new DOMRect(100, 100, 100, 100), new DOMRect(0, 0, 50, 50))).to.eql({top: 50});
+        expect(vcenter(new DOMRect(100, 100, 100, 100), new DOMRect(0, 0, 50, 50))).to.eql({top: 125});
+        expect(vafter(new DOMRect(100, 100, 100, 100), new DOMRect(0, 0, 50, 50))).to.eql({top: 200});
+        expect(hbefore(new DOMRect(100, 100, 100, 100), new DOMRect(0, 0, 50, 50))).to.eql({left: 50});
+        expect(hcenter(new DOMRect(100, 100, 100, 100), new DOMRect(0, 0, 50, 50))).to.eql({left: 125});
+        expect(hafter(new DOMRect(100, 100, 100, 100), new DOMRect(0, 0, 50, 50))).to.eql({left: 200});
     });
 });
