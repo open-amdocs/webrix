@@ -21,15 +21,15 @@ import ResizeObserver from 'tools/ResizeObserver';
 import {propTypes, defaultProps} from './Scalable.props';
 import './Scalable.scss';
 
-export const Scalable = forwardRef(({zoomx, zoomy, className, children, ...props}, ref) => {
+export const Scalable = forwardRef(({scalex, scaley, className, children, ...props}, ref) => {
     const inner = useRef();
     const outer = useRef();
 
     const updateDimensions = useCallback(() => {
         const {clientWidth: width, clientHeight: height} = inner.current;
-        outer.current.style.width = `${width * zoomx}px`;
-        outer.current.style.height = `${height * zoomy}px`;
-    }, [zoomx, zoomy]);
+        outer.current.style.width = `${width * scalex}px`;
+        outer.current.style.height = `${height * scaley}px`;
+    }, [scalex, scaley]);
 
     useEffect(() => {
         updateDimensions();
@@ -38,7 +38,7 @@ export const Scalable = forwardRef(({zoomx, zoomy, className, children, ...props
     return (
         <div {...props} ref={copyComponentRef(ref, outer)} className={classNames('scalable', className)}>
             <ResizeObserver onResize={updateDimensions}>
-                <div className='scalable-inner' style={{transform: `scale(${zoomx}, ${zoomy})`}} ref={inner}>
+                <div className='scalable-inner' style={{transform: `scale(${scalex}, ${scaley})`}} ref={inner}>
                     {children}
                 </div>
             </ResizeObserver>

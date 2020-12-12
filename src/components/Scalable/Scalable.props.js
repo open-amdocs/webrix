@@ -18,12 +18,12 @@ import {number, node} from 'prop-types';
 
 export const propTypes = {
     children: node,
-    zoomx: number,
-    zoomy: number,
+    scalex: number,
+    scaley: number,
 };
 
 export const defaultProps = {
     children: null,
-    zoomx: 1,
-    zoomy: 1,
+    scalex: 1,
+    scaley: 1,
 };

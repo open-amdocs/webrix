@@ -13,14 +13,14 @@ describe('Scalable', () => {
             expect(wrapper.find('.scalable-inner').get(0).props.style.transform).to.eql('scale(1, 1)');
         });
         it('should render scaled Scalable', () => {
-            const wrapper = shallow(<Scalable zoomx={2} zoomy={3}/>);
+            const wrapper = shallow(<Scalable scalex={2} scaley={3}/>);
             expect(wrapper.find('.scalable-inner').get(0).props.style.transform).to.eql('scale(2, 3)');
         });
-        it('should zoom', () => {
+        it('should scale', () => {
             const ref = {current: {style: {}, clientHeight: 100, clientWidth: 100}};
             rewire.__Rewire__('useRef', () => ref);
             const wrapper = shallow(
-                <Scalable zoomx={1.5} zoomy={1.5}/>
+                <Scalable scalex={1.5} scaley={1.5}/>
             );
             wrapper.find('ResizeObserver').prop('onResize')();
             expect(ref.current.style).to.eql({width: '150px', height: '150px'});
