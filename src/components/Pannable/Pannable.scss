@@ -10,16 +10,8 @@
     cursor: -webkit-grabbing;
   }
 
-  .scrollbar {
-    height: 100%;
-
-    .scrollbar-inner {
-      height: 100%;
-
-      .movable {
-        height: 100%;
-        width: 100%;
-      }
-    }
+  .movable {
+    width: fit-content;
+    height: fit-content;
   }
 }
