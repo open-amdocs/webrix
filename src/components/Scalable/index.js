@@ -14,6 +14,6 @@
  * limitations under the License.
  */
 
-import Zoomable from './Zoomable';
+import Scalable from './Scalable';
 
-export default Zoomable;
+export default Scalable;
