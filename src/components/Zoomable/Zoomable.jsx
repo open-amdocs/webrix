@@ -14,19 +14,37 @@
  * limitations under the License.
  */
 
-import React, {memo, forwardRef} from 'react';
+import React, {memo, forwardRef, useRef, useEffect, useCallback} from 'react';
 import classNames from 'classnames';
+import {copyComponentRef} from 'utility/react';
+import ResizeObserver from 'tools/ResizeObserver';
 import {propTypes, defaultProps} from './Zoomable.props';
+import './Zoomable.scss';
 
-export const Zoomable = forwardRef(({zoom, style, className, ...props}, ref) => (
-    <div {...props}
-        ref={ref}
-        className={classNames('zoomable', className)}
-        style={{
-            ...style,
-            transform: `scale(${zoom})`,
-        }}/>
-));
+export const Zoomable = forwardRef(({zoomx, zoomy, className, children, ...props}, ref) => {
+    const inner = useRef();
+    const outer = useRef();
+
+    const updateDimensions = useCallback(() => {
+        const {clientWidth: width, clientHeight: height} = inner.current;
+        outer.current.style.width = `${width * zoomx}px`;
+        outer.current.style.height = `${height * zoomy}px`;
+    }, [zoomx, zoomy]);
+
+    useEffect(() => {
+        updateDimensions();
+    }, [updateDimensions]);
+
+    return (
+        <div {...props} ref={copyComponentRef(ref, outer)} className={classNames('zoomable', className)}>
+            <ResizeObserver onResize={updateDimensions}>
+                <div className='zoomable-inner' style={{transform: `scale(${zoomx}, ${zoomy})`}} ref={inner}>
+                    {children}
+                </div>
+            </ResizeObserver>
+        </div>
+    )
+});
 
 Zoomable.displayName = 'Zoomable';
 Zoomable.propTypes = propTypes;

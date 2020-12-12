@@ -14,12 +14,16 @@
  * limitations under the License.
  */
 
-import {number} from 'prop-types';
+import {number, node} from 'prop-types';
 
 export const propTypes = {
-    zoom: number,
+    children: node,
+    zoomx: number,
+    zoomy: number,
 };
 
 export const defaultProps = {
-    zoom: 1,
+    children: null,
+    zoomx: 1,
+    zoomy: 1,
 };
