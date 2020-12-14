@@ -15,13 +15,14 @@
  */
 
 import React, {forwardRef, useCallback, useRef} from 'react';
+import cls from 'classnames';
 import {copyComponentRef} from 'utility/react';
 import Movable from '../Movable';
 import Scrollable from '../Scrollable';
 import {propTypes, defaultProps} from './Pannable.props';
 import './Pannable.scss';
 
-export const Pannable = forwardRef(({children}, ref) => {
+export const Pannable = forwardRef(({children, className, ...props}, ref) => {
     const scrollRef = useRef();
     const pannableRef = useRef();
     const initial = { top: 0, left: 0 };
@@ -47,7 +48,7 @@ export const Pannable = forwardRef(({children}, ref) => {
     });
 
     return (
-        <div className='pannable' ref={copyComponentRef(ref, pannableRef)}>
+        <div {...props} className={cls('pannable', className)} ref={copyComponentRef(ref, pannableRef)}>
             <Scrollable ref={scrollRef}>
                 <Movable
                     className='movable'
