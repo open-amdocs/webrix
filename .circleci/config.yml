@@ -27,6 +27,8 @@ jobs:
           file: ./coverage/lcov.info
 
   release:
+    docker:
+      - image: 'circleci/node:12'
     executor:
       name: node/default
     steps:
