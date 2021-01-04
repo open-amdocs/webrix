@@ -22,8 +22,8 @@ import {noop} from 'utility/memory';
 const ResizeObserver = ({children, onResize}) => {
     const child = React.Children.only(children);
     const ref = useRef();
-    const observer = useRef(new window.ResizeObserver(() => {
-        const {clientWidth: width, clientHeight: height} = ref.current;
+    const observer = useRef(new window.ResizeObserver(entries => {
+        const {width, height} = entries[0].contentRect;
         onResize({width, height});
     }));
     useEffect(() => {
