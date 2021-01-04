@@ -3,6 +3,7 @@ import {mount} from 'enzyme';
 import {expect} from 'chai';
 import PoppableContext from '../../Poppable.context';
 import Triangle from './Triangle';
+import {getTop, getLeft} from './Triangle.utils';
 
 describe('<Triangle/>', () => {
     describe('HTML structure', () => {
@@ -21,6 +22,16 @@ describe('<Triangle/>', () => {
                 </PoppableContext.Provider>
             );
             expect(wrapper.html()).to.eql(null);
+        });
+    });
+    describe('Utils', () => {
+        it('getTop()', () => {
+            expect(getTop({top: 10, bottom: 10}, {top: 0, bottom: 0}, 10)).to.eql(-10);
+            expect(getTop({top: 0, bottom: 10}, {top: 0, bottom: 10}, 10)).to.eql(-5);
+        });
+        it('getLeft()', () => {
+            expect(getLeft({left: 10}, {right: 0}, 10)).to.eql(-10);
+            expect(getLeft({left: 0, right: 10}, {left: 0, right: 10}, 10)).to.eql(-5);
         });
     });
 });

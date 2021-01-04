@@ -3,9 +3,9 @@ import React from 'react';
 import {act} from 'react-dom/test-utils';
 import sinon from 'sinon';
 import {expect} from 'chai';
-import {mount} from 'enzyme';
-import {useClickOutside} from './useClickOutside';
-import {getZindex, isAbove} from './clickOutside.utils';
+import {mount, shallow} from 'enzyme';
+import OverrideContext from './useClickOutside.context';
+import {useClickOutside, ClickOutside, ClickOutsideOverride} from './useClickOutside';
 
 const Elem = () => {
     let test = 1234;
@@ -32,20 +32,14 @@ describe('useClickOutside()', () => {
         expect(document.removeEventListener.calledWith('mouseup')).to.eql(true);
     });
 
-    it('should test getZindex', () => {
-        const  el = document.createElement('div');
-        el.style['z-index'] = 10;
-        expect(getZindex(el)).to.equal(10);
+    it('<ClickOutside/>', () => {
+        const wrapper = shallow(<ClickOutside><div/></ClickOutside>);
+        expect(() => shallow(<ClickOutside/>)).to.throw();
+        expect(wrapper.find('div').prop('onMouseDownCapture')).to.be.a('function');
     });
 
-    it('should test isAbove', () => {
-        const  el1 = document.createElement('div');
-        el1.className = 'stackable';
-        el1.style['z-index'] = 10;
-        const  el2 = document.createElement('div');
-        el2.className = 'stackable';
-        el2.style['z-index'] = 11;
-        expect(isAbove(el1, el2)).to.eql(false);
-        expect(isAbove(el2, el1)).to.eql(true);
+    it('<ClickOutsideOverride/>', () => {
+        const wrapper = shallow(<ClickOutsideOverride/>);
+        expect(wrapper.find(OverrideContext.Provider)).to.have.length(1);
     });
 });
