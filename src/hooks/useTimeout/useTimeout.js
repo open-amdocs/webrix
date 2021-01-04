@@ -30,7 +30,7 @@ const stop = timeout => {
     clearTimeout(timeout.current);
 };
 
-export default (callback, delay, recurring) => {
+export default (callback, delay = 0, recurring = false) => {
     const timeout = useRef();
     return {
         start: useCallback((...args) => start(args, timeout, callback, delay, recurring), [timeout, callback, delay, recurring]),
