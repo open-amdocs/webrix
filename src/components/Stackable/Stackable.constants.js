@@ -14,4 +14,4 @@
  * limitations under the License.
  */
 
-export const BASE_Z_INDEX = 10;
+export const DEFAULT_Z_INDEX = 10;

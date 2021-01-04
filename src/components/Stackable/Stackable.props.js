@@ -14,15 +14,17 @@
  * limitations under the License.
  */
 
-import {instanceOf, node, shape} from 'prop-types';
+import {instanceOf, node, shape, number} from 'prop-types';
 
 export const propTypes = {
+    zIndex: number,
     target: instanceOf(Element),
     parent: shape({current: instanceOf(Element)}),
     children: node,
 };
 
 export const defaultProps = {
+    zIndex: null,
     target: document.body,
     parent: {},
     children: null,

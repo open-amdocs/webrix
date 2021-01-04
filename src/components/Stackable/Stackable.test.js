@@ -3,7 +3,7 @@ import {mount} from 'enzyme';
 import {expect} from 'chai';
 import {noop} from 'utility/memory';
 import Stackable from './Stackable';
-import {BASE_Z_INDEX} from './Stackable.constants';
+import {DEFAULT_Z_INDEX} from './Stackable.constants';
 import Context from './Stackable.context';
 import {getAncestors} from './Stackable.utils';
 
@@ -25,7 +25,7 @@ describe('<Stackable/>', () => {
             const el = sp.find(`.stackable.depth-${initialValue.depth}`);
 
             expect(el).to.have.length(1);
-            expect(el.props().style).to.eql({zIndex: initialValue.depth + BASE_Z_INDEX});
+            expect(el.props().style).to.eql({zIndex: DEFAULT_Z_INDEX});
         });
 
         it('should increment the depth of nested portals', () => {
