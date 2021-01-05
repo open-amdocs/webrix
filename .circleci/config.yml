@@ -37,7 +37,6 @@ jobs:
           override-ci-command: npm install --legacy-peer-deps
       - run: npm run build:cjs
       - run: npm run build:umd
-      - run: npm run cleanup
       - run:
           name: copy files
           command: |
@@ -49,7 +48,7 @@ jobs:
           name: release
           command: |
             cd ./build
-            semantic-release
+            npm run release
 
 workflows:
     build-and-test:
