@@ -1,0 +1,17 @@
+.pannable {
+  height: 100%;
+  cursor: grab;
+  cursor: -moz-grab;
+  cursor: -webkit-grab;
+
+  &.dragging {
+    cursor: grabbing;
+    cursor: -moz-grabbing;
+    cursor: -webkit-grabbing;
+  }
+
+  .movable {
+    width: fit-content;
+    height: fit-content;
+  }
+}

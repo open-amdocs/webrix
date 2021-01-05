@@ -1,0 +1,19 @@
+.scrollbar {
+  .horizontal-scrollbar-track {
+    position: absolute;
+    height: 12px;
+    width: 100%;
+    bottom: 0;
+    left: 0;
+
+    .scrollbar-thumb {
+      bottom: 0;
+      box-sizing: border-box;
+
+      .scrollbar-thumb-inner {
+        height: 6px;
+        width: 100%;
+      }
+    }
+  }
+}

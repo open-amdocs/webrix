@@ -1,0 +1,4 @@
+{
+  "require": ["test/register.js", "test/setup.js"],
+  "exit": true
+}

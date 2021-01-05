@@ -1,8 +1,7 @@
 {
-  "dryRun": true,
   "branches": [
     {"name": "master"},
-    {"name": "alpha", "prerelease": "alpha"},
+    {"name": "beta", "prerelease": true},
     {"name":  "1.x", "range": "1.x", "channel": "1.x", "prerelease": true}
   ]
 }

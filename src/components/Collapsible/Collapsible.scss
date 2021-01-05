@@ -1,0 +1,30 @@
+.collapsible {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  transition: all 0.2s ease-in-out;
+  overflow: hidden;
+
+  .content-wrapper {
+    transition:
+      height 0.3s cubic-bezier(0.7, 0, 0.3, 1) 0.2s,
+      opacity 0.2s ease-out,
+      transform 0.4s ease-out;
+    overflow: hidden;
+    opacity: 0;
+    transform: translateX(-40px); // Slide from left
+  }
+
+  &.expanded {
+    & > .content-wrapper {
+      opacity: 1;
+      transform: translateX(0);
+      transition:
+        // This transition is similar to the initial one,
+        // only switching the delays between height & opacity/transform
+        height 0.3s cubic-bezier(0.7, 0, 0.3, 1),
+        opacity 0.2s ease-out 0.2s,
+        transform 0.4s ease-out;
+    }
+  }
+}

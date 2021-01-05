@@ -51,6 +51,6 @@ import {Movable} from 'webrix';
 * [Pannable](http://webrix.amdocs.com/docs/components/pannable)
 * [Resizable](http://webrix.amdocs.com/docs/components/resizable)
 * [Poppable](http://webrix.amdocs.com/docs/components/poppable)
-* [Zoomable](http://webrix.amdocs.com/docs/components/zoomable)
+* [Scalable](http://webrix.amdocs.com/docs/components/Scalable)
 * [Scrollable](http://webrix.amdocs.com/docs/components/scrollable)
 * [Collapsible](http://webrix.amdocs.com/docs/components/collapsible)

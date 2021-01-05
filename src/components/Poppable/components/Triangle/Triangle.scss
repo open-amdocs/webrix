@@ -1,0 +1,24 @@
+.poppable {
+  &.vafter .poppable-triangle {
+    border-bottom-color: var(--triangle-color);
+  }
+
+  &.vbefore .poppable-triangle {
+    border-top-color: var(--triangle-color);
+  }
+
+  &.hbefore .poppable-triangle {
+    border-left-color: var(--triangle-color);
+  }
+
+  &.hafter .poppable-triangle {
+    border-right-color: var(--triangle-color);
+  }
+
+  .poppable-triangle {
+    position: fixed;
+    border-style: solid;
+    border-color: transparent;
+    pointer-events: none;
+  }
+}

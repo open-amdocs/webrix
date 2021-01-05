@@ -5,7 +5,8 @@ require('@babel/register')({
         resolve(__dirname, '../src'),
         resolve(__dirname),
     ],
-    // plugins: [
-    //     'istanbul',
-    // ],
+    plugins: [
+        'rewire',
+        resolve(__dirname, './babel-plugin-ignore-styles'),
+    ],
 });

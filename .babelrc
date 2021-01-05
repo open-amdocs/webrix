@@ -4,12 +4,15 @@
         "@babel/plugin-proposal-export-default-from",
         "@babel/plugin-proposal-function-bind",
         "@babel/plugin-transform-runtime",
+        "@babel/plugin-proposal-optional-chaining",
         ["@babel/plugin-proposal-decorators", {"legacy": true}],
         ["@babel/plugin-proposal-class-properties", {"loose": true}],
         ["module-resolver", {
             "root": ["./src"],
             "alias": {
-                "utility": "./src/utility"
+                "utility": "./src/utility",
+                "hooks": "./src/hooks",
+                "tools": "./src/tools"
             }
         }]
     ]
