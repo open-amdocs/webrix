@@ -49,7 +49,7 @@ jobs:
           name: release
           command: |
             cd ./build
-            npm run release
+            semantic-release
 
 workflows:
     build-and-test:

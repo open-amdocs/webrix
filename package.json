@@ -82,7 +82,6 @@
     "build:umd": "rollup --config rollup/rollup.umd.js",
     "test": "nyc mocha \"src/**/*.test.js\"",
     "lint": "eslint --ext=js --ext=jsx src/",
-    "cleanup": "node ./cleanup.js",
-    "release": "semantic-release"
+    "cleanup": "node ./cleanup.js"
   }
 }
