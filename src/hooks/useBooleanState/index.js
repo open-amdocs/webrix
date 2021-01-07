@@ -14,4 +14,6 @@
  * limitations under the License.
  */
 
-export * from './useBooleanState';
+import {useBooleanState} from './useBooleanState';
+export {useFocusabilityState, useVisibilityState} from './useBooleanState';
+export default useBooleanState;

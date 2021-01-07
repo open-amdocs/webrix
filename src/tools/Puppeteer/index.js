@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-import {useClickOutside} from './useClickOutside';
-export {ClickOutside, ClickOutsideOverride} from './useClickOutside';
-export default useClickOutside;
+import Puppeteer from './Puppeteer';
+export {default as puppet} from './Puppet.hoc';
+export default Puppeteer;

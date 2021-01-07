@@ -14,4 +14,6 @@
  * limitations under the License.
  */
 
-export * from './useMounted';
+import {useMounted} from './useMounted';
+export {useUnmounted} from './useMounted';
+export default useMounted;
