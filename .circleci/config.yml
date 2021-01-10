@@ -6,25 +6,50 @@ orbs:
 
 jobs:
 
-  lint:
+  checkout:
     executor:
       name: node/default
     steps:
       - checkout
-      - node/install-packages:
-          override-ci-command: npm install
+      - run: rm -rf .git # get rid of that big excess folder
+      - persist_to_workspace:
+          root: .
+          paths:
+            - .
+
+  lint:
+    executor:
+      name: node/default
+    steps:
+      - attach_workspace:
+          at: .
+      - node/install-packages
       - run: npm run lint
 
   test:
     executor:
       name: node/default
     steps:
-      - checkout
-      - node/install-packages:
-          override-ci-command: npm install
+      - attach_workspace:
+          at: .
+      - node/install-packages
       - run: npm test
       - codecov/upload:
           file: ./coverage/lcov.info
+
+  build:
+    executor:
+      name: node/default
+    steps:
+      - attach_workspace:
+          at: .
+      - node/install-packages
+      - run: npm run build:cjs
+      - run: npm run build:umd
+      - persist_to_workspace:
+          root: .
+          paths:
+            - ./build # Only persist the build files, since persisting large folders (like node_modules) results in long persisting/attaching times
 
   release:
     docker:
@@ -32,11 +57,10 @@ jobs:
     executor:
       name: node/default
     steps:
-      - checkout
+      - attach_workspace:
+          at: .
       - node/install-packages:
           override-ci-command: npm install --legacy-peer-deps
-      - run: npm run build:cjs
-      - run: npm run build:umd
       - run: npm run cleanup
       - run:
           name: copy files
@@ -54,9 +78,18 @@ jobs:
 workflows:
     build-and-test:
       jobs:
-        - lint
-        - test
+        - checkout
+        - lint:
+            requires:
+              - checkout
+        - test:
+            requires:
+              - checkout
+        - build:
+            requires:
+              - checkout
         - release:
             requires:
               - lint
               - test
+              - build
