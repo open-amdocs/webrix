@@ -8,32 +8,31 @@ const globals = {
     'prop-types': 'PropTypes',
 };
 
-export default [
-    {
-        ...base,
-        output: {
-            file: 'build/umd/webrix.umd.js',
-            format: 'umd',
-            name: 'Webrix',
-            globals,
-        },
-        plugins: [
-            ...base.plugins(),
-            postcss({sourceMap: true}),
-        ],
+export const production = {
+    ...base,
+    output: {
+        file: 'build/umd/webrix.umd.min.js',
+        format: 'umd',
+        plugins: [terser()],
+        name: 'Webrix',
+        globals,
     },
-    {
-        ...base,
-        output: {
-            file: 'build/umd/webrix.umd.min.js',
-            format: 'umd',
-            plugins: [terser()],
-            name: 'Webrix',
-            globals,
-        },
-        plugins: [
-            ...base.plugins(),
-            postcss({minimize: true}),
-        ],
-    }
-];
+    plugins: [
+        ...base.plugins(),
+        postcss({minimize: true}),
+    ],
+};
+
+export const development = {
+    ...base,
+    output: {
+        file: 'build/umd/webrix.umd.js',
+        format: 'umd',
+        name: 'Webrix',
+        globals,
+    },
+    plugins: [
+        ...base.plugins(),
+        postcss({sourceMap: true}),
+    ],
+};

@@ -77,9 +77,8 @@
     "url": "https://github.com/open-amdocs/webrix.git"
   },
   "scripts": {
-    "dev": "rollup --config rollup/rollup.dev.js --watch",
-    "build:cjs": "rollup --config rollup/rollup.cjs.js",
-    "build:umd": "rollup --config rollup/rollup.umd.js",
+    "build:dev": "rollup --config rollup/rollup.dev.js --watch",
+    "build:prod": "rollup --config rollup/rollup.prod.js",
     "test": "nyc mocha \"src/**/*.test.js\"",
     "lint": "eslint --ext=js --ext=jsx src/",
     "cleanup": "node ./cleanup.js"

@@ -43,8 +43,7 @@ jobs:
       - attach_workspace:
           at: .
       - node/install-packages
-      - run: npm run build:cjs
-      - run: npm run build:umd
+      - run: npm run build:prod
       - persist_to_workspace:
           root: .
           paths:
