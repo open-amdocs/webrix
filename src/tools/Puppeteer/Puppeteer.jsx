@@ -26,7 +26,7 @@ const Puppeteer = ({children, props, namespace}) => {
     const injected = {...inherited, ...props};
 
     Object.keys(inherited).forEach(prop => {
-        if (Object.prototype.hasOwnProperty.call(prop, prop)) {
+        if (Object.prototype.hasOwnProperty.call(props, prop)) {
             injected[prop] = (originalProps, prototype) => {
                 return props[prop]({...originalProps, [prop]: inherited[prop](originalProps, prototype)}, prototype);
             }
