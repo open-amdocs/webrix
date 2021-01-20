@@ -27,7 +27,7 @@ import {propTypes, defaultProps} from './Poppable.props';
 
 export const Poppable = forwardRef(({children, container, reference, placements, default: _default, onPlacement, placement, overflow, className, style, ...props}, ref) => {
     const target = useRef();
-    usePosition({target, container, reference, placements, default: _default, onPlacement, overflow});
+    usePosition({target, container, reference, placements, default: _default, onPlacement, strategy: overflow});
     const rects = useBoundingRects(target, reference, container, placement);
     const handleOnContextMenu = useCallback(e => e.stopPropagation(), []); // prevent onContextMenu event bubbling from the react portal to the react tree
 

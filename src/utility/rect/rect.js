@@ -105,3 +105,28 @@ export const intersect = (a, b) => (
     && b.top <= a.bottom
     && b.bottom >= a.top
 );
+
+/**
+ * Get the DOMRect representing the intersecting area between the 2 given rects.
+ *
+ * @param a {DOMRect} The first rect
+ * @param b {DOMRect} The second rect
+ *
+ * @return {DOMRect}
+ */
+export const union = (a, b) => {
+    if (intersect(a, b)) {
+        const left = Math.max(a.left, b.left);
+        const top = Math.max(a.top, b.top);
+        const right = Math.min(a.right, b.right);
+        const bottom = Math.min(a.bottom, b.bottom);
+        return new DOMRect(left, top, right - left, bottom - top);
+    }
+};
+
+/**
+ *
+ * @param rect {DOMRect}
+ * @return {number}
+ */
+export const area = rect => rect.width * rect.height;

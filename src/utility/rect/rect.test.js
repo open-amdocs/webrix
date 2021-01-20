@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-import {getCenterPoint, getRelativePosition, equal, contained, intersect} from './rect';
+import {getCenterPoint, getRelativePosition, equal, contained, intersect, union, area} from './rect';
 
 describe('rect', () => {
 
@@ -50,5 +50,19 @@ describe('rect', () => {
         expect(intersect(a, new DOMRect(101, -21, 20, 20))).to.eql(false);
         expect(intersect(a, new DOMRect(101, 101, 20, 20))).to.eql(false);
         expect(intersect(a, new DOMRect(-21, 101, 20, 20))).to.eql(false);
+    });
+
+    it('union()', () => {
+        const r = (...args) => new DOMRect(...args);
+        expect(union(r(0, 0, 20, 20), r(0, 0, 20, 20))).to.eql(r(0, 0, 20, 20));
+        expect(union(r(0, 0, 20, 20), r(10, 10, 20, 20))).to.eql(r(10, 10, 10, 10));
+        expect(union(r(0, 0, 20, 20), r(20, 20, 20, 20))).to.eql(r(20, 20, 0, 0));
+        expect(union(r(0, 0, 20, 20), r(-10, -10, 20, 20))).to.eql(r(0, 0, 10, 10));
+        expect(union(r(0, 0, 20, 20), r(40, 40, 20, 20))).to.eql(undefined);
+    });
+
+    it('area()', () => {
+        expect(area(new DOMRect(0, 0, 10, 10))).to.eql(100);
+        expect(area(new DOMRect(0, 0, 5, 20))).to.eql(100);
     });
 });

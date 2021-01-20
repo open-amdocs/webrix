@@ -17,7 +17,7 @@
 import {useRef, useEffect} from 'react';
 import {equal} from 'utility/rect';
 import {useTimeout} from 'hooks';
-import {getPlacement, refsReady, getBoundingRects} from './Poppable.utils';
+import {refsReady, getBoundingRects} from './Poppable.utils';
 import {POLLING_INTERVAL} from './Poppable.constants';
 
 export const useBoundingRects = (target, reference, container, {top, left}) => {
@@ -44,16 +44,14 @@ const useBoundingRectListener = (target, container, reference, callback) => {
             }
         }
     }
-};
+}
 
-export const usePosition = ({target, container, reference, placements, default: _default, onPlacement, overflow}) => {
+export const usePosition = ({target, container, reference, placements, default: _default, onPlacement, strategy}) => {
     const {start, stop} = useTimeout(() => updatePosition(), POLLING_INTERVAL, true);
     const updatePosition = useBoundingRectListener(target, container, reference, (rbr, tbr, cbr, wbr) => {
-        const _placements = placements(rbr, tbr);
-        const desired = _placements[_default];
-        const newPosition = getPlacement({tbr, cbr, rbr, wbr}, _placements, desired, overflow);
-        if (!tbr || newPosition.top !== tbr.top || newPosition.left !== tbr.left) {
-            onPlacement(newPosition);
+        const {top, left} = strategy({tbr, cbr, rbr, wbr}, {default: _default, placements});
+        if (!tbr || top !== tbr.top || left !== tbr.left) {
+            onPlacement({top, left});
         }
     });
 
