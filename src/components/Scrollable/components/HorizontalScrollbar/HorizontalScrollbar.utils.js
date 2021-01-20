@@ -18,6 +18,7 @@ import {getThumbPosition, getThumbLength} from '../../Scrollable.utils';
 
 export const onUpdate = (track, thumb, container) => {
     const {clientWidth, scrollWidth, scrollLeft} = container;
-    thumb.style.width = `${getThumbLength(clientWidth, scrollWidth)}px`;
-    thumb.style.left = `${getThumbPosition(clientWidth, clientWidth, scrollWidth, scrollLeft)}px`;
+    const {clientWidth: trackWidth} = track;
+    thumb.style.width = `${getThumbLength(trackWidth, clientWidth, scrollWidth)}px`;
+    thumb.style.left = `${getThumbPosition(trackWidth, clientWidth, scrollWidth, scrollLeft)}px`;
 };

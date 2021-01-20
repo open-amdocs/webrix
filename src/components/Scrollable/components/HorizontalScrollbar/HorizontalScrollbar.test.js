@@ -59,11 +59,11 @@ describe('<HorizontalScrollbar/>', () => {
 
     describe('Utils', () => {
         it('onUpdate()', () => {
-            const track = {style: {}, clientHeight: 5};
+            const track = {style: {}, clientHeight: 5, clientWidth: 100};
             const thumb = {style: {}};
             const container = {scrollWidth: 200, scrollLeft: 50, clientWidth: 100};
             onUpdate(track, thumb, container);
-            expect(thumb.style).to.eql({left: '20px', width: '60px'});
+            expect(thumb.style).to.eql({left: '25px', width: '50px'});
         });
     });
 });

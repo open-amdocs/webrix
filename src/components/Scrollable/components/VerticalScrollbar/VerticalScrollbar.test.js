@@ -57,11 +57,11 @@ describe('<VerticalScrollbar/>', () => {
 
     describe('Utils', () => {
         it('onUpdate()', () => {
-            const track = {style: {}, clientWidth: 5};
+            const track = {style: {}, clientWidth: 5, clientHeight: 100};
             const thumb = {style: {}};
             const container = {scrollHeight: 200, scrollTop: 50, clientHeight: 100};
             onUpdate(track, thumb, container);
-            expect(thumb.style).to.eql({top: '20px', height: '60px'});
+            expect(thumb.style).to.eql({top: '25px', height: '50px'});
         });
     });
 });
