@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-import {getThumbPosition, getThumbSize} from '../../Scrollable.utils';
+import {getThumbPosition, getThumbLength} from '../../Scrollable.utils';
 
 export const onUpdate = (track, thumb, container) => {
     const {clientWidth, scrollWidth, scrollLeft} = container;
-    thumb.style.width = `${getThumbSize(clientWidth, scrollWidth)}px`;
-    thumb.style.left = `${getThumbPosition(clientWidth, scrollWidth, scrollLeft)}px`;
+    thumb.style.width = `${getThumbLength(clientWidth, scrollWidth)}px`;
+    thumb.style.left = `${getThumbPosition(clientWidth, clientWidth, scrollWidth, scrollLeft)}px`;
 };

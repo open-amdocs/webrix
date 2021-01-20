@@ -14,4 +14,4 @@
  * limitations under the License.
  */
 
-export const MIN_THUMB_SIZE = 0.2; // Of container's height
+export const MIN_THUMB_LENGTH = 30; // In pixels

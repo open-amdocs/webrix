@@ -3,7 +3,8 @@ import {mount} from 'enzyme';
 import {expect} from 'chai';
 import sinon from 'sinon';
 import Scrollable from './Scrollable';
-import {getThumbSize, getThumbPosition} from './Scrollable.utils';
+import {MIN_THUMB_LENGTH} from './Scrollable.constants';
+import {getThumbLength, getThumbPosition} from './Scrollable.utils';
 
 describe('<Scrollable/>', () => {
 
@@ -79,14 +80,17 @@ describe('<Scrollable/>', () => {
     });
 
     describe('Utils', () => {
-        it('getThumbSize()', () => {
-            expect(getThumbSize(10, 10)).to.eql(10);
-            expect(getThumbSize(10, 20)).to.eql(6);
-            expect(getThumbSize(10, 20000)).to.eql(2);
+        it('getThumbLength()', () => {
+            expect(getThumbLength(100, 100, 100)).to.eql(100);
+            expect(getThumbLength(100, 100, 200)).to.eql(50);
+            expect(getThumbLength(100, 100, 300)).to.eql(33);
+            expect(getThumbLength(200, 100, 300)).to.eql(67);
+            expect(getThumbLength(100, 100, 20000)).to.eql(MIN_THUMB_LENGTH);
         });
         it('getThumbPosition()', () => {
-            expect(getThumbPosition(10, 10, 0)).to.eql(0);
-            expect(getThumbPosition(10, 20, 10)).to.eql(4);
+            expect(getThumbPosition(100, 100, 200, 0)).to.eql(0);
+            expect(getThumbPosition(100, 100, 200, 100)).to.eql(50);
+            expect(getThumbPosition(200, 100, 200, 100)).to.eql(100);
         });
     });
 });

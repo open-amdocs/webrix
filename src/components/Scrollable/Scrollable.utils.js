@@ -14,14 +14,34 @@
  * limitations under the License.
  */
 
-import {MIN_THUMB_SIZE} from './Scrollable.constants';
+import {MIN_THUMB_LENGTH} from './Scrollable.constants';
 
-export const getThumbSize = (trackLength, scrollLength) => {
-    const portion = trackLength / scrollLength;
-    return Math.round(trackLength * (MIN_THUMB_SIZE + (1 - MIN_THUMB_SIZE) * portion));
+/**
+ * Compute the thumb length based on the given track and scroll lengths
+ *
+ * @param trackLength {number} The track length
+ * @param clientLength {number} The scrollable container's client length (clientWidth/clientHeight)
+ * @param scrollLength {number} The scrollable container's scroll length (scrollWidth/scrollHeight)
+ * @param minLength {number} The min length of the thumb in pixels
+ * @return {number} The thumb length
+ */
+export const getThumbLength = (trackLength, clientLength, scrollLength, minLength = MIN_THUMB_LENGTH) => {
+    const length = Math.round((clientLength / scrollLength) * trackLength);
+    return Math.max(minLength, length);
 };
 
-export const getThumbPosition = (trackLength, scrollLength, scrollPos) => {
-    const portion = (trackLength / scrollLength) * (1 - MIN_THUMB_SIZE);
-    return Math.round(scrollPos * portion);
+/**
+ * Compute the thumb position based on the given track and scroll lengths
+ *
+ * @param trackLength {number} The track length
+ * @param clientLength {number} The scrollable container's client length (clientWidth/clientHeight)
+ * @param scrollLength {number} The scrollable container's scroll length (scrollWidth/scrollHeight)
+ * @param scrollPos {number} The scrollable container's scroll position (scrollTop/scrollWidth)
+ * @param minLength {number} The min length of the thumb in pixels
+ * @return {number} The thumb position
+ */
+export const getThumbPosition = (trackLength, clientLength, scrollLength, scrollPos, minLength = MIN_THUMB_LENGTH) => {
+    const length = getThumbLength(trackLength, clientLength, scrollLength, minLength);
+    const ratio = (trackLength - length) / (scrollLength - clientLength);
+    return Math.round(scrollPos * ratio);
 };
