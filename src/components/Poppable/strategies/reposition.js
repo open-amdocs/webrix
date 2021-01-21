@@ -62,8 +62,11 @@ export const filterPlacements = (placements, tbr, cbr) => (
 );
 
 /**
- * Get the final placement of the target after filtering & sorting the supported placements
- * and clamping it into the container.
+ * This overflow recovery strategy repositions the target based on a list of valid placements.
+ * The placements are first filtered out, removing any placement that is entirely outside
+ * the cbr. Then the placements are sorted based on their non-overflowing area (from less
+ * overflowing to more overflowing) and by their distance from the desired (default) placement
+ * (from closest to furthest). Finally, the first placement in the resulting array is picked.
  *
  * @param {Array} placements
  * @param {Object} desired The desired positioning
