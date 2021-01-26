@@ -5,6 +5,7 @@ $offset: $size / -2;
   position: absolute;
   width: $size;
   height: $size;
+  user-select: none;
 
   &.right-resizer {
     right: $offset;
