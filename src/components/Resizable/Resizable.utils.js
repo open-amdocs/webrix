@@ -16,6 +16,13 @@
 
 import {clamp, add, toCSS} from 'utility/rect';
 
+/**
+ *
+ * @param initial {{top: number, left: number, width: number, height: number}}
+ * @param delta {{top: number, left: number, width: number, height: number}}
+ * @param max {{top: number, left: number, width: number, height: number}}
+ * @return {{top: number, left: number, width: number, height: number}}
+ */
 export const inscribe = (initial, delta, max) => {
     const rect = add(initial, delta);
     return toCSS(clamp(
