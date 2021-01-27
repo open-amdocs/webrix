@@ -16,7 +16,9 @@
 
 import Resizable from './Resizable';
 import Resizers from './Resizable.resizers';
+import {inscribe} from './Resizable.utils';
 
 Resizable.Resizer = Resizers;
+Resizable.inscribe = inscribe;
 
 export default Resizable;

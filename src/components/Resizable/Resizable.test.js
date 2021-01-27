@@ -53,4 +53,32 @@ describe('<Resizable>', () => {
             });
         });
     });
+    describe('Utils', () => {
+        it('Resizable.inscribe', () => {
+            const r = (x, y, w, h) => ({left: x, top: y, width: w, height: h});
+
+            // No change
+            expect(Resizable.inscribe(r(10, 10, 10, 10), r(0, 0, 0, 0), r(0, 0, 20, 20))).to.eql(r(10, 10, 10, 10))
+
+            // Left resize
+            expect(Resizable.inscribe(r(10, 10, 10, 10), r(10, 0, -10, 0), r(0, 0, 20, 20))).to.eql(r(20, 10, 0, 10))
+            expect(Resizable.inscribe(r(10, 10, 10, 10), r(20, 0, -20, 0), r(0, 0, 20, 20))).to.eql(r(20, 10, 0, 10))
+            expect(Resizable.inscribe(r(10, 10, 10, 10), r(-20, 0, 20, 0), r(0, 0, 20, 20))).to.eql(r(0, 10, 20, 10))
+
+            // Right resize
+            expect(Resizable.inscribe(r(10, 10, 10, 10), r(0, 0, -10, 0), r(0, 0, 20, 20))).to.eql(r(10, 10, 0, 10))
+            expect(Resizable.inscribe(r(10, 10, 10, 10), r(0, 0, -20, 0), r(0, 0, 20, 20))).to.eql(r(10, 10, 0, 10))
+            expect(Resizable.inscribe(r(10, 10, 10, 10), r(0, 0, 20, 0), r(0, 0, 20, 20))).to.eql(r(10, 10, 10, 10))
+
+            // Top resize
+            expect(Resizable.inscribe(r(10, 10, 10, 10), r(0, 10, 10, -10), r(0, 0, 20, 20))).to.eql(r(10, 20, 10, 0))
+            expect(Resizable.inscribe(r(10, 10, 10, 10), r(0, 20, 0, -20), r(0, 0, 20, 20))).to.eql(r(10, 20, 10, 0))
+            expect(Resizable.inscribe(r(10, 10, 10, 10), r(0, -20, 0, 20), r(0, 0, 20, 20))).to.eql(r(10, 0, 10, 20))
+
+            // Bottom resize
+            expect(Resizable.inscribe(r(10, 10, 10, 10), r(0, 0, 0, -10), r(0, 0, 20, 20))).to.eql(r(10, 10, 10, 0))
+            expect(Resizable.inscribe(r(10, 10, 10, 10), r(0, 0, 0, -20), r(0, 0, 20, 20))).to.eql(r(10, 10, 10, 0))
+            expect(Resizable.inscribe(r(10, 10, 10, 10), r(0, 0, 0, 20), r(0, 0, 20, 20))).to.eql(r(10, 10, 10, 10))
+        });
+    });
 });

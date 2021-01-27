@@ -76,10 +76,11 @@ describe('rect', () => {
     });
 
     it('add()', () => {
-        expect(add(new DOMRect(0, 0, 10, 10), new DOMRect(0, 0, 0, 0))).to.eql(new DOMRect(0, 0, 10, 10));
-        expect(add(new DOMRect(0, 0, 10, 10), new DOMRect(10, 10, 0, 0))).to.eql(new DOMRect(10, 10, 10, 10));
-        expect(add(new DOMRect(0, 0, 10, 10), new DOMRect(10, 10, 10, 10))).to.eql(new DOMRect(10, 10, 20, 20));
-        expect(add(new DOMRect(0, 0, 10, 10), new DOMRect(10, 10, -5, -5))).to.eql(new DOMRect(10, 10, 5, 5));
+        const r = (...args) => new DOMRect(...args);
+        expect(add(r(0, 0, 10, 10), r(0, 0, 0, 0))).to.eql(r(0, 0, 10, 10));
+        expect(add(r(0, 0, 10, 10), r(10, 10, 0, 0))).to.eql(r(10, 10, 10, 10));
+        expect(add(r(0, 0, 10, 10), r(10, 10, 10, 10))).to.eql(r(10, 10, 20, 20));
+        expect(add(r(0, 0, 10, 10), r(10, 10, -5, -5))).to.eql(r(10, 10, 5, 5));
     });
 
     it('toCSS()', () => {
