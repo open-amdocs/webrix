@@ -27,9 +27,9 @@
  * clamp(15, 0, 10, true); // Outputs 0
  * clamp(1, 5, 10, true); // Outputs 10
  *
- * @param {number} num The number to evaluate
- * @param {number} min The minimum boundary of the range
- * @param {number} max The maximum boundary of the range
+ * @param num {number} The number to evaluate
+ * @param min {number} The minimum boundary of the range
+ * @param max {number} The maximum boundary of the range
  * @param {boolean} [cyclic = false] Whether to cycle the value between boundaries (i.e. if the value > max, return min, and vice versa)
  *
  * @returns {Number}

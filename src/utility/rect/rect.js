@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+import {clamp as _clamp} from '../number';
+
 /**
  * Get the center point of a DOMRect
  *
@@ -125,8 +127,51 @@ export const union = (a, b) => {
 };
 
 /**
+ * Get the area of the given DOMRect
  *
  * @param rect {DOMRect}
  * @return {number}
  */
 export const area = rect => rect.width * rect.height;
+
+/**
+ * Clamp the given rect within the rects given in min/max
+ *
+ * @param rect {DOMRect} The rectangle to clamp
+ * @param min {DOMRect} The rectangle representing the minimum dimensions (should be completely contained within the max rect)
+ * @param max {DOMRect} The rectangle representing the maximum dimensions
+ * @return {{top: Number, left: Number, width: Number, height: Number}}
+ */
+export const clamp = (rect, min, max) => new DOMRect(
+    _clamp(rect.left, max.left, min.left),
+    _clamp(rect.top, max.top, min.top),
+    _clamp(rect.width, min.width, max.width),
+    _clamp(rect.height, min.height, max.height),
+);
+
+/**
+ * Add the deltas given in 'delta' to the rectangle given in 'rect'
+ *
+ * @param rect {DOMRect} The rectangle to add to
+ * @param delta {DOMRect} A rect representing the deltas to add to the rectangle
+ * @return {DOMRect}
+ */
+export const add = (rect, delta) => new DOMRect(
+    rect.left + delta.left,
+    rect.top + delta.top,
+    rect.width + delta.width,
+    rect.height + delta.height,
+);
+
+/**
+ * Convert the given DOMRect to an object that can be injected as style properties
+ *
+ * @param rect {DOMRect}
+ * @return {{top: number, left: number, width: number, height: number}}
+ */
+export const toCSS = rect => ({
+    left: Math.round(rect.left),
+    top: Math.round(rect.top),
+    width: Math.round(rect.width),
+    height: Math.round(rect.height),
+})

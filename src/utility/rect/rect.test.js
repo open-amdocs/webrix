@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-import {getCenterPoint, getRelativePosition, equal, contained, intersect, union, area} from './rect';
+import {getCenterPoint, getRelativePosition, equal, contained, intersect, union, area, clamp, add, toCSS} from './rect';
 
 describe('rect', () => {
 
@@ -64,5 +64,26 @@ describe('rect', () => {
     it('area()', () => {
         expect(area(new DOMRect(0, 0, 10, 10))).to.eql(100);
         expect(area(new DOMRect(0, 0, 5, 20))).to.eql(100);
+    });
+
+    it('clamp()', () => {
+        const r = (...args) => new DOMRect(...args);
+        expect(clamp(r(0, 0, 10, 10), r(5, 5, 10, 10), r(0, 0, 20, 20))).to.eql(r(0, 0, 10, 10));
+        expect(clamp(r(0, 0, 30, 30), r(5, 5, 10, 10), r(0, 0, 20, 20))).to.eql(r(0, 0, 20, 20));
+        expect(clamp(r(-10, -10, 10, 10), r(5, 5, 10, 10), r(0, 0, 20, 20))).to.eql(r(0, 0, 10, 10));
+        expect(clamp(r(0, 0, 0, 0), r(5, 5, 10, 10), r(0, 0, 20, 20))).to.eql(r(0, 0, 10, 10));
+        expect(clamp(r(10, 10, 10, 10), r(5, 5, 10, 10), r(0, 0, 20, 20))).to.eql(r(5, 5, 10, 10));
+    });
+
+    it('add()', () => {
+        expect(add(new DOMRect(0, 0, 10, 10), new DOMRect(0, 0, 0, 0))).to.eql(new DOMRect(0, 0, 10, 10));
+        expect(add(new DOMRect(0, 0, 10, 10), new DOMRect(10, 10, 0, 0))).to.eql(new DOMRect(10, 10, 10, 10));
+        expect(add(new DOMRect(0, 0, 10, 10), new DOMRect(10, 10, 10, 10))).to.eql(new DOMRect(10, 10, 20, 20));
+        expect(add(new DOMRect(0, 0, 10, 10), new DOMRect(10, 10, -5, -5))).to.eql(new DOMRect(10, 10, 5, 5));
+    });
+
+    it('toCSS()', () => {
+        expect(toCSS(new DOMRect(0, 0, 10, 10))).to.eql({left: 0, top: 0, width: 10, height: 10});
+        expect(toCSS(new DOMRect(1.2, 1.2, 1.2, 1.2))).to.eql({left: 1, top: 1, width: 1, height: 1});
     });
 });
