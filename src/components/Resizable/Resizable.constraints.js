@@ -119,8 +119,8 @@ export const snap = (horizontal, vertical, strength = 1) => controller({
         shared.next = {
             ...shared.next,
             // Apply rounded width/height only if distance is within the strength threshold
-            width: hd < strength * horizontal / 2 ? rw : width,
-            height: vd < strength * vertical / 2 ? rh : height,
+            width: hd <= strength * horizontal / 2 ? rw : width,
+            height: vd <= strength * vertical / 2 ? rh : height,
         };
     },
 });
