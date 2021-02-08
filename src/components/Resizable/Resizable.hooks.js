@@ -15,12 +15,12 @@
  */
 
 import {useRef, useCallback} from 'react';
-import {add, lock, setInitial, update} from './Resizable.constraints';
+import {init, lock, update} from './Resizable.constraints';
 
-export const useResize = (args, constraints = []) => {
+export const useResize = ({constraints = [], ...args}) => {
     const shared = useRef({});
     const dependencies = constraints.reduce((acc, cur) => acc.concat(cur.dependencies), []);
-    const ops = [setInitial(), add(), ...constraints, lock(), update()];
+    const ops = [init(), ...constraints, lock(), update()];
 
     const onBeginResize = useCallback(e => {
         ops.forEach(({onBeginResize}) => onBeginResize(e, args, shared.current));

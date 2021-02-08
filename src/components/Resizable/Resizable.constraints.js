@@ -26,15 +26,12 @@ const controller = props => ({
     ...props,
 })
 
-export const setInitial = () => controller({
+export const init = () => controller({
     onBeginResize: (e, {ref}, shared) => {
         const {left, top, width, height} = ref.current.getBoundingClientRect();
         shared.next = {left, top, width, height};
         shared.initial = {left, top, width, height};
     },
-});
-
-export const add = () => controller({
     onResize: ({delta}, args, {next, initial})=> {
         const {left, top, width, height} = initial;
         next.width = Math.max(width + delta.width, 0);
@@ -67,7 +64,7 @@ export const lock = () => controller({
     },
 });
 
-export const contained = container => controller({
+export const contain = container => controller({
     dependencies: [container],
     onBeginResize: (e, args, shared) => {
         shared.max = container.current.getBoundingClientRect();

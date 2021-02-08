@@ -53,7 +53,7 @@ describe('<Resizable>', () => {
             });
         });
     });
-    describe('Utils', () => {
+    describe('Constraints', () => {
         it('Resizable.inscribe', () => {
             const r = (x, y, w, h) => ({left: x, top: y, width: w, height: h});
 
