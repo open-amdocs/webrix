@@ -15,8 +15,10 @@
  */
 
 import Movable from './Movable';
-import {inscribe} from './Movable.utils';
+import {useMove} from './Movable.hooks';
+import * as Constraints from './Movable.constraints';
 
-Movable.inscribe = inscribe;
+Movable.useMove = useMove;
+Movable.Constraints = Constraints;
 
 export default Movable;
