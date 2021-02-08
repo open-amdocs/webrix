@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import React, {useCallback} from 'react';
+import React, {useCallback, memo} from 'react';
 import {propTypes} from './Resizable.props';
 import Movable from '../Movable';
 
@@ -30,7 +30,7 @@ const Resizer = ({direction, onBeginResize, onResize, onEndResize}) => (
 
 Resizer.propTypes = propTypes;
 
-const Top = props => {
+const Top = memo(props => {
     const handleOnResize = useCallback(({dy, cy}) => (
         props.onResize({
             delta: {...INITIAL, top: dy, height: -dy},
@@ -40,11 +40,12 @@ const Top = props => {
     return (
         <Resizer {...props} onResize={handleOnResize} direction='top'/>
     );
-};
+});
 
 Top.propTypes = propTypes;
+Top.displayName = 'Resizable.Resizer.Top';
 
-const Left = props => {
+const Left = memo(props => {
     const handleOnResize = useCallback(({dx, cx}) => (
         props.onResize({
             delta: {...INITIAL, left: dx, width: -dx},
@@ -54,11 +55,12 @@ const Left = props => {
     return (
         <Resizer {...props} onResize={handleOnResize} direction='left'/>
     );
-};
+});
 
 Left.propTypes = propTypes;
+Left.displayName = 'Resizable.Resizer.Left';
 
-const Bottom = props => {
+const Bottom = memo(props => {
     const handleOnResize = useCallback(({dy, cy}) => (
         props.onResize({
             delta: {...INITIAL, height: dy},
@@ -68,11 +70,12 @@ const Bottom = props => {
     return (
         <Resizer {...props} onResize={handleOnResize} direction='bottom'/>
     );
-};
+});
 
 Bottom.propTypes = propTypes;
+Bottom.displayName = 'Resizable.Resizer.Bottom';
 
-const Right = props => {
+const Right = memo(props => {
     const handleOnResize = useCallback(({dx, cx}) => (
         props.onResize({
             delta: {...INITIAL, width: dx},
@@ -82,11 +85,12 @@ const Right = props => {
     return (
         <Resizer {...props} onResize={handleOnResize} direction='right'/>
     );
-};
+});
 
 Right.propTypes = propTypes;
+Right.displayName = 'Resizable.Resizer.Right';
 
-const TopLeft = props => {
+const TopLeft = memo(props => {
     const handleOnResize = useCallback(({dx, dy, cx, cy}) => (
         props.onResize({
             delta: {left: dx, width: -dx, top: dy, height: -dy},
@@ -96,11 +100,12 @@ const TopLeft = props => {
     return (
         <Resizer {...props} onResize={handleOnResize} direction='top-left'/>
     );
-};
+});
 
 TopLeft.propTypes = propTypes;
+TopLeft.displayName = 'Resizable.Resizer.TopLeft';
 
-const TopRight = props => {
+const TopRight = memo(props => {
     const handleOnResize = useCallback(({dx, dy, cx, cy}) => (
         props.onResize({
             delta: {...INITIAL, width: dx, top: dy, height: -dy},
@@ -110,11 +115,12 @@ const TopRight = props => {
     return (
         <Resizer {...props} onResize={handleOnResize} direction='top-right'/>
     );
-};
+});
 
 TopRight.propTypes = propTypes;
+TopRight.displayName = 'Resizable.Resizer.TopRight';
 
-const BottomLeft = props => {
+const BottomLeft = memo(props => {
     const handleOnResize = useCallback(({dx, dy, cx, cy}) => (
         props.onResize({
             delta: {...INITIAL, left: dx, width: -dx, height: dy},
@@ -124,11 +130,12 @@ const BottomLeft = props => {
     return (
         <Resizer {...props} onResize={handleOnResize} direction='bottom-left'/>
     );
-};
+});
 
 BottomLeft.propTypes = propTypes;
+BottomLeft.displayName = 'Resizable.Resizer.BottomLeft';
 
-const BottomRight = props => {
+const BottomRight = memo(props => {
     const handleOnResize = useCallback(({dx, dy, cx, cy}) => (
         props.onResize({
             delta: {...INITIAL, width: dx, height: dy},
@@ -138,16 +145,18 @@ const BottomRight = props => {
     return (
         <Resizer {...props} onResize={handleOnResize} direction='bottom-right'/>
     );
-};
+});
 
 BottomRight.propTypes = propTypes;
+BottomRight.displayName = 'Resizable.Resizer.BottomRight';
 
-const All = props => (
+const All = memo(props => (
     [Top, Left, Bottom, Right, TopLeft, TopRight, BottomLeft, BottomRight].map((Resizer, i) => (
         <Resizer key={i} {...props}/>
     ))
-);
+));
 
 All.propTypes = propTypes;
+All.displayName = 'Resizable.Resizer.All';
 
 export default {Top, Left, Bottom, Right, TopLeft, TopRight, BottomLeft, BottomRight, All};
