@@ -1,0 +1,3 @@
+.movable {
+  touch-action: none; // Needed when calling preventDefault() on touch events, see https://stackoverflow.com/a/42288386/1096470
+}

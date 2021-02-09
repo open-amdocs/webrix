@@ -39,11 +39,13 @@ describe('<Movable/>', () => {
 
             document.addEventListener = (type, handler) => handlers[type] = handler;
             wrapper.simulate('mousedown', {clientX: 10, clientY: 10});
+            wrapper.simulate('touchstart', {changedTouches: [{clientX: 10, clientY: 10}]});
 
             // Move the cursor by 10 pixels in both x/y
             handlers.mousemove({clientX: 20, clientY: 20});
+            handlers.touchmove({changedTouches: [{clientX: 20, clientY: 20}]});
             event = handleOnMove.args[0][0];
-            expect(handleOnMove.callCount).to.eql(1);
+            expect(handleOnMove.callCount).to.eql(2);
             expect(event.x).to.eql(20);
             expect(event.y).to.eql(20);
             expect(event.cx).to.eql(10);
@@ -53,8 +55,9 @@ describe('<Movable/>', () => {
 
             // Move the cursor by another 10 pixels in both x/y
             handlers.mousemove({clientX: 30, clientY: 30});
-            event = handleOnMove.args[1][0];
-            expect(handleOnMove.callCount).to.eql(2);
+            handlers.touchmove({changedTouches: [{clientX: 30, clientY: 30}]});
+            event = handleOnMove.args[2][0];
+            expect(handleOnMove.callCount).to.eql(4);
             expect(event.x).to.eql(30);
             expect(event.y).to.eql(30);
             expect(event.cx).to.eql(10);
@@ -64,8 +67,9 @@ describe('<Movable/>', () => {
 
             // Move the cursor by -30 pixels in both x/y
             handlers.mousemove({clientX: 0, clientY: 0});
-            event = handleOnMove.args[2][0];
-            expect(handleOnMove.callCount).to.eql(3);
+            handlers.touchmove({changedTouches: [{clientX: 0, clientY: 0}]});
+            event = handleOnMove.args[4][0];
+            expect(handleOnMove.callCount).to.eql(6);
             expect(event.x).to.eql(0);
             expect(event.y).to.eql(0);
             expect(event.cx).to.eql(-30);

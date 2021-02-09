@@ -15,66 +15,23 @@
  */
 
 import React, {forwardRef, memo} from 'react';
-import PropTypes from 'prop-types';
-import {noop} from 'utility/memory';
+import cls from 'classnames';
+import {mouseTracker, touchTracker, moveTracker} from './Movable.utils';
+import {propTypes, defaultProps} from './Movable.props';
+import './movable.scss';
 
-export const track = ({onBeginMove, onMove, onEndMove}) => {
+export const Movable = forwardRef(({onBeginMove, onMove, onEndMove, ...props}, ref) => {
+    const tracker = moveTracker(onBeginMove, onMove, onEndMove);
+    const handleOnMouseDown = mouseTracker(tracker);
+    const handleOnTouchStart = touchTracker(tracker);
 
-    let initial = {};
-    let previous = {};
-
-    const sanitizeEvent = e => {
-        const {clientX: x, clientY: y, target} = e;
-        return ({
-            x,
-            y,
-            target,
-            cx: x - previous.x,
-            cy: y - previous.y,
-            dx: x - initial.x,
-            dy: y - initial.y,
-            stopPropagation: () => e.stopPropagation(),
-            preventDefault: () => e.preventDefault(),
-        });
-    };
-
-    const handleOnMouseMove = e => {
-        onMove(sanitizeEvent(e));
-        previous = {x: e.clientX, y: e.clientY};
-    };
-
-    const handleOnMouseUp = e => {
-        document.removeEventListener('mousemove', handleOnMouseMove);
-        document.removeEventListener('mouseup', handleOnMouseUp);
-        onEndMove(sanitizeEvent(e));
-    };
-
-    /* handleOnMouseDown */
-    return e => {
-        initial = {x: e.clientX, y: e.clientY};
-        previous = {...initial};
-        document.addEventListener('mousemove', handleOnMouseMove);
-        document.addEventListener('mouseup', handleOnMouseUp);
-        onBeginMove(sanitizeEvent(e));
-    };
-};
-
-export const Movable = forwardRef(({onBeginMove, onMove, onEndMove, ...props}, ref) => (
-    <div {...props} ref={ref} onMouseDown={track({onBeginMove, onMove, onEndMove})}/>
-));
+    return (
+        <div {...props} ref={ref} onMouseDown={handleOnMouseDown} onTouchStart={handleOnTouchStart} className={cls('movable', props.className)}/>
+    );
+});
 
 Movable.displayName = 'Movable';
-
-Movable.propTypes = {
-    onBeginMove: PropTypes.func,
-    onMove: PropTypes.func,
-    onEndMove: PropTypes.func,
-};
-
-Movable.defaultProps = {
-    onBeginMove: noop,
-    onMove: noop,
-    onEndMove: noop,
-};
+Movable.propTypes = propTypes;
+Movable.defaultProps = defaultProps;
 
 export default memo(Movable);
