@@ -18,7 +18,7 @@ import React, {forwardRef, memo} from 'react';
 import cls from 'classnames';
 import {mouseTracker, touchTracker, moveTracker} from './Movable.utils';
 import {propTypes, defaultProps} from './Movable.props';
-import './movable.scss';
+import './Movable.scss';
 
 export const Movable = forwardRef(({onBeginMove, onMove, onEndMove, ...props}, ref) => {
     const tracker = moveTracker(onBeginMove, onMove, onEndMove);
