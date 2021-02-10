@@ -14,40 +14,10 @@
  * limitations under the License.
  */
 
-import {noop} from 'utility/memory';
 import {clamp} from 'utility/number';
+import {operation} from './Movable.hooks';
 
-const controller = props => ({
-    dependencies: [],
-    onBeginMove: noop,
-    onMove: noop,
-    onEndMove: noop,
-    ...props,
-})
-
-export const init = () => controller({
-    onBeginMove: (e, {ref}, shared) => {
-        const {top, left} = ref.current.getBoundingClientRect();
-        shared.next = {top, left};
-        shared.initial = {top, left};
-    },
-    onMove: ({dx, dy}, args, {next, initial})=> {
-        const {left, top} = initial;
-        next.left = left + dx;
-        next.top = top + dy;
-    },
-});
-
-export const update = () => controller({
-    onMove: (e, {onMove}, {next}) => {
-        onMove({
-            top: Math.round(next.top),
-            left: Math.round(next.left),
-        });
-    },
-});
-
-export const contain = container => controller({
+export const contain = container => operation({
     dependencies: [container],
     onBeginMove: (e, {ref}, shared) => {
         const {width, height} = ref.current.getBoundingClientRect();
@@ -63,7 +33,7 @@ export const contain = container => controller({
     },
 });
 
-export const snap = (horizontal, vertical, strength = 1) => controller({
+export const snap = (horizontal, vertical, strength = 1) => operation({
     dependencies: [horizontal, vertical, strength],
     onMove: (e, args, shared) => {
         const {top, left} = shared.next;

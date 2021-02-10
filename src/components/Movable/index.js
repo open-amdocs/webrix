@@ -15,10 +15,11 @@
  */
 
 import Movable from './Movable';
-import {useMove} from './Movable.hooks';
+import {useMove, useMoveArea} from './Movable.hooks';
 import * as Constraints from './Movable.constraints';
 
 Movable.useMove = useMove;
+Movable.useMoveArea = useMoveArea;
 Movable.Constraints = Constraints;
 
 export default Movable;
