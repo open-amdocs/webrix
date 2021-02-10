@@ -25,10 +25,10 @@ import './Pannable.scss';
 export const Pannable = forwardRef(({children, className, ...props}, ref) => {
     const scrollRef = useRef();
     const pannableRef = useRef();
-    const initial = { top: 0, left: 0 };
+    const initial = {top: 0, left: 0};
 
     const handleOnBeginMove = useCallback(() => {
-        //TODO: accessing the inner structure of scrollbar is bad practice
+        // TODO: accessing the inner structure of scrollbar is bad practice
         // this is just a temporary solution until Scrollbar will expose its inner ref via forwardRef
         const scrollbar = scrollRef.current.container.current;
         initial.top = scrollbar.scrollTop;
@@ -51,7 +51,6 @@ export const Pannable = forwardRef(({children, className, ...props}, ref) => {
         <div {...props} className={cls('pannable', className)} ref={copyComponentRef(ref, pannableRef)}>
             <Scrollable ref={scrollRef}>
                 <Movable
-                    className='movable'
                     onMove={handleOnMove}
                     onBeginMove={handleOnBeginMove}
                     onEndMove={handleOnEndMove}>
