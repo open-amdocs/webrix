@@ -46,27 +46,27 @@ import {Movable} from 'webrix';
 
 ### Components
 
-* [Movable](http://webrix.amdocs.com/docs/components/movable)
-* [Stackable](http://webrix.amdocs.com/docs/components/stackable)
-* [Pannable](http://webrix.amdocs.com/docs/components/pannable)
-* [Resizable](http://webrix.amdocs.com/docs/components/resizable)
-* [Poppable](http://webrix.amdocs.com/docs/components/poppable)
-* [Scalable](http://webrix.amdocs.com/docs/components/Scalable)
-* [Scrollable](http://webrix.amdocs.com/docs/components/scrollable)
-* [Collapsible](http://webrix.amdocs.com/docs/components/collapsible)
+* [<Movable\/>](http://webrix.amdocs.com/docs/components/movable)
+* [<Stackable\/>](http://webrix.amdocs.com/docs/components/stackable)
+* [<Pannable\/>](http://webrix.amdocs.com/docs/components/pannable)
+* [<Resizable\/>](http://webrix.amdocs.com/docs/components/resizable)
+* [<Poppable\/>](http://webrix.amdocs.com/docs/components/poppable)
+* [<Scalable\/>](http://webrix.amdocs.com/docs/components/Scalable)
+* [<Scrollable\/>](http://webrix.amdocs.com/docs/components/scrollable)
+* [<Collapsible\/>](http://webrix.amdocs.com/docs/components/collapsible)
 
 ### Hooks
 
-* [useBooleanState](http://webrix.amdocs.com/docs/hooks/usebooleanstate)
-* [usePrevious](http://webrix.amdocs.com/docs/hooks/useprevious)
-* [useMounted](http://webrix.amdocs.com/docs/hooks/usemounted)
-* [useClickOutside](http://webrix.amdocs.com/docs/hooks/useclickoutside)
-* [useTimeout](http://webrix.amdocs.com/docs/hooks/usetimeout)
-* [useDebounce](http://webrix.amdocs.com/docs/hooks/usedebounce)
-* [useThrottle](http://webrix.amdocs.com/docs/hooks/usethrottle)
-* [useObject](http://webrix.amdocs.com/docs/hooks/useobject)
+* [useBooleanState()](http://webrix.amdocs.com/docs/hooks/usebooleanstate)
+* [usePrevious()](http://webrix.amdocs.com/docs/hooks/useprevious)
+* [useMounted()](http://webrix.amdocs.com/docs/hooks/usemounted)
+* [useClickOutside()](http://webrix.amdocs.com/docs/hooks/useclickoutside)
+* [useTimeout()](http://webrix.amdocs.com/docs/hooks/usetimeout)
+* [useDebounce()](http://webrix.amdocs.com/docs/hooks/usedebounce)
+* [useThrottle()](http://webrix.amdocs.com/docs/hooks/usethrottle)
+* [useObject()](http://webrix.amdocs.com/docs/hooks/useobject)
 
 ### Tools
 
-* [ResizeObserver](http://webrix.amdocs.com/docs/tools/resizeobserver)
-* [Puppeteer](http://webrix.amdocs.com/docs/tools/puppeteer)
+* [<ResizeObserver\/>](http://webrix.amdocs.com/docs/tools/resizeobserver)
+* [<Puppeteer\/>](http://webrix.amdocs.com/docs/tools/puppeteer)
