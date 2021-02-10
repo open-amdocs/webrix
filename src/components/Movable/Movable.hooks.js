@@ -34,5 +34,5 @@ export const useMove = ({constraints = [], ...args}) => {
         ops.forEach(({onEndMove}) => onEndMove(e, args, shared.current))
     }, dependencies);
 
-    return {onBeginMove, onMove, onEndMove};
+    return {onBeginMove, onMove, onEndMove, ref: args.ref};
 };
