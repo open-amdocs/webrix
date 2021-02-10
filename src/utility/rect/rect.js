@@ -135,21 +135,6 @@ export const union = (a, b) => {
 export const area = rect => rect.width * rect.height;
 
 /**
- * Clamp the given rect within the rects given in min/max
- *
- * @param rect {DOMRect} The rectangle to clamp
- * @param min {DOMRect} The rectangle representing the minimum dimensions (should be completely contained within the max rect)
- * @param max {DOMRect} The rectangle representing the maximum dimensions
- * @return {{top: Number, left: Number, width: Number, height: Number}}
- */
-export const clamp = (rect, min, max) => new DOMRect(
-    _clamp(rect.left, max.left, min.left),
-    _clamp(rect.top, max.top, min.top),
-    _clamp(rect.width, min.width, max.width),
-    _clamp(rect.height, min.height, max.height),
-);
-
-/**
  * Add the deltas given in 'delta' to the rectangle given in 'rect'
  *
  * @param rect {DOMRect} The rectangle to add to
