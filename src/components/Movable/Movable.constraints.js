@@ -27,7 +27,7 @@ const controller = props => ({
 
 export const init = () => controller({
     onBeginMove: (e, {ref}, shared) => {
-        const {offsetTop: top, offsetLeft: left} = ref.current;
+        const {top, left} = ref.current.getBoundingClientRect();
         shared.next = {top, left};
         shared.initial = {top, left};
     },
@@ -47,22 +47,18 @@ export const update = () => controller({
     },
 });
 
-export const contain = (left, top, right, bottom) => controller({
-    dependencies: [left, top, right, bottom],
-    onBeginMove: (e, args, shared) => {
-        shared.bounds = {left, top, right, bottom};
-        // shared.container = new DOMRect(
-        //     shared.container.left - (shared.movable.left - position.left),
-        //     shared.container.top - (shared.movable.top - position.top),
-        //     shared.container.width,
-        //     shared.container.height,
-        // );
+export const contain = container => controller({
+    dependencies: [container],
+    onBeginMove: (e, {ref}, shared) => {
+        const {width, height} = ref.current.getBoundingClientRect();
+        shared.bounds = container.current.getBoundingClientRect();
+        shared.size = {width, height};
     },
     onMove: (e, args, shared) => {
         const {bounds, next} = shared;
         shared.next = {
-            left: clamp(next.left, bounds.left, bounds.right),
-            top: clamp(next.top, bounds.top, bounds.right),
+            left: clamp(next.left, bounds.left, bounds.right - shared.size.width),
+            top: clamp(next.top, bounds.top, bounds.bottom - shared.size.height),
         };
     },
 });
