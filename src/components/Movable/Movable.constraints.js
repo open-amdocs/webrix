@@ -48,3 +48,15 @@ export const snap = (horizontal, vertical, strength = 1) => operation({
         };
     },
 });
+
+export const padding = (top, right, bottom, left) => operation({
+    dependencies: [top, right, bottom, left],
+    onBeginMove: (e, args, shared) => {
+        shared.bounds = {
+            top: shared.bounds.top + top,
+            right: shared.bounds.right - right,
+            bottom: shared.bounds.bottom - bottom,
+            left: shared.bounds.left + left,
+        };
+    },
+});

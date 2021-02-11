@@ -74,6 +74,7 @@ export const useMoveArea = ({constraints = [], ...args}) => {
         onBeginMove: ({x, y}, {ref, onMove}, shared) => {
             shared.initial = ref.current.getBoundingClientRect();
             shared.next = {left: x - shared.initial.left, top: y - shared.initial.top};
+            shared.bounds = {top: 0, left: 0, right: shared.initial.width, bottom: shared.initial.height};
             onMove({
                 top: Math.round(shared.next.top),
                 left: Math.round(shared.next.left),
@@ -85,9 +86,9 @@ export const useMoveArea = ({constraints = [], ...args}) => {
         },
     });
     const after = operation({
-        onMove: (e, {onMove}, {next, initial}) => {
-            next.left = Math.min(Math.max(next.left, 0), initial.width);
-            next.top = Math.min(Math.max(next.top, 0), initial.height);
+        onMove: (e, {onMove}, {next, bounds}) => {
+            next.left = Math.min(Math.max(next.left, bounds.left), bounds.right);
+            next.top = Math.min(Math.max(next.top, bounds.top), bounds.bottom);
 
             onMove({
                 top: Math.round(next.top),
