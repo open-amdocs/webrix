@@ -23,7 +23,7 @@ const ResizeObserver = ({children, onResize}) => {
     const child = React.Children.only(children);
     const ref = useRef();
     const observer = useRef(new window.ResizeObserver(entries => {
-        const {width, height} = entries[0].contentRect;
+        const {inlineSize: width, blockSize: height} = entries[0].borderBoxSize[0];
         onResize({width, height});
     }));
     useEffect(() => {
