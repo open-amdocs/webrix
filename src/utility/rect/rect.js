@@ -14,8 +14,6 @@
  * limitations under the License.
  */
 
-import {clamp as _clamp} from '../number';
-
 /**
  * Get the center point of a DOMRect
  *

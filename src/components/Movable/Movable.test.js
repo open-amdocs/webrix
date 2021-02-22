@@ -100,13 +100,13 @@ describe('<Movable/>', () => {
         });
     });
 
-    describe('Utils', () => {
-        it('Movable.inscribe', () => {
-            const r = (x, y, w, h) => ({left: x, top: y, width: w, height: h});
-            expect(Movable.inscribe(r(0, 0, 10, 10), r(0, 0, 20, 20))).to.eql(r(0, 0, 10, 10));
-            expect(Movable.inscribe(r(20, 20, 10, 10), r(0, 0, 20, 20))).to.eql(r(10, 10, 10, 10));
-            expect(Movable.inscribe(r(-20, -20, 10, 10), r(0, 0, 20, 20))).to.eql(r(0, 0, 10, 10));
-            expect(Movable.inscribe(r(0, 0, 20, 20), r(0, 0, 20, 20))).to.eql(r(0, 0, 20, 20));
-        });
-    });
+    // describe('Utils', () => {
+    //     it('Movable.inscribe', () => {
+    //         const r = (x, y, w, h) => ({left: x, top: y, width: w, height: h});
+    //         expect(Movable.inscribe(r(0, 0, 10, 10), r(0, 0, 20, 20))).to.eql(r(0, 0, 10, 10));
+    //         expect(Movable.inscribe(r(20, 20, 10, 10), r(0, 0, 20, 20))).to.eql(r(10, 10, 10, 10));
+    //         expect(Movable.inscribe(r(-20, -20, 10, 10), r(0, 0, 20, 20))).to.eql(r(0, 0, 10, 10));
+    //         expect(Movable.inscribe(r(0, 0, 20, 20), r(0, 0, 20, 20))).to.eql(r(0, 0, 20, 20));
+    //     });
+    // });
 });
