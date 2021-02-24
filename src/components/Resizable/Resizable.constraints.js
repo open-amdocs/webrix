@@ -14,24 +14,27 @@
  * limitations under the License.
  */
 
-import {noop} from 'utility/memory';
 import {clamp} from 'utility/number';
+import {operation} from './Resizable.hooks';
 
-const controller = props => ({
-    dependencies: [],
-    onBeginResize: noop,
-    onResize: noop,
-    onEndResize: noop,
-    ...props,
-})
-
-export const contain = container => controller({
+/**
+ * Limit the resizing of the element to not overflow the boundaries of the given container.
+ *
+ * @param container {ReactRef}
+ * @return {{onResize: function, onBeginResize: function, onEndResize: function, dependencies: []}}
+ */
+export const contain = container => operation({
     dependencies: [container],
     onBeginResize: (e, args, shared) => {
         shared.max = container.current.getBoundingClientRect();
     },
     onResize: ({delta}, args, shared) => {
         const {initial, next, max} = shared;
+        // The new width/height is dependent on which edge was used for resizing.
+        // For example, when resizing using the left resizer, the right boundary is not the right side
+        // of the container, but the right side of the resizable element. However, when resizing using
+        // the right resizer, the right boundary becomes the right side of the container, and the left
+        // boundary becomes the left side of the resizable element.
         const width = clamp(next.width, 0, delta.left === 0 ? max.left + max.width - initial.left : initial.left + initial.width - max.left);
         const height = clamp(next.height, 0, delta.top === 0 ? max.top + max.height - initial.top : initial.top + initial.height - max.top);
         shared.next = {
@@ -42,7 +45,14 @@ export const contain = container => controller({
     },
 });
 
-export const min = (minWidth, minHeight) => controller({
+/**
+ * Limit the resizing to not go below the given width/height.
+ *
+ * @param minWidth {number}
+ * @param minHeight {number}
+ * @return {{onResize: function, onBeginResize: function, onEndResize: function, dependencies: []}}
+ */
+export const min = (minWidth, minHeight) => operation({
     dependencies: [minWidth, minHeight],
     onResize: (e, args, shared) => {
         const {width, height} = shared.next;
@@ -54,7 +64,14 @@ export const min = (minWidth, minHeight) => controller({
     },
 });
 
-export const max = (maxWidth, maxHeight) => controller({
+/**
+ * Limit the resizing to not go above the given width/height.
+ *
+ * @param maxWidth {number}
+ * @param maxHeight {number}
+ * @return {{onResize: function, onBeginResize: function, onEndResize: function, dependencies: []}}
+ */
+export const max = (maxWidth, maxHeight) => operation({
     dependencies: [maxWidth, maxHeight],
     onResize: (e, args, shared) => {
         const {width, height} = shared.next;
@@ -66,7 +83,16 @@ export const max = (maxWidth, maxHeight) => controller({
     },
 });
 
-export const snap = (horizontal, vertical, strength = 1) => controller({
+/**
+ * Snap the resizing to a grid specified by the given `horizontal` & `vertical` arguments,
+ * optionally specifying the snapping strength in `strength`, as a number between `0` and `1`.
+ *
+ * @param horizontal {number}
+ * @param vertical {number}
+ * @param strength {number}
+ * @return {{onResize: function, onBeginResize: function, onEndResize: function, dependencies: []}}
+ */
+export const snap = (horizontal, vertical, strength = 1) => operation({
     dependencies: [horizontal, vertical, strength],
     onResize: (e, args, shared) => {
         const {width, height} = shared.next;
@@ -83,7 +109,14 @@ export const snap = (horizontal, vertical, strength = 1) => controller({
     },
 });
 
-export const ratio = r => controller({
+/**
+ * Maintain the given ratio when resizing. The given value represents the ratio between the width
+ * and the height. For example, to maintain a `4:3` ratio, use the value `4/3`.
+ *
+ * @param r {number}
+ * @return {{onResize: function, onBeginResize: function, onEndResize: function, dependencies: []}}
+ */
+export const ratio = r => operation({
     dependencies: [r],
     onResize: (e, args, {next}) => {
         if (next.width / next.height > r) {
