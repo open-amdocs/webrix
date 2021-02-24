@@ -64,7 +64,9 @@ export const useResize = ({constraints = [], ...args}) => {
     const after = operation({
         onResize: ({delta}, {onResize}, shared) => {
             const {next, initial} = shared;
-
+            // Ensure that the resize operation only affects the resized edge.
+            // For example, when using the left resizer, it shouldn't go past the right edge,
+            // and vice versa.
             if (delta.left !== 0) {
                 next.left = initial.left + initial.width - next.width;
             } else {

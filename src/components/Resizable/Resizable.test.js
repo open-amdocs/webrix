@@ -1,4 +1,5 @@
-import React from 'react';
+import React, {useRef} from 'react';
+import {act} from 'react-dom/test-utils';
 import {mount} from 'enzyme';
 import sinon from 'sinon';
 import {expect} from 'chai';
@@ -53,32 +54,115 @@ describe('<Resizable>', () => {
             });
         });
     });
-    // describe('Constraints', () => {
-    //     it('Resizable.inscribe', () => {
-    //         const r = (x, y, w, h) => ({left: x, top: y, width: w, height: h});
-    //
-    //         // No change
-    //         expect(Resizable.inscribe(r(10, 10, 10, 10), r(0, 0, 0, 0), r(0, 0, 20, 20))).to.eql(r(10, 10, 10, 10))
-    //
-    //         // Left resize
-    //         expect(Resizable.inscribe(r(10, 10, 10, 10), r(10, 0, -10, 0), r(0, 0, 20, 20))).to.eql(r(20, 10, 0, 10))
-    //         expect(Resizable.inscribe(r(10, 10, 10, 10), r(20, 0, -20, 0), r(0, 0, 20, 20))).to.eql(r(20, 10, 0, 10))
-    //         expect(Resizable.inscribe(r(10, 10, 10, 10), r(-20, 0, 20, 0), r(0, 0, 20, 20))).to.eql(r(0, 10, 20, 10))
-    //
-    //         // Right resize
-    //         expect(Resizable.inscribe(r(10, 10, 10, 10), r(0, 0, -10, 0), r(0, 0, 20, 20))).to.eql(r(10, 10, 0, 10))
-    //         expect(Resizable.inscribe(r(10, 10, 10, 10), r(0, 0, -20, 0), r(0, 0, 20, 20))).to.eql(r(10, 10, 0, 10))
-    //         expect(Resizable.inscribe(r(10, 10, 10, 10), r(0, 0, 20, 0), r(0, 0, 20, 20))).to.eql(r(10, 10, 10, 10))
-    //
-    //         // Top resize
-    //         expect(Resizable.inscribe(r(10, 10, 10, 10), r(0, 10, 10, -10), r(0, 0, 20, 20))).to.eql(r(10, 20, 10, 0))
-    //         expect(Resizable.inscribe(r(10, 10, 10, 10), r(0, 20, 0, -20), r(0, 0, 20, 20))).to.eql(r(10, 20, 10, 0))
-    //         expect(Resizable.inscribe(r(10, 10, 10, 10), r(0, -20, 0, 20), r(0, 0, 20, 20))).to.eql(r(10, 0, 10, 20))
-    //
-    //         // Bottom resize
-    //         expect(Resizable.inscribe(r(10, 10, 10, 10), r(0, 0, 0, -10), r(0, 0, 20, 20))).to.eql(r(10, 10, 10, 0))
-    //         expect(Resizable.inscribe(r(10, 10, 10, 10), r(0, 0, 0, -20), r(0, 0, 20, 20))).to.eql(r(10, 10, 10, 0))
-    //         expect(Resizable.inscribe(r(10, 10, 10, 10), r(0, 0, 0, 20), r(0, 0, 20, 20))).to.eql(r(10, 10, 10, 10))
-    //     });
-    // });
+
+    describe('Hooks', () => {
+        it('useResize()', () => {
+            let wrapper;
+            const onResize = sinon.spy();
+            const {useResize} = Resizable;
+            const r = (x, y, w, h) => ({left: x, top: y, width: w, height: h});
+            const Elem = () => {
+                const props = useResize({
+                    ref: useRef({getBoundingClientRect: () => r(0, 0, 20, 20)}),
+                    onResize,
+                });
+                return <Resizable {...props}/>;
+            };
+
+            act(() => {
+                wrapper = mount(<Elem/>)
+            });
+            wrapper.find('Resizable').prop('onBeginResize')();
+            wrapper.find('Resizable').prop('onResize')({delta: r(0, 0, 0, 0)});
+            expect(onResize.callCount).to.eql(1);
+            expect(onResize.calledWith(r(0, 0, 20, 20))).to.eql(true);
+
+            wrapper.find('Resizable').prop('onResize')({delta: r(10, 10, -10, -10)});
+            expect(onResize.callCount).to.eql(2);
+            expect(onResize.calledWith(r(10, 10, 10, 10))).to.eql(true);
+
+            wrapper.find('Resizable').prop('onResize')({delta: r(0, 0, 10, 10)});
+            expect(onResize.callCount).to.eql(3);
+            expect(onResize.calledWith(r(0, 0, 30, 30))).to.eql(true);
+
+            wrapper.find('Resizable').prop('onResize')({delta: r(30, 30, -30, -30)});
+            expect(onResize.callCount).to.eql(4);
+            expect(onResize.calledWith(r(20, 20, 0, 0))).to.eql(true);
+        });
+    });
+
+    describe('Constraints', () => {
+        it('contain()', () => {
+            const {contain} = Resizable.Constraints;
+            const shared = {};
+            const r = (x, y, w, h) => ({left: x, top: y, width: w, height: h});
+
+            // No Change
+            shared.initial = r(10, 10, 10, 10);
+            shared.next = shared.initial;
+            shared.max = r(0, 0, 20, 20);
+            contain({}).onResize({delta: r(0, 0, 0, 0)}, {}, shared);
+            expect(shared.next).to.eql(r(10, 10, 10, 10));
+        });
+        it('min()', () => {
+            const {min} = Resizable.Constraints;
+            const shared = {};
+
+            shared.next = {width: 30, height: 30};
+            min(20, 20).onResize({}, {}, shared);
+            expect(shared.next).to.eql({width: 30, height: 30});
+
+            shared.next = {width: 30, height: 30};
+            min(40, 40).onResize({}, {}, shared);
+            expect(shared.next).to.eql({width: 40, height: 40});
+        });
+        it('max()', () => {
+            const {max} = Resizable.Constraints;
+            const shared = {};
+
+            shared.next = {width: 30, height: 30};
+            max(40, 40).onResize({}, {}, shared);
+            expect(shared.next).to.eql({width: 30, height: 30});
+
+            shared.next = {width: 30, height: 30};
+            max(20, 20).onResize({}, {}, shared);
+            expect(shared.next).to.eql({width: 20, height: 20});
+        });
+        it('snap()', () => {
+            const {snap} = Resizable.Constraints;
+            const shared = {};
+
+            shared.next = {width: 30, height: 30};
+            snap(20, 20).onResize({}, {}, shared);
+            expect(shared.next).to.eql({width: 40, height: 40});
+
+            shared.next = {width: 30, height: 30};
+            snap(10, 10).onResize({}, {}, shared);
+            expect(shared.next).to.eql({width: 30, height: 30});
+
+            shared.next = {width: 30, height: 30};
+            snap(20, 20, 0.3).onResize({}, {}, shared);
+            expect(shared.next).to.eql({width: 30, height: 30});
+
+            shared.next = {width: 23, height: 23};
+            snap(20, 20, 0.3).onResize({}, {}, shared);
+            expect(shared.next).to.eql({width: 20, height: 20});
+
+            shared.next = {width: 24, height: 24};
+            snap(20, 20, 0.3).onResize({}, {}, shared);
+            expect(shared.next).to.eql({width: 24, height: 24});
+        });
+        it('ratio()', () => {
+            const {ratio} = Resizable.Constraints;
+            const shared = {};
+
+            shared.next = {width: 30, height: 30};
+            ratio(2).onResize({}, {}, shared);
+            expect(shared.next).to.eql({width: 60, height: 30});
+
+            shared.next = {width: 90, height: 30};
+            ratio(2).onResize({}, {}, shared);
+            expect(shared.next).to.eql({width: 90, height: 45});
+        });
+    });
 });
