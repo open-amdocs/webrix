@@ -17,6 +17,12 @@
 import {clamp} from 'utility/number';
 import {operation} from './Movable.hooks';
 
+/**
+ * Limit the movement to the given container.
+ *
+ * @param container {ReactRef} A ref to the container element.
+ * @return {constraint}
+ */
 export const contain = container => operation({
     dependencies: [container],
     onBeginMove: (e, {ref}, shared) => {
@@ -33,6 +39,15 @@ export const contain = container => operation({
     },
 });
 
+/**
+ * Snap the movement to a grid specified by the given horizontal & vertical sizes
+ * of the grid steps, optionally specifying the snapping strength.
+ *
+ * @param horizontal {number} The horizontal grid step size
+ * @param vertical {number} The vertical grid step size
+ * @param strength {number} The snap strength, where 1 is
+ * @return {constraint}
+ */
 export const snap = (horizontal, vertical, strength = 1) => operation({
     dependencies: [horizontal, vertical, strength],
     onMove: (e, args, shared) => {
@@ -49,6 +64,17 @@ export const snap = (horizontal, vertical, strength = 1) => operation({
     },
 });
 
+/**
+ * Apply padding to the movement boundaries.
+ * This can either be the bounds specified by the contain() constraints,
+ * or, if using the useMoveArea() hook, the bounding rect of the given ref.
+ *
+ * @param top {number}
+ * @param right {number}
+ * @param bottom {number}
+ * @param left {number}
+ * @return {constraint}
+ */
 export const padding = (top, right, bottom, left) => operation({
     dependencies: [top, right, bottom, left],
     onBeginMove: (e, args, shared) => {

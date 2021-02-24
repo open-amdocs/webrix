@@ -25,6 +25,7 @@ export const operation = props => ({
     ...props,
 });
 
+// The base hook
 export const base = (ops = [], args) => {
     const shared = useRef({});
     const dependencies = ops.reduce((acc, cur) => acc.concat(cur.dependencies), []).concat(Object.values(args));
@@ -44,6 +45,14 @@ export const base = (ops = [], args) => {
     return {onBeginMove, onMove, onEndMove, ref: args.ref};
 };
 
+/**
+ * Generate the set of props to be injected to a Movable component,
+ * applying the given constraints.
+ *
+ * @param constraints {array}
+ * @param args
+ * @return {{ref, onEndMove: function, onMove: function, onBeginMove: function}}
+ */
 export const useMove = ({constraints = [], ...args}) => {
     const before = operation({
         onBeginMove: (e, {ref}, shared) => {
@@ -69,6 +78,16 @@ export const useMove = ({constraints = [], ...args}) => {
     return base(ops, args);
 };
 
+/**
+ * Generate the set of props to be injected to a Movable component,
+ * applying the given constraints. This is similar to useMove(),
+ * only here the ref is used as a movement 'pad', and the movement
+ * is usually applied to another element.
+ *
+ * @param constraints {array}
+ * @param args
+ * @return {{ref, onEndMove: function, onMove: function, onBeginMove: function}}
+ */
 export const useMoveArea = ({constraints = [], ...args}) => {
     const before = operation({
         onBeginMove: ({x, y}, {ref, onMove}, shared) => {
