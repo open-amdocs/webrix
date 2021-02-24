@@ -15,7 +15,6 @@
  */
 
 import {noop} from 'utility/memory';
-import {toCSS} from 'utility/rect';
 import {clamp} from 'utility/number';
 
 const controller = props => ({
@@ -25,44 +24,6 @@ const controller = props => ({
     onEndResize: noop,
     ...props,
 })
-
-export const init = () => controller({
-    onBeginResize: (e, {ref}, shared) => {
-        const {left, top, width, height} = ref.current.getBoundingClientRect();
-        shared.next = {left, top, width, height};
-        shared.initial = {left, top, width, height};
-    },
-    onResize: ({delta}, args, {next, initial})=> {
-        const {left, top, width, height} = initial;
-        next.width = Math.max(width + delta.width, 0);
-        next.height = Math.max(height + delta.height, 0);
-        next.left = left + delta.left;
-        next.top = top + delta.top;
-    },
-});
-
-export const update = () => controller({
-    onResize: (e, {onResize}, {next}) => {
-        onResize(toCSS(next));
-    },
-});
-
-export const lock = () => controller({
-    onResize: ({delta}, args, shared) => {
-        const {next, initial} = shared;
-
-        if (delta.left !== 0) {
-            next.left = initial.left + initial.width - next.width;
-        } else {
-            next.left = initial.left;
-        }
-        if (delta.top !== 0) {
-            next.top = initial.top + initial.height - next.height;
-        } else {
-            next.top = initial.top;
-        }
-    },
-});
 
 export const contain = container => controller({
     dependencies: [container],

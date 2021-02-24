@@ -15,12 +15,21 @@
  */
 
 import {useRef, useCallback} from 'react';
-import {init, lock, update} from './Resizable.constraints';
+import {noop} from 'utility/memory';
+import {toCSS} from 'utility/rect';
 
-export const useResize = ({constraints = [], ...args}) => {
+export const operation = props => ({
+    dependencies: [],
+    onBeginResize: noop,
+    onResize: noop,
+    onEndResize: noop,
+    ...props,
+});
+
+// The base hook
+export const base = (ops = [], args) => {
     const shared = useRef({});
-    const dependencies = constraints.reduce((acc, cur) => acc.concat(cur.dependencies), []);
-    const ops = [init(), ...constraints, lock(), update()];
+    const dependencies = ops.reduce((acc, cur) => acc.concat(cur.dependencies), []).concat(Object.values(args));
 
     const onBeginResize = useCallback(e => {
         ops.forEach(({onBeginResize}) => onBeginResize(e, args, shared.current));
@@ -31,8 +40,44 @@ export const useResize = ({constraints = [], ...args}) => {
     }, dependencies);
 
     const onEndResize = useCallback(e => {
-        ops.forEach(({onEndResize}) => onEndResize(e, args, shared.current))
+        ops.forEach(({onEndResize}) => onEndResize(e, args, shared.current));
     }, dependencies);
 
     return {onBeginResize, onResize, onEndResize};
+};
+
+export const useResize = ({constraints = [], ...args}) => {
+    const before = operation({
+        onBeginResize: (e, {ref}, shared) => {
+            const {left, top, width, height} = ref.current.getBoundingClientRect();
+            shared.next = {left, top, width, height};
+            shared.initial = {left, top, width, height};
+        },
+        onResize: ({delta}, args, {next, initial})=> {
+            const {left, top, width, height} = initial;
+            next.width = Math.max(width + delta.width, 0);
+            next.height = Math.max(height + delta.height, 0);
+            next.left = left + delta.left;
+            next.top = top + delta.top;
+        },
+    });
+    const after = operation({
+        onResize: ({delta}, {onResize}, shared) => {
+            const {next, initial} = shared;
+
+            if (delta.left !== 0) {
+                next.left = initial.left + initial.width - next.width;
+            } else {
+                next.left = initial.left;
+            }
+            if (delta.top !== 0) {
+                next.top = initial.top + initial.height - next.height;
+            } else {
+                next.top = initial.top;
+            }
+            onResize(toCSS(next));
+        },
+    });
+    const ops = [before, ...constraints, after];
+    return base(ops, args);
 };
