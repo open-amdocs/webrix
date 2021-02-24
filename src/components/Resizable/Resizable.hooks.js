@@ -46,7 +46,15 @@ export const base = (ops = [], args) => {
     return {onBeginResize, onResize, onEndResize};
 };
 
-export const useResize = ({constraints = [], ...args}) => {
+/**
+ * Generate the set of props to be injected to a Resizable component,
+ * applying the given constraints.
+ *
+ * @param constraints {array}
+ * @param args
+ * @return {{onResize: function, onBeginResize: function, onEndResize: function}}
+ */
+export const useResize = ({constraints = [], ...args}) => { // eslint-disable-line max-lines-per-function
     const before = operation({
         onBeginResize: (e, {ref}, shared) => {
             const {left, top, width, height} = ref.current.getBoundingClientRect();
