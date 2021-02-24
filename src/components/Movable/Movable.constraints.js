@@ -31,10 +31,10 @@ export const contain = container => operation({
         shared.size = {width, height};
     },
     onMove: (e, args, shared) => {
-        const {bounds, next} = shared;
+        const {bounds, next, size} = shared;
         shared.next = {
-            left: clamp(next.left, bounds.left, bounds.right - shared.size.width),
-            top: clamp(next.top, bounds.top, bounds.bottom - shared.size.height),
+            left: clamp(next.left, bounds.left, bounds.right - size.width),
+            top: clamp(next.top, bounds.top, bounds.bottom - size.height),
         };
     },
 });

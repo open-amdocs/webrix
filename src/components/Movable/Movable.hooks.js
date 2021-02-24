@@ -16,6 +16,7 @@
 
 import {useRef, useCallback} from 'react';
 import {noop} from 'utility/memory';
+import {clamp} from 'utility/number';
 
 export const operation = props => ({
     dependencies: [],
@@ -106,8 +107,8 @@ export const useMoveArea = ({constraints = [], ...args}) => {
     });
     const after = operation({
         onMove: (e, {onMove}, {next, bounds}) => {
-            next.left = Math.min(Math.max(next.left, bounds.left), bounds.right);
-            next.top = Math.min(Math.max(next.top, bounds.top), bounds.bottom);
+            next.left = clamp(next.left, bounds.left, bounds.right);
+            next.top = clamp(next.top, bounds.top, bounds.bottom);
 
             onMove({
                 top: Math.round(next.top),
