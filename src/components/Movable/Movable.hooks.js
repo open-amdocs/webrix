@@ -27,21 +27,21 @@ export const operation = props => ({
 });
 
 // The base hook
-export const base = (ops = [], args) => {
+export const useBase = (ops = [], args) => {
     const shared = useRef({});
     const dependencies = ops.reduce((acc, cur) => acc.concat(cur.dependencies), []).concat(Object.values(args));
 
     const onBeginMove = useCallback(e => {
         ops.forEach(({onBeginMove}) => onBeginMove(e, args, shared.current));
-    }, dependencies);
+    }, dependencies); // eslint-disable-line react-hooks/exhaustive-deps
 
     const onMove = useCallback(e => {
         ops.forEach(({onMove}) => onMove(e, args, shared.current));
-    }, dependencies);
+    }, dependencies); // eslint-disable-line react-hooks/exhaustive-deps
 
     const onEndMove = useCallback(e => {
         ops.forEach(({onEndMove}) => onEndMove(e, args, shared.current))
-    }, dependencies);
+    }, dependencies); // eslint-disable-line react-hooks/exhaustive-deps
 
     return {onBeginMove, onMove, onEndMove, ref: args.ref};
 };
@@ -76,7 +76,7 @@ export const useMove = ({constraints = [], ...args}) => {
         },
     });
     const ops = [before, ...constraints, after];
-    return base(ops, args);
+    return useBase(ops, args);
 };
 
 /**
@@ -117,5 +117,5 @@ export const useMoveArea = ({constraints = [], ...args}) => {
         },
     });
     const ops = [before, ...constraints, after];
-    return base(ops, args);
+    return useBase(ops, args);
 };

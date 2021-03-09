@@ -27,21 +27,21 @@ export const operation = props => ({
 });
 
 // The base hook
-export const base = (ops = [], args) => {
+export const useBase = (ops = [], args) => {
     const shared = useRef({});
     const dependencies = ops.reduce((acc, cur) => acc.concat(cur.dependencies), []).concat(Object.values(args));
 
     const onBeginResize = useCallback(e => {
         ops.forEach(({onBeginResize}) => onBeginResize(e, args, shared.current));
-    }, dependencies);
+    }, dependencies); // eslint-disable-line react-hooks/exhaustive-deps
 
     const onResize = useCallback(e => {
         ops.forEach(({onResize}) => onResize(e, args, shared.current));
-    }, dependencies);
+    }, dependencies); // eslint-disable-line react-hooks/exhaustive-deps
 
     const onEndResize = useCallback(e => {
         ops.forEach(({onEndResize}) => onEndResize(e, args, shared.current));
-    }, dependencies);
+    }, dependencies); // eslint-disable-line react-hooks/exhaustive-deps
 
     return {onBeginResize, onResize, onEndResize};
 };
@@ -89,5 +89,5 @@ export const useResize = ({constraints = [], ...args}) => { // eslint-disable-li
         },
     });
     const ops = [before, ...constraints, after];
-    return base(ops, args);
+    return useBase(ops, args);
 };

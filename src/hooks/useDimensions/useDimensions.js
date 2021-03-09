@@ -23,8 +23,9 @@ export default ref => {
         setDimensions({width, height});
     }));
     useEffect(() => {
-        observer.current.observe(ref.current);
-        return () => observer.current.disconnect();
-    }, []);
+        const {current: obs} = observer;
+        obs.observe(ref.current);
+        return () => obs.disconnect();
+    }, [ref]);
     return dimensions;
 };
