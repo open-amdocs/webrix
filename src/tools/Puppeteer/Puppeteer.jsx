@@ -44,7 +44,7 @@ Puppeteer.propTypes = propTypes.puppeteer;
 Puppeteer.defaultProps = defaultProps.puppeteer;
 
 Puppeteer.Break = ({children, props, namespace}) => {
-    const ctx = useContext(PuppeteerContext);
+    const ctx = useContext(PuppeteerContext); // eslint-disable-line react-hooks/rules-of-hooks
     const inherited = ctx[namespace] || {};
 
     return (

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import React, {forwardRef, useCallback, useRef} from 'react';
+import React, {forwardRef, useCallback, useRef, useMemo} from 'react';
 import cls from 'classnames';
 import {copyComponentRef} from 'utility/react';
 import Movable from '../Movable';
@@ -25,7 +25,7 @@ import './Pannable.scss';
 export const Pannable = forwardRef(({children, className, ...props}, ref) => {
     const scrollRef = useRef();
     const pannableRef = useRef();
-    const initial = {top: 0, left: 0};
+    const initial = useMemo(() => ({top: 0, left: 0}), []);
 
     const handleOnBeginMove = useCallback(() => {
         // TODO: accessing the inner structure of scrollbar is bad practice
@@ -34,18 +34,18 @@ export const Pannable = forwardRef(({children, className, ...props}, ref) => {
         initial.top = scrollbar.scrollTop;
         initial.left = scrollbar.scrollLeft;
         pannableRef.current.classList.add('dragging');
-    }, [initial.top, initial.left]);
+    }, [initial]);
 
     const handleOnMove = useCallback(({ dx, dy}) => {
         const scrollbar = scrollRef.current.container.current;
         const {top, left} = initial;
         scrollbar.scrollTop = top - dy;
         scrollbar.scrollLeft = left - dx;
-    }, [initial.top, initial.left]);
+    }, [initial]);
 
     const handleOnEndMove = useCallback(() => {
         pannableRef.current.classList.remove('dragging');
-    });
+    }, [pannableRef]);
 
     return (
         <div {...props} className={cls('pannable', className)} ref={copyComponentRef(ref, pannableRef)}>
