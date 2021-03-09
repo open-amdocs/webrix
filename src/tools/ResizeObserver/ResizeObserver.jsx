@@ -27,8 +27,9 @@ const ResizeObserver = ({children, onResize}) => {
         onResize({width, height});
     }));
     useEffect(() => {
-        observer.current.observe(ref.current);
-        return () => observer.current.disconnect();
+        const {current: obs} = observer;
+        obs.observe(ref.current);
+        return () => obs.disconnect();
     }, []);
 
     return React.cloneElement(child, {ref: copyComponentRef(child.ref, ref)});

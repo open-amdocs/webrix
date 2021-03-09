@@ -31,12 +31,13 @@ const Resizer = ({direction, onBeginResize, onResize, onEndResize}) => (
 Resizer.propTypes = propTypes;
 
 const Top = memo(props => {
+    const {onResize} = props;
     const handleOnResize = useCallback(({dy, cy}) => (
-        props.onResize({
+        onResize({
             delta: {...INITIAL, top: dy, height: -dy},
             change: {...INITIAL, top: cy, height: -cy},
         })
-    ), [props.onResize]);
+    ), [onResize]);
     return (
         <Resizer {...props} onResize={handleOnResize} direction='top'/>
     );
@@ -46,12 +47,13 @@ Top.propTypes = propTypes;
 Top.displayName = 'Resizable.Resizer.Top';
 
 const Left = memo(props => {
+    const {onResize} = props;
     const handleOnResize = useCallback(({dx, cx}) => (
-        props.onResize({
+        onResize({
             delta: {...INITIAL, left: dx, width: -dx},
             change: {...INITIAL, left: cx, width: -cx},
         })
-    ), [props.onResize]);
+    ), [onResize]);
     return (
         <Resizer {...props} onResize={handleOnResize} direction='left'/>
     );
@@ -61,12 +63,13 @@ Left.propTypes = propTypes;
 Left.displayName = 'Resizable.Resizer.Left';
 
 const Bottom = memo(props => {
+    const {onResize} = props;
     const handleOnResize = useCallback(({dy, cy}) => (
-        props.onResize({
+        onResize({
             delta: {...INITIAL, height: dy},
             change: {...INITIAL, height: cy},
         })
-    ), [props.onResize]);
+    ), [onResize]);
     return (
         <Resizer {...props} onResize={handleOnResize} direction='bottom'/>
     );
@@ -76,12 +79,13 @@ Bottom.propTypes = propTypes;
 Bottom.displayName = 'Resizable.Resizer.Bottom';
 
 const Right = memo(props => {
+    const {onResize} = props;
     const handleOnResize = useCallback(({dx, cx}) => (
-        props.onResize({
+        onResize({
             delta: {...INITIAL, width: dx},
             change: {...INITIAL, width: cx},
         })
-    ), [props.onResize]);
+    ), [onResize]);
     return (
         <Resizer {...props} onResize={handleOnResize} direction='right'/>
     );
@@ -91,12 +95,13 @@ Right.propTypes = propTypes;
 Right.displayName = 'Resizable.Resizer.Right';
 
 const TopLeft = memo(props => {
+    const {onResize} = props;
     const handleOnResize = useCallback(({dx, dy, cx, cy}) => (
-        props.onResize({
+        onResize({
             delta: {left: dx, width: -dx, top: dy, height: -dy},
             change: {left: cx, width: -cx, top: cy, height: -cy},
         })
-    ), [props.onResize]);
+    ), [onResize]);
     return (
         <Resizer {...props} onResize={handleOnResize} direction='top-left'/>
     );
@@ -106,12 +111,13 @@ TopLeft.propTypes = propTypes;
 TopLeft.displayName = 'Resizable.Resizer.TopLeft';
 
 const TopRight = memo(props => {
+    const {onResize} = props;
     const handleOnResize = useCallback(({dx, dy, cx, cy}) => (
-        props.onResize({
+        onResize({
             delta: {...INITIAL, width: dx, top: dy, height: -dy},
             change: {...INITIAL, width: cx, top: cy, height: -cy},
         })
-    ), [props.onResize]);
+    ), [onResize]);
     return (
         <Resizer {...props} onResize={handleOnResize} direction='top-right'/>
     );
@@ -121,12 +127,13 @@ TopRight.propTypes = propTypes;
 TopRight.displayName = 'Resizable.Resizer.TopRight';
 
 const BottomLeft = memo(props => {
+    const {onResize} = props;
     const handleOnResize = useCallback(({dx, dy, cx, cy}) => (
-        props.onResize({
+        onResize({
             delta: {...INITIAL, left: dx, width: -dx, height: dy},
             change: {...INITIAL, left: cx, width: -cx, height: cy},
         })
-    ), [props.onResize]);
+    ), [onResize]);
     return (
         <Resizer {...props} onResize={handleOnResize} direction='bottom-left'/>
     );
@@ -136,12 +143,13 @@ BottomLeft.propTypes = propTypes;
 BottomLeft.displayName = 'Resizable.Resizer.BottomLeft';
 
 const BottomRight = memo(props => {
+    const {onResize} = props;
     const handleOnResize = useCallback(({dx, dy, cx, cy}) => (
-        props.onResize({
+        onResize({
             delta: {...INITIAL, width: dx, height: dy},
             change: {...INITIAL, width: cx, height: cy},
         })
-    ), [props.onResize]);
+    ), [onResize]);
     return (
         <Resizer {...props} onResize={handleOnResize} direction='bottom-right'/>
     );
