@@ -86,3 +86,23 @@ export const padding = (top, right, bottom, left) => operation({
         };
     },
 });
+
+export const trackpad = ref => operation({
+    dependencies: [ref],
+    onBeginMove: ({x, y}, args, shared) => {
+        shared.initial = ref.current.getBoundingClientRect();
+        shared.next = {left: x - shared.initial.left, top: y - shared.initial.top};
+        shared.bounds = {top: 0, left: 0, right: shared.initial.width, bottom: shared.initial.height};
+    },
+    onMove: ({x, y}, args, {next, bounds, initial}) => {
+        next.left = clamp(x - initial.left, bounds.left, bounds.right);
+        next.top = clamp(y - initial.top, bounds.top, bounds.bottom);
+    },
+});
+
+export const update = onUpdate => operation({
+    dependencies: [onUpdate],
+    onBeginMove: (e, args, {next}) => onUpdate(next),
+    onMove: (e, args, {next}) => onUpdate(next),
+    onEndMove: (e, args, {next}) => onUpdate(next),
+});

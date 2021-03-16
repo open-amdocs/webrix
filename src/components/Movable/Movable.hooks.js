@@ -46,6 +46,9 @@ export const useBase = (ops = [], args) => {
     return {onBeginMove, onMove, onEndMove, ref: args.ref};
 };
 
+export const useNewMove = (...ops) => {
+    return useBase(ops, {});
+};
 /**
  * Generate the set of props to be injected to a Movable component,
  * applying the given constraints.
