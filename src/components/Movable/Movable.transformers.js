@@ -14,24 +14,27 @@
  * limitations under the License.
  */
 
-import {clamp as _clamp} from 'utility/number';
+import * as number from 'utility/number';
 
-// Map the given value based on the given in/out limits
-export const map = (imin, imax, omin, omax) => v => (v - imin) / (imax - imin) * (omax - omin) + omin;
+export const map = (...args) => v => number.map(v, ...args);
+export const clamp = (...args) => v => number.clamp(v, ...args);
+export const interval = (...args) => v => number.interval(v, ...args);
+export const decimals = (...args) => v => number.decimals(v, ...args);
 
-// Enforce number precision based on the given number of decimal places
-export const decimals = p => v => Math.round(v * Math.pow(10, p)) / Math.pow(10, p);
-
-// Round the given number to the given interval
-export const interval = i => v => Math.round(v / i) * i;
-
-export const clamp = (min, max) => v => _clamp(v, min, max);
-
-export const angle = (cx, cy) => ({left, top}) => {
-    const adjacent = left - cx;
-    const opposite = top - cy;
+export const angle = ({center: {x, y}, angle, rotate, output: {min, max}}) => ({left, top}) => {
+    const adjacent = left - x;
+    const opposite = top - y;
     const radians = Math.atan(opposite / adjacent) + (adjacent < 0 ? Math.PI : 0) + Math.PI / 2;
-    return radians * (180 / Math.PI);
-};
+    let degrees = radians * (180 / Math.PI);
 
-export const transform = (v, ...t) => t.reduce((acc, cur) => cur(acc), v);
+    // If the angle + rotation is more than 360, and the current degree is passed 360,
+    // we add 360 to it since otherwise it will start from zero again.
+    // The last part is used for when the angle is outside of the given range.
+    // In that case, we want to angle to go either to the start of the range, or to the end
+    // of the range, based on proximity to either end.
+    if (angle + rotate > 360 && degrees >= 0 && degrees < angle / 2 - 180 + rotate) {
+        degrees += 360;
+    }
+
+    return map(rotate, angle + rotate, min, max)(number.clamp(degrees, rotate, angle + rotate));
+};

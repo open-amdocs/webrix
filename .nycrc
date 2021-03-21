@@ -4,5 +4,6 @@
   "lines": 90,
   "functions": 90,
   "statements": 90,
-  "reporter": ["lcov", "text-summary", "html"]
+  "reporter": ["lcov", "text-summary", "html"],
+  "exclude": ["**/index.js"]
 }

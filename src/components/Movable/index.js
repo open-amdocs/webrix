@@ -15,15 +15,12 @@
  */
 
 import Movable from './Movable';
-import {useMove, useMoveArea, useNewMove, operation} from './Movable.hooks';
-import * as Constraints from './Movable.constraints';
-import * as Transform from './Movable.transformers';
+import {useMove} from './Movable.hooks';
+import * as Operations from './Movable.operations';
+import * as Transformers from './Movable.transformers';
 
 Movable.useMove = useMove;
-Movable.useMoveArea = useMoveArea;
-Movable.useNewMove = useNewMove;
-Movable.Constraints = Constraints;
-Movable.Transform = Transform;
-Movable.createConstraint = operation;
+Movable.Operations = Operations;
+Movable.Transformers = Transformers;
 
 export default Movable;

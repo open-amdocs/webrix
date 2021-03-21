@@ -3,6 +3,7 @@ import {act} from 'react-dom/test-utils';
 import {shallow, mount} from 'enzyme';
 import {expect} from 'chai';
 import sinon from 'sinon';
+import * as number from 'utility/number';
 import Movable from './';
 
 describe('<Movable/>', () => {
@@ -102,117 +103,162 @@ describe('<Movable/>', () => {
     });
 
     describe('Hooks', () => {
-        it('useMove()', () => {
-            let wrapper;
-            const onMove = sinon.spy();
-            const {useMove} = Movable;
-            const Elem = () => {
-                const props = useMove({
-                    ref: useRef({getBoundingClientRect: () => ({top: 0, left: 0})}),
-                    onMove,
-                });
-                return <Movable {...props} ref={undefined}/>;
-            };
+        describe('useMove()', () => {
+            it('reposition()', () => {
+                let wrapper;
+                const onMove = sinon.spy();
+                const {useMove} = Movable;
+                const {reposition, update} = Movable.Operations;
+                const Elem = () => {
+                    const props = useMove([
+                        reposition(useRef({getBoundingClientRect: () => ({top: 0, left: 0})})),
+                        update(onMove),
+                    ]);
+                    return <Movable {...props} ref={undefined}/>;
+                };
 
-            act(() => {wrapper = mount(<Elem/>)});
-            wrapper.find('Movable').prop('onBeginMove')();
-            wrapper.find('Movable').prop('onMove')({dx: 10, dy: 10});
-            expect(onMove.callCount).to.eql(1);
-            expect(onMove.calledWith({top: 10, left: 10})).to.eql(true);
+                act(() => {wrapper = mount(<Elem/>)});
+                wrapper.find('Movable').prop('onBeginMove')();
+                wrapper.find('Movable').prop('onMove')({dx: 10, dy: 10});
+                expect(onMove.callCount).to.eql(2);
+                expect(onMove.calledWith({top: 10, left: 10})).to.eql(true);
 
-            wrapper.find('Movable').prop('onMove')({dx: 10.5, dy: 10.5});
-            expect(onMove.callCount).to.eql(2);
-            expect(onMove.calledWith({top: 11, left: 11})).to.eql(true);
-        });
+                wrapper.unmount();
+            });
 
-        it('useMoveArea()', () => {
-            let wrapper;
-            const onMove = sinon.spy();
-            const {useMoveArea} = Movable;
-            const Elem = () => {
-                const props = useMoveArea({
-                    ref: useRef({getBoundingClientRect: () => ({top: 0, left: 0, width: 20, height: 20})}),
-                    onMove,
-                });
-                return <Movable {...props} ref={undefined}/>;
-            };
+            it('trackpad()', () => {
+                let wrapper;
+                const onMove = sinon.spy();
+                const {useMove} = Movable;
+                const {trackpad, update} = Movable.Operations;
+                const Elem = () => {
+                    const props = useMove([
+                        trackpad(useRef({getBoundingClientRect: () => ({top: 0, left: 0, width: 20, height: 20})})),
+                        update(onMove),
+                    ]);
+                    return <Movable {...props} ref={undefined}/>;
+                };
 
-            act(() => {wrapper = mount(<Elem/>)});
-            wrapper.find('Movable').prop('onBeginMove')({x: 10, y: 10});
-            expect(onMove.callCount).to.eql(1);
-            expect(onMove.calledWith({top: 10, left: 10})).to.eql(true);
+                act(() => {wrapper = mount(<Elem/>)});
+                wrapper.find('Movable').prop('onBeginMove')({x: 10, y: 10});
+                expect(onMove.callCount).to.eql(1);
+                expect(onMove.calledWith({top: 10, left: 10})).to.eql(true);
 
-            wrapper.find('Movable').prop('onMove')({x: 10.5, y: 10.5});
-            expect(onMove.callCount).to.eql(2);
-            expect(onMove.calledWith({top: 10, left: 10})).to.eql(true);
+                wrapper.find('Movable').prop('onMove')({x: 10.5, y: 10.5});
+                expect(onMove.callCount).to.eql(2);
+                expect(onMove.calledWith({top: 10, left: 10})).to.eql(true);
 
-            wrapper.find('Movable').prop('onMove')({x: 30, y: 30});
-            expect(onMove.callCount).to.eql(3);
-            expect(onMove.calledWith({top: 20, left: 20})).to.eql(true);
+                wrapper.find('Movable').prop('onMove')({x: 30, y: 30});
+                expect(onMove.callCount).to.eql(3);
+                expect(onMove.calledWith({top: 20, left: 20})).to.eql(true);
+
+                wrapper.unmount();
+            });
         });
     });
 
-    describe('Constraints', () => {
+    describe('Operations', () => {
         it('contain()', () => {
-            const {contain} = Movable.Constraints;
+            const {contain} = Movable.Operations;
             const shared = {};
             const ref = {current: {getBoundingClientRect: () => ({width: 0, height: 0})}};
 
-            contain(ref).onBeginMove({}, {ref}, shared);
+            contain(ref, ref).onBeginMove({}, shared);
             expect(shared.bounds).to.eql({width: 0, height: 0});
             expect(shared.size).to.eql({width: 0, height: 0});
 
             shared.next = {top: 0, left: 0};
             shared.size = {width: 20, height: 20};
             shared.bounds = {top: 0, left: 0, bottom: 40, right: 40};
-            contain({}).onMove({}, {}, shared);
+            contain({}, {}).onMove({}, shared);
             expect(shared.next).to.eql({top: 0, left: 0});
 
             shared.next = {top: 30, left: 30};
             shared.size = {width: 20, height: 20};
             shared.bounds = {top: 0, left: 0, bottom: 40, right: 40};
-            contain({}).onMove({}, {}, shared);
+            contain({}, {}).onMove({}, shared);
             expect(shared.next).to.eql({top: 20, left: 20});
 
             shared.next = {top: -10, left: -10};
             shared.size = {width: 20, height: 20};
             shared.bounds = {top: 0, left: 0, bottom: 40, right: 40};
-            contain({}).onMove({}, {}, shared);
+            contain({}, {}).onMove({}, shared);
             expect(shared.next).to.eql({top: 0, left: 0});
         });
 
         it('snap()', () => {
-            const {snap} = Movable.Constraints;
+            const {snap} = Movable.Operations;
             const shared = {};
 
             shared.next = {top: 0, left: 0};
-            snap(20, 20).onMove({}, {}, shared);
+            snap(20, 20).onMove({}, shared);
             expect(shared.next).to.eql({top: 0, left: 0});
 
             shared.next = {top: 10, left: 10};
-            snap(20, 20).onMove({}, {}, shared);
+            snap(20, 20).onMove({}, shared);
             expect(shared.next).to.eql({top: 20, left: 20});
 
             shared.next = {top: 10, left: 10};
-            snap(20, 20, 0.3).onMove({}, {}, shared);
+            snap(20, 20, 0.3).onMove({}, shared);
             expect(shared.next).to.eql({top: 10, left: 10});
 
             shared.next = {top: 4, left: 4};
-            snap(20, 20, 0.3).onMove({}, {}, shared);
+            snap(20, 20, 0.3).onMove({}, shared);
             expect(shared.next).to.eql({top: 4, left: 4});
 
             shared.next = {top: 3, left: 3};
-            snap(20, 20, 0.3).onMove({}, {}, shared);
+            snap(20, 20, 0.3).onMove({}, shared);
             expect(shared.next).to.eql({top: 0, left: 0});
         });
 
-        it('padding()', () => {
-            const {padding} = Movable.Constraints;
-            const shared = {};
+        it('upadate()', () => {
+            const {update} = Movable.Operations;
+            const spy = sinon.spy();
+            const shared = {next: 'mock'};
 
-            shared.bounds = {top: 0, right: 10, bottom: 10, left: 0};
-            padding(1, 1, 1, 1).onBeginMove({}, {}, shared);
-            expect(shared.bounds).to.eql({top: 1, right: 9, bottom: 9, left: 1});
+            update(spy).onBeginMove({}, shared);
+            update(spy).onMove({}, shared);
+            update(spy).onEndMove({}, shared);
+            expect(spy.callCount).to.eql(3);
+            expect(spy.calledWith(shared.next)).to.eql(true);
+        });
+
+        it('transform()', () => {
+            const {transform} = Movable.Operations;
+            const shared = {next: 10};
+
+            transform(v => v + 10).onMove({}, shared);
+            expect(shared.next).to.eql(20);
+
+            shared.next = 10;
+            transform(v => v + 10, v => v / 2).onMove({}, shared);
+            expect(shared.next).to.eql(10);
+        });
+    });
+
+    describe('Transformers', () => {
+        it('map()', () => {
+            const args = [0, 10, 0, 20];
+            expect(Movable.Transformers.map(...args)(5)).to.eql(number.map(5, ...args));
+        });
+        it('clamp()', () => {
+            const args = [0, 10];
+            expect(Movable.Transformers.clamp(...args)(5)).to.eql(number.clamp(5, ...args));
+        });
+        it('interval()', () => {
+            const args = [4];
+            expect(Movable.Transformers.interval(...args)(5)).to.eql(number.interval(5, ...args));
+        });
+        it('decimals()', () => {
+            const args = [2];
+            expect(Movable.Transformers.decimals(...args)(4.1234)).to.eql(number.decimals(4.1234, ...args));
+        });
+        it('angle()', () => {
+            expect(Movable.Transformers.angle({center: {x: 50, y: 50}, rotate: 0, angle: 360, output: {min: 0, max: 360}})({top: 0, left: 50})).to.eql(0);
+            expect(Movable.Transformers.angle({center: {x: 50, y: 50}, rotate: 0, angle: 360, output: {min: 0, max: 360}})({top: 50, left: 0})).to.eql(270);
+            expect(Movable.Transformers.angle({center: {x: 50, y: 50}, rotate: 0, angle: 360, output: {min: 0, max: 360}})({top: 50, left: 100})).to.eql(90);
+            expect(Movable.Transformers.angle({center: {x: 50, y: 50}, rotate: 0, angle: 360, output: {min: 0, max: 360}})({top: 100, left: 50})).to.eql(180);
+            expect(Movable.Transformers.angle({center: {x: 50, y: 50}, rotate: 180, angle: 360, output: {min: 0, max: 360}})({top: 100, left: 50})).to.eql(0);
         });
     });
 });
