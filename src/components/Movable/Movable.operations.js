@@ -30,7 +30,7 @@ export const createOperation = handlers => ({
  * @param movable
  * @returns {operation}
  */
-export const reposition = movable => createOperation({
+export const move = movable => createOperation({
     onBeginMove: (e, shared) => {
         const {top, left} = movable.current.getBoundingClientRect();
         shared.next = {top, left};

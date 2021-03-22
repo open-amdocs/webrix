@@ -16,12 +16,11 @@
 
 import Resizable from './Resizable';
 import Resizers from './Resizable.resizers';
-import {useResize, operation} from './Resizable.hooks';
-import * as Constraints from './Resizable.constraints';
+import {useResize} from './Resizable.hooks';
+import * as Operations from './Resizable.operations';
 
 Resizable.Resizer = Resizers;
 Resizable.useResize = useResize;
-Resizable.Constraints = Constraints;
-Resizable.createConstraint = operation;
+Resizable.Operations = Operations;
 
 export default Resizable;

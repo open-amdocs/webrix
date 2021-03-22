@@ -15,7 +15,50 @@
  */
 
 import {clamp} from 'utility/number';
-import {operation} from './Resizable.hooks';
+import {noop} from 'utility/memory';
+
+export const createOperation = handlers => ({
+    onBeginResize: noop,
+    onResize: noop,
+    onEndResize: noop,
+    ...handlers,
+});
+
+export const resize = resizable => createOperation({
+    onBeginResize: (e, shared) => {
+        const {left, top, width, height} = resizable.current.getBoundingClientRect();
+        shared.next = {left, top, width, height};
+        shared.initial = {left, top, width, height};
+    },
+    onResize: ({delta}, shared)=> {
+        const {left, top, width, height} = shared.initial;
+        shared.next = {
+            width: Math.max(width + delta.width, 0),
+            height: Math.max(height + delta.height, 0),
+            left: left + delta.left,
+            top: top + delta.top,
+        };
+    },
+});
+
+export const lock = () => createOperation({
+    onResize: ({delta}, shared) => {
+        const {next, initial} = shared;
+        // Ensure that the resize operation only affects the resized edge.
+        // For example, when using the left resizer, it shouldn't go past the right edge,
+        // and vice versa.
+        if (delta.left !== 0) {
+            next.left = initial.left + initial.width - next.width;
+        } else {
+            next.left = initial.left;
+        }
+        if (delta.top !== 0) {
+            next.top = initial.top + initial.height - next.height;
+        } else {
+            next.top = initial.top;
+        }
+    },
+})
 
 /**
  * Limit the resizing of the element to not overflow the boundaries of the given container.
@@ -23,12 +66,11 @@ import {operation} from './Resizable.hooks';
  * @param container {ReactRef}
  * @return {{onResize: function, onBeginResize: function, onEndResize: function, dependencies: []}}
  */
-export const contain = container => operation({
-    dependencies: [container],
-    onBeginResize: (e, args, shared) => {
+export const contain = container => createOperation({
+    onBeginResize: (e, shared) => {
         shared.max = container.current.getBoundingClientRect();
     },
-    onResize: ({delta}, args, shared) => {
+    onResize: ({delta}, shared) => {
         const {initial, next, max} = shared;
         // The new width/height is dependent on which edge was used for resizing.
         // For example, when resizing using the left resizer, the right boundary is not the right side
@@ -52,9 +94,8 @@ export const contain = container => operation({
  * @param minHeight {number}
  * @return {{onResize: function, onBeginResize: function, onEndResize: function, dependencies: []}}
  */
-export const min = (minWidth, minHeight) => operation({
-    dependencies: [minWidth, minHeight],
-    onResize: (e, args, shared) => {
+export const min = (minWidth, minHeight) => createOperation({
+    onResize: (e, shared) => {
         const {width, height} = shared.next;
         shared.next = {
             ...shared.next,
@@ -71,9 +112,8 @@ export const min = (minWidth, minHeight) => operation({
  * @param maxHeight {number}
  * @return {{onResize: function, onBeginResize: function, onEndResize: function, dependencies: []}}
  */
-export const max = (maxWidth, maxHeight) => operation({
-    dependencies: [maxWidth, maxHeight],
-    onResize: (e, args, shared) => {
+export const max = (maxWidth, maxHeight) => createOperation({
+    onResize: (e, shared) => {
         const {width, height} = shared.next;
         shared.next = {
             ...shared.next,
@@ -92,9 +132,8 @@ export const max = (maxWidth, maxHeight) => operation({
  * @param strength {number}
  * @return {{onResize: function, onBeginResize: function, onEndResize: function, dependencies: []}}
  */
-export const snap = (horizontal, vertical, strength = 1) => operation({
-    dependencies: [horizontal, vertical, strength],
-    onResize: (e, args, shared) => {
+export const snap = (horizontal, vertical, strength = 1) => createOperation({
+    onResize: (e, shared) => {
         const {width, height} = shared.next;
         const rw =  Math.round(width / horizontal) * horizontal; // Rounded width
         const rh =  Math.round(height / vertical) * vertical; // Rounded height
@@ -116,13 +155,24 @@ export const snap = (horizontal, vertical, strength = 1) => operation({
  * @param r {number}
  * @return {{onResize: function, onBeginResize: function, onEndResize: function, dependencies: []}}
  */
-export const ratio = r => operation({
-    dependencies: [r],
-    onResize: (e, args, {next}) => {
+export const ratio = r => createOperation({
+    onResize: (e, {next}) => {
         if (next.width / next.height > r) {
             next.height = next.width / r;
         } else {
             next.width = next.height * r;
         }
     },
+});
+
+/**
+ * Call the function given in callback, passing shared.next as an argument.
+ *
+ * @param onUpdate
+ * @returns {operation}
+ */
+export const update = onUpdate => createOperation({
+    onBeginResize: (e, {next}) => onUpdate(next),
+    onResize: (e, {next}) => onUpdate(next),
+    onEndResize: (e, {next}) => onUpdate(next),
 });

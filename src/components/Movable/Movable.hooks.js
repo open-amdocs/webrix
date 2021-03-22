@@ -21,15 +21,15 @@ export const useMove = ops => {
 
     const onBeginMove = useCallback(e => {
         ops.forEach(({onBeginMove}) => onBeginMove(e, shared.current));
-    }, ops); // eslint-disable-line react-hooks/exhaustive-deps
+    }, [ops]);
 
     const onMove = useCallback(e => {
         ops.forEach(({onMove}) => onMove(e, shared.current));
-    }, ops); // eslint-disable-line react-hooks/exhaustive-deps
+    }, [ops]);
 
     const onEndMove = useCallback(e => {
         ops.forEach(({onEndMove}) => onEndMove(e, shared.current))
-    }, ops); // eslint-disable-line react-hooks/exhaustive-deps
+    }, [ops]);
 
     return {onBeginMove, onMove, onEndMove};
 };

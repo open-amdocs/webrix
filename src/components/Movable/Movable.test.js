@@ -104,14 +104,14 @@ describe('<Movable/>', () => {
 
     describe('Hooks', () => {
         describe('useMove()', () => {
-            it('reposition()', () => {
+            it('move()', () => {
                 let wrapper;
                 const onMove = sinon.spy();
                 const {useMove} = Movable;
-                const {reposition, update} = Movable.Operations;
+                const {move, update} = Movable.Operations;
                 const Elem = () => {
                     const props = useMove([
-                        reposition(useRef({getBoundingClientRect: () => ({top: 0, left: 0})})),
+                        move(useRef({getBoundingClientRect: () => ({top: 0, left: 0})})),
                         update(onMove),
                     ]);
                     return <Movable {...props} ref={undefined}/>;
