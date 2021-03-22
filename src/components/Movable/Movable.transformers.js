@@ -40,14 +40,15 @@ export const angle = ({center: {x, y}, angle: {from, range}, output: {min, max}}
     const radians = Math.atan(opposite / adjacent) + (adjacent < 0 ? Math.PI : 0) + Math.PI / 2;
     let angle = radians * (180 / Math.PI); // Convert angle to degrees
 
-    // If from + range is more than 360, and the current angle is passed 360,
-    // we add 360 to it since otherwise it will start from zero again.
-    // The last part is used for when the angle is outside of the given range.
-    // In that case, we want the angle to go either to the start of the range, or to the end
-    // of the range, based on proximity to either end.
-    if (range + from > 360 && angle >= 0 && angle < range / 2 - 180 + from) {
-        angle += 360;
+    // Normalize the angle to start at 'from', so that the full circle starts
+    // and ends at that point.
+    angle = angle - from + (angle >= 0 && angle < from ? 360 : 0);
+
+    // When the angle is outside of the given range, we want the angle to go either to the
+    // start of the range, or to the end of the range, based on proximity to either end.
+    if (angle > 180 + range / 2) {
+        angle = 0;
     }
 
-    return map(from, range + from, min, max)(number.clamp(angle, from, range + from));
+    return map(0, range, min, max)(number.clamp(angle, 0, range));
 };

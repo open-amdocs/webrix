@@ -259,6 +259,10 @@ describe('<Movable/>', () => {
             expect(Movable.Transformers.angle({center: {x: 50, y: 50}, angle: {from: 0, range: 360}, output: {min: 0, max: 360}})({top: 50, left: 100})).to.eql(90);
             expect(Movable.Transformers.angle({center: {x: 50, y: 50}, angle: {from: 0, range: 360}, output: {min: 0, max: 360}})({top: 100, left: 50})).to.eql(180);
             expect(Movable.Transformers.angle({center: {x: 50, y: 50}, angle: {from: 180, range: 360}, output: {min: 0, max: 360}})({top: 100, left: 50})).to.eql(0);
+
+            // Test when the angle is outside the range
+            expect(Movable.Transformers.angle({center: {x: 50, y: 50}, angle: {from: 270, range: 180}, output: {min: 0, max: 180}})({top: 100, left: 0})).to.eql(0);
+            expect(Movable.Transformers.angle({center: {x: 50, y: 50}, angle: {from: 270, range: 180}, output: {min: 0, max: 180}})({top: 100, left: 100})).to.eql(180);
         });
     });
 });
