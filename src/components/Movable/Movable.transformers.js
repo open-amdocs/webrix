@@ -21,20 +21,33 @@ export const clamp = (...args) => v => number.clamp(v, ...args);
 export const interval = (...args) => v => number.interval(v, ...args);
 export const decimals = (...args) => v => number.decimals(v, ...args);
 
-export const angle = ({center: {x, y}, angle, rotate, output: {min, max}}) => ({left, top}) => {
+/**
+ * This transformer calculates the angle between the line created by the mouse position
+ * and the given center point, and the horizontal x axis. This angle is than mapped from
+ * the range given in 'angle', to the range given in 'output'.
+ *
+ * @param x The center's x coordinate
+ * @param y The center's y coordinate
+ * @param from The start angle, relative to the positive y axis (in degrees)
+ * @param range The angle range (max degrees from the start angle)
+ * @param min The output range minimum
+ * @param max The output range maximum
+ * @returns {function({left: *, top: *}): number}
+ */
+export const angle = ({center: {x, y}, angle: {from, range}, output: {min, max}}) => ({left, top}) => {
     const adjacent = left - x;
     const opposite = top - y;
     const radians = Math.atan(opposite / adjacent) + (adjacent < 0 ? Math.PI : 0) + Math.PI / 2;
-    let degrees = radians * (180 / Math.PI);
+    let angle = radians * (180 / Math.PI); // Convert angle to degrees
 
-    // If the angle + rotation is more than 360, and the current degree is passed 360,
+    // If from + range is more than 360, and the current angle is passed 360,
     // we add 360 to it since otherwise it will start from zero again.
     // The last part is used for when the angle is outside of the given range.
-    // In that case, we want to angle to go either to the start of the range, or to the end
+    // In that case, we want the angle to go either to the start of the range, or to the end
     // of the range, based on proximity to either end.
-    if (angle + rotate > 360 && degrees >= 0 && degrees < angle / 2 - 180 + rotate) {
-        degrees += 360;
+    if (range + from > 360 && angle >= 0 && angle < range / 2 - 180 + from) {
+        angle += 360;
     }
 
-    return map(rotate, angle + rotate, min, max)(number.clamp(degrees, rotate, angle + rotate));
+    return map(from, range + from, min, max)(number.clamp(angle, from, range + from));
 };

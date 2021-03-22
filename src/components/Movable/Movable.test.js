@@ -254,11 +254,11 @@ describe('<Movable/>', () => {
             expect(Movable.Transformers.decimals(...args)(4.1234)).to.eql(number.decimals(4.1234, ...args));
         });
         it('angle()', () => {
-            expect(Movable.Transformers.angle({center: {x: 50, y: 50}, rotate: 0, angle: 360, output: {min: 0, max: 360}})({top: 0, left: 50})).to.eql(0);
-            expect(Movable.Transformers.angle({center: {x: 50, y: 50}, rotate: 0, angle: 360, output: {min: 0, max: 360}})({top: 50, left: 0})).to.eql(270);
-            expect(Movable.Transformers.angle({center: {x: 50, y: 50}, rotate: 0, angle: 360, output: {min: 0, max: 360}})({top: 50, left: 100})).to.eql(90);
-            expect(Movable.Transformers.angle({center: {x: 50, y: 50}, rotate: 0, angle: 360, output: {min: 0, max: 360}})({top: 100, left: 50})).to.eql(180);
-            expect(Movable.Transformers.angle({center: {x: 50, y: 50}, rotate: 180, angle: 360, output: {min: 0, max: 360}})({top: 100, left: 50})).to.eql(0);
+            expect(Movable.Transformers.angle({center: {x: 50, y: 50}, angle: {from: 0, range: 360}, output: {min: 0, max: 360}})({top: 0, left: 50})).to.eql(0);
+            expect(Movable.Transformers.angle({center: {x: 50, y: 50}, angle: {from: 0, range: 360}, output: {min: 0, max: 360}})({top: 50, left: 0})).to.eql(270);
+            expect(Movable.Transformers.angle({center: {x: 50, y: 50}, angle: {from: 0, range: 360}, output: {min: 0, max: 360}})({top: 50, left: 100})).to.eql(90);
+            expect(Movable.Transformers.angle({center: {x: 50, y: 50}, angle: {from: 0, range: 360}, output: {min: 0, max: 360}})({top: 100, left: 50})).to.eql(180);
+            expect(Movable.Transformers.angle({center: {x: 50, y: 50}, angle: {from: 180, range: 360}, output: {min: 0, max: 360}})({top: 100, left: 50})).to.eql(0);
         });
     });
 });
