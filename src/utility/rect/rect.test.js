@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-import {getCenterPoint, getRelativePosition, equal, contained, intersect, union, area, add, toCSS} from './rect';
+import {getCenterPoint, getRelativePosition, equal, contained, intersect, union, area, add} from './rect';
 
 describe('rect', () => {
 
@@ -72,10 +72,5 @@ describe('rect', () => {
         expect(add(r(0, 0, 10, 10), r(10, 10, 0, 0))).to.eql(r(10, 10, 10, 10));
         expect(add(r(0, 0, 10, 10), r(10, 10, 10, 10))).to.eql(r(10, 10, 20, 20));
         expect(add(r(0, 0, 10, 10), r(10, 10, -5, -5))).to.eql(r(10, 10, 5, 5));
-    });
-
-    it('toCSS()', () => {
-        expect(toCSS(new DOMRect(0, 0, 10, 10))).to.eql({left: 0, top: 0, width: 10, height: 10});
-        expect(toCSS(new DOMRect(1.2, 1.2, 1.2, 1.2))).to.eql({left: 1, top: 1, width: 1, height: 1});
     });
 });

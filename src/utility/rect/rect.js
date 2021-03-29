@@ -145,16 +145,3 @@ export const add = (rect, delta) => new DOMRect(
     rect.width + delta.width,
     rect.height + delta.height,
 );
-
-/**
- * Convert the given DOMRect to an object that can be injected as style properties
- *
- * @param rect {DOMRect}
- * @return {{top: number, left: number, width: number, height: number}}
- */
-export const toCSS = rect => ({
-    left: Math.round(rect.left),
-    top: Math.round(rect.top),
-    width: Math.round(rect.width),
-    height: Math.round(rect.height),
-})
