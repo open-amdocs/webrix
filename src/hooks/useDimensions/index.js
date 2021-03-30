@@ -14,13 +14,6 @@
  * limitations under the License.
  */
 
-import Movable from './Movable';
-import {useMove} from './Movable.hooks';
-import * as Operations from './Movable.operations';
-import * as Transformers from './Movable.transformers';
+import useDimensions from './useDimensions';
 
-Movable.useMove = useMove;
-Movable.Operations = Operations;
-Movable.Transformers = Transformers;
-
-export default Movable;
+export default useDimensions;

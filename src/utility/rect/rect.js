@@ -125,8 +125,23 @@ export const union = (a, b) => {
 };
 
 /**
+ * Get the area of the given DOMRect
  *
  * @param rect {DOMRect}
  * @return {number}
  */
 export const area = rect => rect.width * rect.height;
+
+/**
+ * Add the deltas given in 'delta' to the rectangle given in 'rect'
+ *
+ * @param rect {DOMRect} The rectangle to add to
+ * @param delta {DOMRect} A rect representing the deltas to add to the rectangle
+ * @return {DOMRect}
+ */
+export const add = (rect, delta) => new DOMRect(
+    rect.left + delta.left,
+    rect.top + delta.top,
+    rect.width + delta.width,
+    rect.height + delta.height,
+);

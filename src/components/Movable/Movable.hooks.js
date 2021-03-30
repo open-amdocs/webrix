@@ -14,13 +14,22 @@
  * limitations under the License.
  */
 
-import Movable from './Movable';
-import {useMove} from './Movable.hooks';
-import * as Operations from './Movable.operations';
-import * as Transformers from './Movable.transformers';
+import {useRef, useCallback} from 'react';
 
-Movable.useMove = useMove;
-Movable.Operations = Operations;
-Movable.Transformers = Transformers;
+export const useMove = ops => {
+    const shared = useRef({});
 
-export default Movable;
+    const onBeginMove = useCallback(e => {
+        ops.forEach(({onBeginMove}) => onBeginMove(e, shared.current));
+    }, [ops]);
+
+    const onMove = useCallback(e => {
+        ops.forEach(({onMove}) => onMove(e, shared.current));
+    }, [ops]);
+
+    const onEndMove = useCallback(e => {
+        ops.forEach(({onEndMove}) => onEndMove(e, shared.current))
+    }, [ops]);
+
+    return {onBeginMove, onMove, onEndMove};
+};

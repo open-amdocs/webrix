@@ -14,35 +14,18 @@
  * limitations under the License.
  */
 
-import React, {useEffect, useRef} from 'react';
-import {node, func} from 'prop-types';
-import {copyComponentRef} from 'utility/react';
-import {noop} from 'utility/memory';
+import {useState, useRef, useEffect} from 'react';
 
-const ResizeObserver = ({children, onResize}) => {
-    const child = React.Children.only(children);
-    const ref = useRef();
+export default ref => {
+    const [dimensions, setDimensions] = useState({width: 0, height: 0});
     const observer = useRef(new window.ResizeObserver(entries => {
         const {inlineSize: width, blockSize: height} = entries[0].borderBoxSize[0];
-        onResize({width, height});
+        setDimensions({width, height});
     }));
     useEffect(() => {
         const {current: obs} = observer;
         obs.observe(ref.current);
         return () => obs.disconnect();
-    }, []);
-
-    return React.cloneElement(child, {ref: copyComponentRef(child.ref, ref)});
+    }, [ref]);
+    return dimensions;
 };
-
-ResizeObserver.propTypes = {
-    children: node,
-    onResize: func,
-};
-
-ResizeObserver.defaultProps = {
-    children: null,
-    onResize: noop,
-};
-
-export default ResizeObserver;
