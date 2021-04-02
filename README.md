@@ -9,12 +9,17 @@
 
 Powerful building blocks for React-based web applications.
 
-For the full documentation, API overview and live examples, visit the official [Webrix documentation site](http://webrix.amdocs.com).
+For the full documentation, API overview and live examples, visit the official [Webrix documentation site](https://webrix.amdocs.com).
 
 ### What Is Webrix?
 
-Webrix is a set of small, single-purpose components, each aimed at overcoming a specific UI challenge.
-It's not a component bank, but rather a set of components with which you can build your own component bank, whether it's basic or highly complex.
+After building numerous UI components, we realized that there are many common challenges that can be solved once and reused everywhere.
+
+We then extracted those solutions into a set of small, single-purpose components, each aimed at overcoming a specific UI challenge.
+
+We call these components "the bricks of the web" - hence the name Webrix.
+
+Read more about [the motivation behind Webrix](https://webrix.amdocs.com/motivation).
 
 ### Installation
 
@@ -46,27 +51,28 @@ import {Movable} from 'webrix';
 
 ### Components
 
-* [<Movable\/>](http://webrix.amdocs.com/docs/components/movable)
-* [<Stackable\/>](http://webrix.amdocs.com/docs/components/stackable)
-* [<Pannable\/>](http://webrix.amdocs.com/docs/components/pannable)
-* [<Resizable\/>](http://webrix.amdocs.com/docs/components/resizable)
-* [<Poppable\/>](http://webrix.amdocs.com/docs/components/poppable)
-* [<Scalable\/>](http://webrix.amdocs.com/docs/components/Scalable)
-* [<Scrollable\/>](http://webrix.amdocs.com/docs/components/scrollable)
-* [<Collapsible\/>](http://webrix.amdocs.com/docs/components/collapsible)
+* [<Movable\/>](https://webrix.amdocs.com/docs/components/movable)
+* [<Stackable\/>](https://webrix.amdocs.com/docs/components/stackable)
+* [<Pannable\/>](https://webrix.amdocs.com/docs/components/pannable)
+* [<Resizable\/>](https://webrix.amdocs.com/docs/components/resizable)
+* [<Poppable\/>](https://webrix.amdocs.com/docs/components/poppable)
+* [<Scalable\/>](https://webrix.amdocs.com/docs/components/Scalable)
+* [<Scrollable\/>](https://webrix.amdocs.com/docs/components/scrollable)
+* [<Collapsible\/>](https://webrix.amdocs.com/docs/components/collapsible)
 
 ### Hooks
 
-* [useBooleanState()](http://webrix.amdocs.com/docs/hooks/usebooleanstate)
-* [usePrevious()](http://webrix.amdocs.com/docs/hooks/useprevious)
-* [useMounted()](http://webrix.amdocs.com/docs/hooks/usemounted)
-* [useClickOutside()](http://webrix.amdocs.com/docs/hooks/useclickoutside)
-* [useTimeout()](http://webrix.amdocs.com/docs/hooks/usetimeout)
-* [useDebounce()](http://webrix.amdocs.com/docs/hooks/usedebounce)
-* [useThrottle()](http://webrix.amdocs.com/docs/hooks/usethrottle)
-* [useObject()](http://webrix.amdocs.com/docs/hooks/useobject)
+* [useBooleanState()](https://webrix.amdocs.com/docs/hooks/usebooleanstate)
+* [usePrevious()](https://webrix.amdocs.com/docs/hooks/useprevious)
+* [useMounted()](https://webrix.amdocs.com/docs/hooks/usemounted)
+* [useClickOutside()](https://webrix.amdocs.com/docs/hooks/useclickoutside)
+* [useTimeout()](https://webrix.amdocs.com/docs/hooks/usetimeout)
+* [useDebounce()](https://webrix.amdocs.com/docs/hooks/usedebounce)
+* [useThrottle()](https://webrix.amdocs.com/docs/hooks/usethrottle)
+* [useObject()](https://webrix.amdocs.com/docs/hooks/useobject)
+* [useDimensions()](https://webrix.amdocs.com/docs/hooks/usedimensions)
 
 ### Tools
 
-* [<ResizeObserver\/>](http://webrix.amdocs.com/docs/tools/resizeobserver)
-* [<Puppeteer\/>](http://webrix.amdocs.com/docs/tools/puppeteer)
+* [<ResizeObserver\/>](https://webrix.amdocs.com/docs/tools/resizeobserver)
+* [<Puppeteer\/>](https://webrix.amdocs.com/docs/tools/puppeteer)
