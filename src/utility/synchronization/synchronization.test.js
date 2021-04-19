@@ -22,10 +22,10 @@ describe('Synchronization', () => {
         db();
         expect(spy.callCount).to.eql(1);
         await waitFor(200);
-        expect(spy.callCount).to.eql(2);
+        expect(spy.callCount).to.eql(1);
         db();
-        expect(spy.callCount).to.eql(3);
+        expect(spy.callCount).to.eql(2);
         await waitFor(200);
-        expect(spy.callCount).to.eql(3);
+        expect(spy.callCount).to.eql(2);
     });
 });
