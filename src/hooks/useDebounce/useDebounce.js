@@ -14,24 +14,22 @@
  * limitations under the License.
  */
 
-import {useCallback, useEffect, useMemo, useRef} from 'react';
-import {debounce} from 'utility/synchronization';
+import {useCallback, useEffect, useRef} from 'react';
 
 export default (callback, wait) => {
-    const timeout = useRef();
-    const _debounce = useMemo(() => {
-        return debounce(callback, wait);
-    }, [callback, wait]);
+    const timeout = useRef(-1);
+    const cb = useRef(callback);
 
-    useEffect(() => () => {
-        clearTimeout(timeout.current);
-    }, []); // No need for deps here since 'timeout' is mutated
+    // Update the callback via a ref to always call the latest version
+    useEffect(() => {cb.current = callback}, [callback]);
+
+    // Cleanup pending timeouts when unmounting.
+    useEffect(() => () => clearTimeout(timeout.current), []);
 
     return useCallback((...args) => {
-        // When the debounce function is regenerated, there could be outstanding
-        // timeoutes that will not be cleared when we call the new debounce function,
-        // so we manually clear them here before calling it again.
         clearTimeout(timeout.current);
-        timeout.current = _debounce(...args);
-    }, [_debounce]);
+        timeout.current = setTimeout(() => {
+            cb.current(...args);
+        }, wait);
+    }, [wait]);
 };

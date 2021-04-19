@@ -14,19 +14,24 @@
  * limitations under the License.
  */
 
-import {useCallback, useMemo, useRef} from 'react';
-import {throttle} from 'utility/synchronization';
+import {useCallback, useEffect, useRef} from 'react';
 
 export default (callback, threshold) => {
-    const timeout = useRef();
-    const _throttle = useMemo(() => {
-        // When the throttled function is regenerated, there could be outstanding
-        // timeoutes that will not be cleared when we call the new throttled function,
-        // so we manually clear them here.
+    const wait = useRef(false);
+    const timeout = useRef(-1);
+
+    useEffect(() => () => {
         clearTimeout(timeout.current);
-        return throttle(callback, threshold);
-    }, [timeout, callback, threshold]);
+    }, []); // No need for deps here since 'timeout' is mutated
+
     return useCallback((...args) => {
-        timeout.current = _throttle(...args);
-    }, [timeout, _throttle]);
+        if (!wait.current) {
+            callback(...args);
+            wait.current = true;
+            clearTimeout(timeout.current);
+            timeout.current = setTimeout(() => {
+                wait.current = false;
+            }, threshold);
+        }
+    }, [callback, threshold]);
 };
