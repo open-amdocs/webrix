@@ -3,6 +3,7 @@ export {default as useClickOutside, ClickOutside, ClickOutsideOverride} from './
 export {default as useMounted, useUnmounted} from './useMounted';
 export {default as useDebounce} from './useDebounce';
 export {default as useDimensions} from './useDimensions';
+export {default as useEventListener} from './useEventListener';
 export {default as useThrottle} from './useThrottle';
 export {default as useObject} from './useObject';
 export {default as usePrevious} from './usePrevious';
