@@ -30,9 +30,8 @@ export default (type, handler, ref, options = {}) => {
     useEffect(() => {
         const handler = e => cache.current.handler(e);
         const options = {...cache.current.options};
-        ref.current?.addEventListener(type, handler, options);
-        return () => {
-            ref.current?.removeEventListener(type, handler, options);
-        }
+        const element = ref.current;
+        element?.addEventListener?.(type, handler, options);
+        return () => element?.removeEventListener?.(type, handler, options);
     }, [type, ref]);
 };
