@@ -13,6 +13,7 @@
     position: relative;
     overflow: auto;
     flex: 1;
+    scroll-behavior: smooth;
     -ms-overflow-style: none;  // IE 10+
     /* stylelint-disable */
     scrollbar-width: none; // Firefox

@@ -20,6 +20,7 @@ import {copyComponentRef, findChildByType} from 'utility/react';
 import ResizeObserver from 'tools/ResizeObserver';
 import {VerticalScrollbarPlaceholder, HorizontalScrollbarPlaceholder, VerticalScrollbar, HorizontalScrollbar} from './components';
 import {propTypes, defaultProps} from './Scrollable.props';
+import {SCROLLING_CLASS_REMOVAL_DELAY} from './Scrollable.constants';
 import './Scrollable.scss';
 
 export default class Scrollable extends React.PureComponent {
@@ -67,6 +68,18 @@ export default class Scrollable extends React.PureComponent {
         }
     }
 
+    handleOnScroll = e => {
+        this.updateScrollbars();
+        const container = this.container.current;
+        if (e.target === container) { // Avoid adding this className on ancestors, since the scroll event bubbles up
+            container.parentElement.classList.add('scrolling');
+            clearTimeout(this.timeout);
+            this.timeout = setTimeout(() => {
+                container.parentElement.classList.remove('scrolling');
+            }, SCROLLING_CLASS_REMOVAL_DELAY);
+        }
+    };
+
     updateScrollbars = () => {
         const {clientHeight, clientWidth, scrollTop: st, scrollLeft: sl, scrollHeight, scrollWidth} = this.container.current;
         const scrollTop = Math.ceil(st);
@@ -102,7 +115,7 @@ export default class Scrollable extends React.PureComponent {
         const content = React.Children.toArray(children).filter(child => ![VerticalScrollbarPlaceholder, HorizontalScrollbarPlaceholder].includes(child.type));
         return (
             <ResizeObserver onResize={this.updateScrollbars}>
-                <div className='scrollbar' style={style} onScroll={this.updateScrollbars}>
+                <div className='scrollbar' style={style} onScroll={this.handleOnScroll}>
                     {React.cloneElement(element, this.getElementProps(), content)}
                     {React.cloneElement(vsb ? vsb.props.children : <VerticalScrollbar/>, {ref: this.vertical, container: this.container})}
                     {React.cloneElement(hsb ? hsb.props.children : <HorizontalScrollbar/>, {ref: this.horizontal, container: this.container})}
