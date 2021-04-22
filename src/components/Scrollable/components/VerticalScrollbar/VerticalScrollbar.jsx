@@ -49,7 +49,7 @@ export default class VerticalScrollbar extends React.PureComponent {
     handleOnMove = ({dy}) => {
         const container = this.props.container.current;
         const {clientHeight, scrollHeight} = container;
-        const handleHeight = this.thumb.current.getBoundingClientRect().height;
+        const handleHeight = this.thumb.current.clientHeight;
         container.scrollTop = this.initialScroll + dy * (scrollHeight - clientHeight) / (clientHeight - handleHeight);
     };
 

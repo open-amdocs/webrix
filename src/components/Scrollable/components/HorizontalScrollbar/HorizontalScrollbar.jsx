@@ -49,7 +49,7 @@ export default class HorizontalScrollbar extends React.PureComponent {
     handleOnMove = ({dx}) => {
         const container = this.props.container.current;
         const {clientWidth, scrollWidth} = container;
-        const handleWidth = this.thumb.current.getBoundingClientRect().width;
+        const handleWidth = this.thumb.current.clientWidth;
         container.scrollLeft = this.initialScroll + dx * ((scrollWidth - clientWidth) / (clientWidth - handleWidth));
     };
 
