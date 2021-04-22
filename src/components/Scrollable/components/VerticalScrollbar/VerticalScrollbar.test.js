@@ -30,18 +30,26 @@ describe('<VerticalScrollbar/>', () => {
             expect(container.current.scrollTop).to.eql(200);
         });
         it('handleOnBeginMove()', () => {
-            const s = new VerticalScrollbar({container: {current: {scrollTop: 50}}});
+            const style = {};
+            const s = new VerticalScrollbar({container: {current: {scrollTop: 50, style}}});
             s.handleOnBeginMove({stopPropagation: noop, preventDefault: noop});
             expect(s.initialScroll).to.eql(s.props.container.current.scrollTop);
+            expect(style.scrollBehavior).to.eql('auto');
         });
         it('handleOnMove()', () => {
             const s = new VerticalScrollbar({});
             s.props.container = {current: {clientHeight: 100, scrollHeight: 400}};
-            s.thumb = {current: {getBoundingClientRect: () => ({height: 40})}};
+            s.thumb = {current: {clientHeight: 40}};
             s.initialMousePos = 25;
             s.initialScroll = 20;
             s.handleOnMove({dy: 75});
             expect(s.props.container.current.scrollTop).to.eql(395);
+        });
+        it('handleOnEndMove()', () => {
+            const style = {};
+            const s = new VerticalScrollbar({container: {current: {style}}});
+            s.handleOnEndMove();
+            expect(style.scrollBehavior).to.eql('smooth');
         });
     });
 
