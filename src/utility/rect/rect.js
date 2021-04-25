@@ -154,12 +154,12 @@ export const add = (rect, delta) => new DOMRect(
  * @returns {{width: number, height: number}|{width: *, height: *}}
  */
 export const readResizeObserverEntry = entry => {
-    if (entry.contentBoxSize) {
-        // Firefox implements `contentBoxSize` as a single content rect, rather than an array
-        const contentBoxSize = Array.isArray(entry.contentBoxSize) ? entry.contentBoxSize[0] : entry.contentBoxSize;
-        const {inlineSize: width, blockSize: height} = contentBoxSize;
+    if (entry.borderBoxSize) {
+        // Firefox implements `borderBoxSize` as a single content rect, rather than an array
+        const borderBoxSize = Array.isArray(entry.borderBoxSize) ? entry.borderBoxSize[0] : entry.borderBoxSize;
+        const {inlineSize: width, blockSize: height} = borderBoxSize;
         return {width, height};
-    } else { // For older browsers & mobile devices that don't support the newer `contentBoxSize`
+    } else { // For older browsers & mobile devices that don't support the newer `borderBoxSize`
         const {width, height} = entry.contentRect;
         return {width, height};
     }

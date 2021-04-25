@@ -76,8 +76,8 @@ describe('rect', () => {
 
     it('readResizeObserverEntry()', () => {
         const output = {width: 100, height: 100};
-        expect(readResizeObserverEntry({contentBoxSize: [{inlineSize: 100, blockSize: 100}]})).to.eql(output);
-        expect(readResizeObserverEntry({contentBoxSize: {inlineSize: 100, blockSize: 100}})).to.eql(output);
+        expect(readResizeObserverEntry({borderBoxSize: [{inlineSize: 100, blockSize: 100}]})).to.eql(output);
+        expect(readResizeObserverEntry({borderBoxSize: {inlineSize: 100, blockSize: 100}})).to.eql(output);
         expect(readResizeObserverEntry({contentRect: {width: 100, height: 100}})).to.eql(output);
     });
 });
