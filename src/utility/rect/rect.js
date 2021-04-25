@@ -145,3 +145,22 @@ export const add = (rect, delta) => new DOMRect(
     rect.width + delta.width,
     rect.height + delta.height,
 );
+
+/**
+ * Converts a ResizeObserverEntry to an object with width/height,
+ * unifying the different APIs between older/newer browsers, and mobile devices.
+ *
+ * @param entry
+ * @returns {{width: number, height: number}|{width: *, height: *}}
+ */
+export const readResizeObserverEntry = entry => {
+    if (entry.contentBoxSize) {
+        // Firefox implements `contentBoxSize` as a single content rect, rather than an array
+        const contentBoxSize = Array.isArray(entry.contentBoxSize) ? entry.contentBoxSize[0] : entry.contentBoxSize;
+        const {inlineSize: width, blockSize: height} = contentBoxSize;
+        return {width, height};
+    } else { // For older browsers & mobile devices that don't support the newer `contentBoxSize`
+        const {width, height} = entry.contentRect;
+        return {width, height};
+    }
+};
