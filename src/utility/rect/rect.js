@@ -159,8 +159,11 @@ export const readResizeObserverEntry = entry => {
         const borderBoxSize = Array.isArray(entry.borderBoxSize) ? entry.borderBoxSize[0] : entry.borderBoxSize;
         const {inlineSize: width, blockSize: height} = borderBoxSize;
         return {width, height};
-    } else { // For older browsers & mobile devices that don't support the newer `borderBoxSize`
-        const {width, height} = entry.contentRect;
+    } else {
+        // For older browsers & mobile devices that don't support the newer `borderBoxSize`
+        // Note that we could use entry.contentRect here, which has better performance,
+        // but since it does not include the padding & borders we use getBoundingClientRect() instead.
+        const {width, height} = entry.target.getBoundingClientRect();
         return {width, height};
     }
 };

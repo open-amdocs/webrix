@@ -1,5 +1,6 @@
 import {expect} from 'chai';
 import {getCenterPoint, getRelativePosition, equal, contained, intersect, union, area, add, readResizeObserverEntry} from './rect';
+import {getBoundingRects} from '../../components/Poppable/Poppable.utils';
 
 describe('rect', () => {
 
@@ -78,6 +79,6 @@ describe('rect', () => {
         const output = {width: 100, height: 100};
         expect(readResizeObserverEntry({borderBoxSize: [{inlineSize: 100, blockSize: 100}]})).to.eql(output);
         expect(readResizeObserverEntry({borderBoxSize: {inlineSize: 100, blockSize: 100}})).to.eql(output);
-        expect(readResizeObserverEntry({contentRect: {width: 100, height: 100}})).to.eql(output);
+        expect(readResizeObserverEntry({target: {getBoundingClientRect: () => ({width: 100, height: 100})}})).to.eql(output);
     });
 });
