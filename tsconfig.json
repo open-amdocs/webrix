@@ -1,0 +1,17 @@
+{
+  "include": [
+    "./src/**/*.js",
+    "./src/**/*.jsx",
+  ],
+  "exclude": [
+    "./src/utility/**/*",
+    "./src/**/*.test.js",
+  ],
+  "compilerOptions": {
+    "allowJs": true,
+    "declaration": true,
+    "emitDeclarationOnly": true,
+    "outDir": "build",
+    "isolatedModules": true
+  }
+}

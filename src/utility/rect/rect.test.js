@@ -1,6 +1,5 @@
 import {expect} from 'chai';
 import {getCenterPoint, getRelativePosition, equal, contained, intersect, union, area, add, readResizeObserverEntry} from './rect';
-import {getBoundingRects} from '../../components/Poppable/Poppable.utils';
 
 describe('rect', () => {
 

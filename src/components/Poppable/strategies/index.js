@@ -19,9 +19,9 @@ import hide from './hide';
 import reposition from './reposition';
 import trap from './trap';
 
-export hide from './hide';
-export reposition from './reposition';
-export trap from './trap';
+export {default as hide} from './hide';
+export {default as reposition} from './reposition';
+export {default as trap} from './trap';
 
 /**
  * This default overflow recovery strategy
