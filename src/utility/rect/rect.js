@@ -145,3 +145,25 @@ export const add = (rect, delta) => new DOMRect(
     rect.width + delta.width,
     rect.height + delta.height,
 );
+
+/**
+ * Converts a ResizeObserverEntry to an object with width/height,
+ * unifying the different APIs between older/newer browsers, and mobile devices.
+ *
+ * @param entry
+ * @returns {{width: number, height: number}|{width: *, height: *}}
+ */
+export const readResizeObserverEntry = entry => {
+    if (entry.borderBoxSize) {
+        // Firefox implements `borderBoxSize` as a single content rect, rather than an array
+        const borderBoxSize = Array.isArray(entry.borderBoxSize) ? entry.borderBoxSize[0] : entry.borderBoxSize;
+        const {inlineSize: width, blockSize: height} = borderBoxSize;
+        return {width, height};
+    } else {
+        // For older browsers & mobile devices that don't support the newer `borderBoxSize`
+        // Note that we could use entry.contentRect here, which has better performance,
+        // but since it does not include the padding & borders we use getBoundingClientRect() instead.
+        const {width, height} = entry.target.getBoundingClientRect();
+        return {width, height};
+    }
+};

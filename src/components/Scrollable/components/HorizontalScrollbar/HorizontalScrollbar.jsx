@@ -44,13 +44,18 @@ export default class HorizontalScrollbar extends React.PureComponent {
         e.stopPropagation();
         e.preventDefault();
         this.initialScroll = this.props.container.current.scrollLeft;
+        this.props.container.current.style.scrollBehavior = 'auto'; // Remove smooth scrolling as it breaks the thumb dragging behavior
     };
 
     handleOnMove = ({dx}) => {
         const container = this.props.container.current;
         const {clientWidth, scrollWidth} = container;
-        const handleWidth = this.thumb.current.getBoundingClientRect().width;
+        const handleWidth = this.thumb.current.clientWidth;
         container.scrollLeft = this.initialScroll + dx * ((scrollWidth - clientWidth) / (clientWidth - handleWidth));
+    };
+
+    handleOnEndMove = () => {
+        this.props.container.current.style.scrollBehavior = 'smooth';
     };
 
     handleOnClick = e => {
@@ -61,9 +66,7 @@ export default class HorizontalScrollbar extends React.PureComponent {
             const {left, width} = track.getBoundingClientRect();
             const {scrollWidth} = this.props.container.current;
             const ratio = (e.clientX - left) / width;
-            container.style.scrollBehavior = 'smooth';
             container.scrollLeft = ratio * scrollWidth;
-            container.style.scrollBehavior = 'auto'; // Remove smooth scrolling as it breaks the thumb dragging behavior
         }
     };
 
@@ -88,7 +91,7 @@ export default class HorizontalScrollbar extends React.PureComponent {
     render() {
         return (
             <div className='scrollbar-track horizontal-scrollbar-track' ref={this.track} onClick={this.handleOnClick}>
-                <Movable className='scrollbar-thumb' ref={this.thumb} onBeginMove={this.handleOnBeginMove} onMove={this.handleOnMove}>
+                <Movable className='scrollbar-thumb' ref={this.thumb} onBeginMove={this.handleOnBeginMove} onMove={this.handleOnMove} onEndMove={this.handleOnEndMove}>
                     <div className='scrollbar-thumb-inner'/>
                 </Movable>
                 {this.props.children}

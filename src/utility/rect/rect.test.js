@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-import {getCenterPoint, getRelativePosition, equal, contained, intersect, union, area, add} from './rect';
+import {getCenterPoint, getRelativePosition, equal, contained, intersect, union, area, add, readResizeObserverEntry} from './rect';
 
 describe('rect', () => {
 
@@ -72,5 +72,12 @@ describe('rect', () => {
         expect(add(r(0, 0, 10, 10), r(10, 10, 0, 0))).to.eql(r(10, 10, 10, 10));
         expect(add(r(0, 0, 10, 10), r(10, 10, 10, 10))).to.eql(r(10, 10, 20, 20));
         expect(add(r(0, 0, 10, 10), r(10, 10, -5, -5))).to.eql(r(10, 10, 5, 5));
+    });
+
+    it('readResizeObserverEntry()', () => {
+        const output = {width: 100, height: 100};
+        expect(readResizeObserverEntry({borderBoxSize: [{inlineSize: 100, blockSize: 100}]})).to.eql(output);
+        expect(readResizeObserverEntry({borderBoxSize: {inlineSize: 100, blockSize: 100}})).to.eql(output);
+        expect(readResizeObserverEntry({target: {getBoundingClientRect: () => ({width: 100, height: 100})}})).to.eql(output);
     });
 });

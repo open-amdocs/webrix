@@ -4,7 +4,7 @@
   max-width: 100%;
   display: flex;
 
-  &:hover .scrollbar-track .scrollbar-thumb .scrollbar-thumb-inner {
+  &:hover > .scrollbar-track .scrollbar-thumb .scrollbar-thumb-inner {
     opacity: 1;
     transition-delay: 0s;
   }
@@ -13,6 +13,7 @@
     position: relative;
     overflow: auto;
     flex: 1;
+    scroll-behavior: smooth;
     -ms-overflow-style: none;  // IE 10+
     /* stylelint-disable */
     scrollbar-width: none; // Firefox

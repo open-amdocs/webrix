@@ -3,8 +3,10 @@ import {mount} from 'enzyme';
 import {expect} from 'chai';
 import sinon from 'sinon';
 import Scrollable from './Scrollable';
-import {MIN_THUMB_LENGTH} from './Scrollable.constants';
+import {MIN_THUMB_LENGTH, SCROLLING_CLASS_REMOVAL_DELAY} from './Scrollable.constants';
 import {getThumbLength, getThumbPosition} from './Scrollable.utils';
+
+const waitFor = delay => new Promise(resolve => setTimeout(resolve, delay));
 
 describe('<Scrollable/>', () => {
 
@@ -28,6 +30,27 @@ describe('<Scrollable/>', () => {
     });
 
     describe('Class Methods', () => {
+        it('handleOnScroll()', async () => {
+            const add = sinon.spy(), remove = sinon.spy();
+            const container = {parentElement: {classList: {add, remove}}};
+            const s = new Scrollable({onScroll: sinon.spy()});
+            s.container = {current: container};
+            s.updateScrollbars = sinon.spy();
+
+            // Should not add class
+            s.handleOnScroll({});
+            expect(s.updateScrollbars.callCount).to.eql(1);
+            expect(add.callCount).to.eql(0);
+            expect(remove.callCount).to.eql(0);
+
+            // Should add and remove class
+            s.handleOnScroll({target: container});
+            expect(s.updateScrollbars.callCount).to.eql(2);
+            expect(add.callCount).to.eql(1);
+            expect(remove.callCount).to.eql(0);
+            await waitFor(SCROLLING_CLASS_REMOVAL_DELAY);
+            expect(remove.callCount).to.eql(1);
+        });
         it('updateScrollbars()', () => {
             const s = new Scrollable({onScroll: sinon.spy()});
             s.container = {current: {clientHeight: 100, clientWidth: 100, scrollHeight: 200, scrollWidth: 200, scrollTop: 50, scrollLeft: 50}};

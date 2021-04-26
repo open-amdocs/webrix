@@ -30,18 +30,26 @@ describe('<HorizontalScrollbar/>', () => {
             expect(container.current.scrollLeft).to.eql(200);
         });
         it('handleOnBeginMove()', () => {
-            const s = new HorizontalScrollbar({container: {current: {scrollLeft: 50}}});
+            const style = {};
+            const s = new HorizontalScrollbar({container: {current: {scrollLeft: 50, style}}});
             s.handleOnBeginMove({stopPropagation: noop, preventDefault: noop});
             expect(s.initialScroll).to.eql(s.props.container.current.scrollLeft);
+            expect(style.scrollBehavior).to.eql('auto');
         });
         it('handleOnMove()', () => {
             const s = new HorizontalScrollbar({});
             s.props.container = {current: {clientWidth: 100, scrollWidth: 400}};
-            s.thumb = {current: {getBoundingClientRect: () => ({width: 40})}};
+            s.thumb = {current: {clientWidth: 40}};
             s.initialMousePos = 25;
             s.initialScroll = 20;
             s.handleOnMove({dx: 75});
             expect(s.props.container.current.scrollLeft).to.eql(395);
+        });
+        it('handleOnEndMove()', () => {
+            const style = {};
+            const s = new HorizontalScrollbar({container: {current: {style}}});
+            s.handleOnEndMove();
+            expect(style.scrollBehavior).to.eql('smooth');
         });
     });
 

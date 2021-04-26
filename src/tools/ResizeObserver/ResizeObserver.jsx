@@ -17,14 +17,14 @@
 import React, {useEffect, useRef} from 'react';
 import {node, func} from 'prop-types';
 import {copyComponentRef} from 'utility/react';
+import {readResizeObserverEntry} from 'utility/rect';
 import {noop} from 'utility/memory';
 
 const ResizeObserver = ({children, onResize}) => {
     const child = React.Children.only(children);
     const ref = useRef();
     const observer = useRef(new window.ResizeObserver(entries => {
-        const {inlineSize: width, blockSize: height} = entries[0].borderBoxSize[0];
-        onResize({width, height});
+        onResize(readResizeObserverEntry(entries[0]));
     }));
     useEffect(() => {
         const {current: obs} = observer;
