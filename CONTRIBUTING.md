@@ -55,6 +55,13 @@ npm config set proxy <proxy_url>
 npm config set https-proxy <proxy_url>
 ```
 
+For installing dependencies, create a `.npmrc` file with the following:
+
+```
+proxy=<proxy_url>
+https-proxy=<proxy_url>
+```
+
 ## Settings for Amdocs Employees
 
 Since we use git for our internal projects with a work email/password, you may face issues login into GitHub with your personal username/password.
