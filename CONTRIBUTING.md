@@ -54,3 +54,13 @@ git config --global http.proxy <proxy_url>
 npm config set proxy <proxy_url>
 npm config set https-proxy <proxy_url>
 ```
+
+## Settings for Amdocs Employees
+
+Since we use git for our internal projects using a different username/password, you may face issues login in to GitHub with a different username/password.
+The best way to avoid it is to create a personal access token:
+
+1. [Create a personal access token](https://docs.github.com/en/github/authenticating-to-github/creating-a-personal-access-token)
+2. Clone the reop
+3. When prompted for a username, use the access token you generated in step 1. Leave the password blank.
+
