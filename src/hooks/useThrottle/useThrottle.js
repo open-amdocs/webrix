@@ -20,8 +20,11 @@ export default (callback, threshold) => {
     const wait = useRef(false);
     const timeout = useRef(-1);
 
-    useEffect(() => () => {
-        clearTimeout(timeout.current);
+    useEffect(() => {
+        const _timeout = timeout.current;
+        return () => {
+            clearTimeout(_timeout);
+        }
     }, []); // No need for deps here since 'timeout' is mutated
 
     return useCallback((...args) => {

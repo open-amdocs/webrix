@@ -24,7 +24,10 @@ export default (callback, wait) => {
     useEffect(() => {cb.current = callback}, [callback]);
 
     // Cleanup pending timeouts when unmounting.
-    useEffect(() => () => clearTimeout(timeout.current), []);
+    useEffect(() => {
+        const _timeout = timeout.current;
+        return () => clearTimeout(_timeout);
+    }, []);
 
     return useCallback((...args) => {
         clearTimeout(timeout.current);

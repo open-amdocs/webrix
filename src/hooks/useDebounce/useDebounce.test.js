@@ -18,6 +18,18 @@ const Elem = () => {
 };
 
 describe('useDebounce()', () => {
+    let spy;
+    beforeEach(() => {
+        spy = sinon.spy(global, 'clearTimeout')
+    });
+    afterEach(() => {
+        spy.resetHistory();
+        spy.restore();
+    });
+    after(() => {
+        spy.restore();
+    });
+
     it('Should delay calls', async () => {
         let wrapper = null;
         act(() => {wrapper = mount(<Elem/>)});
@@ -40,10 +52,8 @@ describe('useDebounce()', () => {
     });
     it('Should cleanup', async () => {
         let wrapper = null;
-        const spy = sinon.spy(global, 'clearTimeout');
         act(() => {wrapper = mount(<Elem/>)});
-        wrapper.unmount();
+        act(() => {wrapper.unmount()});
         expect(spy.callCount).to.eql(1);
-        spy.restore();
     });
 });
