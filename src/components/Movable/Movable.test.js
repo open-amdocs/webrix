@@ -123,7 +123,7 @@ describe('<Movable/>', () => {
                 expect(onMove.callCount).to.eql(2);
                 expect(onMove.calledWith({top: 10, left: 10})).to.eql(true);
 
-                wrapper.unmount();
+                act(() => {wrapper.unmount()});
             });
 
             it('trackpad()', () => {
@@ -152,7 +152,7 @@ describe('<Movable/>', () => {
                 expect(onMove.callCount).to.eql(3);
                 expect(onMove.calledWith({top: 20, left: 20})).to.eql(true);
 
-                wrapper.unmount();
+                act(() => {wrapper.unmount()});
             });
         });
     });
