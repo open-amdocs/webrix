@@ -37,7 +37,7 @@ describe('useThrottle()', () => {
         await waitFor(DELAY);
         wrapper.update();
         expect(wrapper.find('.counter').text()).to.eql('2');
-        wrapper.unmount();
+        act(() => {wrapper.unmount()});
     });
     it('Should cleanup', async () => {
         let wrapper = null;
