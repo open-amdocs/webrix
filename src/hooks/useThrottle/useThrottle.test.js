@@ -43,7 +43,7 @@ describe('useThrottle()', () => {
         let wrapper = null;
         const spy = sinon.spy(global, 'clearTimeout');
         act(() => {wrapper = mount(<Elem/>)});
-        wrapper.unmount();
+        act(() => {wrapper.unmount()});
         expect(spy.callCount).to.eql(1);
         spy.restore();
     });

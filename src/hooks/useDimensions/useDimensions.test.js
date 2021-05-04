@@ -11,7 +11,7 @@ const Elem = () => {
     );
 };
 
-describe('useDebounce()', () => {
+describe('useDimensions()', () => {
     it('Should return the previous value', async () => {
         let wrapper = null;
         let observed = 0, disconnected = 0;
@@ -24,7 +24,7 @@ describe('useDebounce()', () => {
         expect(observed).to.eql(1);
         expect(disconnected).to.eql(0);
 
-        wrapper.unmount();
+        act(() => {wrapper.unmount()});
         expect(observed).to.eql(1);
         expect(disconnected).to.eql(1);
     });
