@@ -29,9 +29,9 @@ import {getBoundingRects as _getBoundingRects} from 'hooks/useBoundingRectObserv
 export const getBoundingRects = (target, reference, container, placement) => {
     const [rbr, tbr, cbr] = _getBoundingRects([reference, target, container]);
     return {
-        rbr: rbr || new DOMRect(),
+        rbr: rbr || new DOMRect(), // Could be undefined initially, before the reference exists
         cbr: cbr || new DOMRect(),
-        tbr: new DOMRect(placement.left, placement.top, tbr?.width, tbr?.height)
+        tbr: new DOMRect(placement.left, placement.top, tbr?.width, tbr?.height),
     };
 };
 

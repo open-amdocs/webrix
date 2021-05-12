@@ -155,15 +155,15 @@ export const relative = ref => createOperation({
         const reference = ref.current.getBoundingClientRect();
         shared.reference = reference;
         shared.next = {
-            left: (shared.next.left - reference.left) / reference.width,
-            top: (shared.next.top - reference.top) / reference.height,
+            left: shared.next.left - reference.left,
+            top: shared.next.top - reference.top,
         };
     },
     onMove: (e, shared) => {
         const {reference, next} = shared;
         shared.next = {
-            left: (next.left - reference.left) / reference.width,
-            top: (next.top - reference.top) / reference.height,
+            left: next.left - reference.left,
+            top: next.top - reference.top,
         };
     },
 });

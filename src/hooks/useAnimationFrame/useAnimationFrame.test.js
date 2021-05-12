@@ -1,50 +1,72 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {act} from 'react-dom/test-utils';
 import {expect} from 'chai';
 import {mount} from 'enzyme';
 import sinon from 'sinon';
 import useAnimationFrame from './useAnimationFrame';
 
-const waitFor = delay => new Promise(resolve => setTimeout(resolve, delay));
-const DELAY = 10;
-
-const Elem = () => {
-    const [count, setCount] = useState(0);
-    const increment = useAnimationFrame(() => {
-        setCount(c => c + 1);
-    }, DELAY);
-    return (
-        <div className='counter' onClick={increment}>{count}</div>
-    );
+const Elem = ({onChange, recurring}) => {
+    const {start, stop} = useAnimationFrame(onChange, recurring);
+    return <div start={start} stop={stop}/>;
 };
 
 describe('useAnimationFrame()', () => {
-    it('Should delay calls', async () => {
+    it('Should call requestAnimationFrame',  () => {
+        global.window.requestAnimationFrame.resetHistory();
+        global.window.cancelAnimationFrame.resetHistory();
+
         let wrapper = null;
-        act(() => {wrapper = mount(<Elem/>)});
-        expect(wrapper.find('.counter').text()).to.eql('0');
+        const onChange = sinon.spy();
+        act(() => {wrapper = mount(<Elem onChange={onChange}/>)});
 
-        wrapper.find('.counter').simulate('click');
-        expect(wrapper.find('.counter').text()).to.eql('1');
-        await waitFor(DELAY);
-        wrapper.update();
-        expect(wrapper.find('.counter').text()).to.eql('1');
+        // Verify a requestAnimationFrame() call is made
+        wrapper.find('div').prop('start')();
+        expect(global.window.cancelAnimationFrame.callCount).to.eql(1);
+        expect(global.window.requestAnimationFrame.callCount).to.eql(1);
 
-        wrapper.find('.counter').simulate('click');
-        wrapper.find('.counter').simulate('click');
-        wrapper.find('.counter').simulate('click');
-        expect(wrapper.find('.counter').text()).to.eql('2');
-        await waitFor(DELAY);
-        wrapper.update();
-        expect(wrapper.find('.counter').text()).to.eql('2');
-        wrapper.unmount();
+        // Verify that the call is executing our given callback
+        global.window.requestAnimationFrame.args[0][0](); // Call the first argument given to requestAnimationFrame()
+        expect(onChange.callCount).to.eql(1);
+
+        act(() => {wrapper.unmount()});
     });
-    it('Should cleanup', async () => {
+    it('Should cleanup', () => {
+        global.window.cancelAnimationFrame.resetHistory();
         let wrapper = null;
-        const spy = sinon.spy(global, 'clearTimeout');
-        act(() => {wrapper = mount(<Elem/>)});
-        wrapper.unmount();
-        expect(spy.callCount).to.eql(1);
-        spy.restore();
+        act(() => {wrapper = mount(<Elem onChange={() => null}/>)});
+
+        // Verify a single cancelAnimationFrame() call is made initially
+        wrapper.find('div').prop('start')();
+        expect(global.window.cancelAnimationFrame.callCount).to.eql(1);
+
+        // Verify a single cancelAnimationFrame() call is made when stopping
+        wrapper.find('div').prop('stop')();
+        expect(global.window.cancelAnimationFrame.callCount).to.eql(2);
+
+        // Verify a second cancelAnimationFrame() call is made when unmounting
+        act(() => {wrapper.unmount()});
+        expect(global.window.cancelAnimationFrame.callCount).to.eql(3);
+    });
+    it('Should call requestAnimationFrame recursively',  () => {
+        global.window.requestAnimationFrame.resetHistory();
+        let wrapper = null;
+        const onChange = sinon.spy();
+        act(() => {wrapper = mount(<Elem onChange={onChange} recurring/>)});
+
+        // Verify a single cancelAnimationFrame() call is made initially
+        wrapper.find('div').prop('start')();
+        expect(global.window.requestAnimationFrame.callCount).to.eql(1);
+
+        // Verify that onChange is called once
+        global.window.requestAnimationFrame.args[0][0]();
+        expect(global.window.requestAnimationFrame.callCount).to.eql(2);
+        expect(onChange.callCount).to.eql(1);
+
+        // Verify that onChange is called again recursively
+        global.window.requestAnimationFrame.args[1][0]();
+        expect(global.window.requestAnimationFrame.callCount).to.eql(3);
+        expect(onChange.callCount).to.eql(2);
+
+        act(() => {wrapper.unmount()});
     });
 });

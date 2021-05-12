@@ -24,7 +24,7 @@ export const getBoundingRects = refs => (
         if (ref.current) {
             return ref.current.getBoundingClientRect();
         }
-        if (ref instanceof Node) {
+        if (ref instanceof Element) {
             return ref.getBoundingClientRect();
         }
         if (ref instanceof DOMRect) {
