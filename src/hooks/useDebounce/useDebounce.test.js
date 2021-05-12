@@ -36,13 +36,13 @@ describe('useDebounce()', () => {
         await waitFor(DELAY);
         wrapper.update();
         expect(wrapper.find('.counter').text()).to.eql('2');
-        wrapper.unmount();
+        act(() => {wrapper.unmount()});
     });
     it('Should cleanup', async () => {
         let wrapper = null;
         const spy = sinon.spy(global, 'clearTimeout');
         act(() => {wrapper = mount(<Elem/>)});
-        wrapper.unmount();
+        act(() => {wrapper.unmount()});
         expect(spy.callCount).to.eql(1);
         spy.restore();
     });

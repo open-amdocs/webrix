@@ -1,5 +1,6 @@
 import React from 'react';
 import {mount} from 'enzyme';
+import {act} from 'react-dom/test-utils';
 import {expect} from 'chai';
 import sinon from 'sinon';
 import ResizeObserver from './ResizeObserver';
@@ -14,11 +15,11 @@ describe('<ResizeObserver>', () => {
             };
 
             const handleOnResize = sinon.spy();
-            const wrapper = mount(<ResizeObserver onResize={handleOnResize}><div style={{width: 100}}></div></ResizeObserver>);
+            const wrapper = mount(<ResizeObserver onResize={handleOnResize}><div style={{width: 100}}/></ResizeObserver>);
             expect(observed).to.eql(1);
             expect(disconnected).to.eql(0);
 
-            wrapper.unmount();
+            act(() => {wrapper.unmount()});
             expect(observed).to.eql(1);
             expect(disconnected).to.eql(1);
         });
