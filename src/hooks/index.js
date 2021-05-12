@@ -1,3 +1,4 @@
+export {default as useAnimationFrame} from './useAnimationFrame';
 export {default as useBooleanState, useVisibilityState, useFocusabilityState} from './useBooleanState';
 export {default as useClickOutside, ClickOutside, ClickOutsideOverride} from './useClickOutside';
 export {default as useMounted, useUnmounted} from './useMounted';
