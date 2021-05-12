@@ -72,6 +72,7 @@ import {Movable} from 'webrix';
 * [useObject()](https://webrix.amdocs.com/docs/hooks/useobject)
 * [useDimensions()](https://webrix.amdocs.com/docs/hooks/usedimensions)
 * [useAnimationFrame()](https://webrix.amdocs.com/docs/hooks/useanimationframe)
+* [useBoundingRectObserver()](https://webrix.amdocs.com/docs/hooks/useboundingrectobserver)
 
 ### Tools
 
