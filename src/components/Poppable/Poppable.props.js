@@ -41,8 +41,8 @@ export const propTypes = {
 };
 
 export const defaultProps = {
-    container: {current: window},
-    reference: {current: document.body},
+    container: window,
+    reference: document.body,
     placements: () => [{top: 0, left: 0}],
     placement: HIDDEN_PLACEMENT,
     overflow: strategy,

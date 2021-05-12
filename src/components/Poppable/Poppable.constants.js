@@ -14,5 +14,4 @@
  * limitations under the License.
  */
 
-export const POLLING_INTERVAL = 10;
-export const HIDDEN_PLACEMENT = {top: -9999, left: -9999};
+export const HIDDEN_PLACEMENT = {top: 0, left: 0, name: 'hidden'};
