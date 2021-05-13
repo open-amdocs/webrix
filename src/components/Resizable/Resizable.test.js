@@ -77,19 +77,19 @@ describe('<Resizable>', () => {
             });
             wrapper.find('Resizable').prop('onBeginResize')();
             wrapper.find('Resizable').prop('onResize')({delta: r(0, 0, 0, 0)});
-            expect(onResize.callCount).to.eql(2);
+            expect(onResize.callCount).to.eql(1);
             expect(onResize.calledWith(r(0, 0, 20, 20))).to.eql(true);
 
             wrapper.find('Resizable').prop('onResize')({delta: r(10, 10, -10, -10)});
-            expect(onResize.callCount).to.eql(3);
+            expect(onResize.callCount).to.eql(2);
             expect(onResize.calledWith(r(10, 10, 10, 10))).to.eql(true);
 
             wrapper.find('Resizable').prop('onResize')({delta: r(0, 0, 10, 10)});
-            expect(onResize.callCount).to.eql(4);
+            expect(onResize.callCount).to.eql(3);
             expect(onResize.calledWith(r(0, 0, 30, 30))).to.eql(true);
 
             wrapper.find('Resizable').prop('onResize')({delta: r(30, 30, -30, -30)});
-            expect(onResize.callCount).to.eql(5);
+            expect(onResize.callCount).to.eql(4);
             expect(onResize.calledWith(r(20, 20, 0, 0))).to.eql(true);
         });
     });
@@ -166,6 +166,44 @@ describe('<Resizable>', () => {
             shared.next = {width: 90, height: 30};
             ratio(2).onResize({}, shared);
             expect(shared.next).to.eql({width: 90, height: 45});
+        });
+        it('relative()', () => {
+            const {relative} = Resizable.Operations;
+            const shared = {};
+
+            shared.reference = {top: 10, left: 10};
+            shared.next = {top: 10, left: 10};
+            relative({current: {getBoundingClientRect: () => ({top: 10, left: 10})}}).onBeginResize({}, shared);
+            expect(shared.next).to.eql({top: 0, left: 0});
+
+            shared.reference = {top: 10, left: 10};
+            shared.next = {top: 10, left: 10};
+            relative({}).onResize({}, shared);
+            expect(shared.next).to.eql({top: 0, left: 0});
+        });
+        it('upadate()', () => {
+            const {update} = Resizable.Operations;
+            const spy = sinon.spy();
+            const shared = {next: 0, prev: 0};
+
+            shared.next++;
+            update(spy).onBeginResize({}, shared);
+            expect(spy.callCount).to.eql(1);
+            expect(spy.calledWith(shared.next)).to.eql(true);
+
+            shared.next++;
+            update(spy).onResize({}, shared);
+            expect(spy.callCount).to.eql(2);
+            expect(spy.calledWith(shared.next)).to.eql(true);
+
+            // Should not call onUpdate when prev/next are the same
+            update(spy).onResize({}, shared);
+            expect(spy.callCount).to.eql(2);
+
+            shared.next++;
+            update(spy).onEndResize({}, shared);
+            expect(spy.callCount).to.eql(3);
+            expect(spy.calledWith(shared.next)).to.eql(true);
         });
     });
 });

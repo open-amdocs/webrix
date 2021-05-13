@@ -143,22 +143,6 @@ const _update = onUpdate => (e, shared) => {
     }
 };
 
-export const translate = (x, y) => createOperation({
-    onBeginMove: (e, shared) => {
-        shared.next = {
-            left: shared.next.left - x,
-            top: shared.next.top - y,
-        };
-    },
-    onMove: (e, shared) => {
-        const {next} = shared;
-        shared.next = {
-            left: next.left - x,
-            top: next.top - y,
-        };
-    },
-});
-
 export const relative = ref => createOperation({
     onBeginMove: (e, shared) => {
         const reference = ref.current.getBoundingClientRect();

@@ -46,7 +46,7 @@ export const Pannable = forwardRef(({children, className, ...props}, ref) => {
 
     const handleOnEndMove = useCallback(() => {
         pannableRef.current.classList.remove('dragging');
-        scrollRef.current.container.current.style.scrollBehavior = 'smooth';
+        scrollRef.current.container.current.style.scrollBehavior = '';
     }, [pannableRef]);
 
     return (

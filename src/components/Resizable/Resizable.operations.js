@@ -183,3 +183,23 @@ const _update = onUpdate => (e, shared) => {
         shared.prev = shared.next;
     }
 };
+
+export const relative = ref => createOperation({
+    onBeginResize: (e, shared) => {
+        const reference = ref.current.getBoundingClientRect();
+        shared.reference = reference;
+        shared.next = {
+            ...shared.next,
+            left: shared.next.left - reference.left,
+            top: shared.next.top - reference.top,
+        };
+    },
+    onResize: (e, shared) => {
+        const {reference, next} = shared;
+        shared.next = {
+            ...shared.next,
+            left: next.left - reference.left,
+            top: next.top - reference.top,
+        };
+    },
+});
