@@ -16,6 +16,7 @@
 
 import {clamp} from 'utility/number';
 import {noop} from 'utility/memory';
+import {isEqual} from '../../utility/object';
 
 export const createOperation = handlers => ({
     onBeginResize: noop,
@@ -172,7 +173,13 @@ export const ratio = r => createOperation({
  * @returns {operation}
  */
 export const update = onUpdate => createOperation({
-    onBeginResize: (e, {next}) => onUpdate(next),
-    onResize: (e, {next}) => onUpdate(next),
-    onEndResize: (e, {next}) => onUpdate(next),
+    onBeginResize: _update(onUpdate),
+    onResize: _update(onUpdate),
+    onEndResize: _update(onUpdate),
 });
+const _update = onUpdate => (e, shared) => {
+    if (!isEqual(shared.prev, shared.next)) {
+        onUpdate(shared.next);
+        shared.prev = shared.next;
+    }
+};

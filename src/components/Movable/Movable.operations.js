@@ -16,6 +16,7 @@
 
 import {clamp} from 'utility/number';
 import {noop} from 'utility/memory';
+import {isEqual} from 'utility/object';
 
 export const createOperation = handlers => ({
     onBeginMove: noop,
@@ -124,15 +125,23 @@ export const transform = (...t) => createOperation({
 
 /**
  * Call the function given in callback, passing shared.next as an argument.
+ * The callback will only be called if shared.next has changed since the last
+ * call.
  *
  * @param onUpdate
  * @returns {operation}
  */
 export const update = onUpdate => createOperation({
-    onBeginMove: (e, {next}) => onUpdate(next),
-    onMove: (e, {next}) => onUpdate(next),
-    onEndMove: (e, {next}) => onUpdate(next),
+    onBeginMove: _update(onUpdate),
+    onMove: _update(onUpdate),
+    onEndMove: _update(onUpdate),
 });
+const _update = onUpdate => (e, shared) => {
+    if (!isEqual(shared.prev, shared.next)) {
+        onUpdate(shared.next);
+        shared.prev = shared.next;
+    }
+};
 
 export const translate = (x, y) => createOperation({
     onBeginMove: (e, shared) => {
