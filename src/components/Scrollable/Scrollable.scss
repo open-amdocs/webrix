@@ -28,6 +28,7 @@
   .scrollbar-track {
     visibility: hidden;
     pointer-events: none;
+    overflow: hidden;
 
     &.visible {
       visibility: visible;
@@ -43,7 +44,7 @@
         background-color: rgba(28, 34, 43, 0.6);
         border-radius: 4px;
         opacity: 0;
-        transition: all 0.2s ease-out 0.5s; // The transition delay is used to keep the thumb visible for a short time when the cursor leaves
+        transition: opacity 0.2s ease-out 0.5s; // The transition delay is used to keep the thumb visible for a short time when the cursor leaves
       }
     }
   }
