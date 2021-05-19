@@ -51,7 +51,7 @@ describe('<Scrollbar.Shadow/>', () => {
         });
         it('getBoxShadow()', () => {
             const boxshadow = getBoxShadow({scrollTop: 0, scrollLeft: 0, scrollHeight: 100, scrollWidth: 100, clientHeight: 100, clientWidth: 100});
-            expect(boxshadow.split(',').length).to.eql(32);
+            expect(boxshadow.split(',').length).to.eql(40);
         });
     });
 });

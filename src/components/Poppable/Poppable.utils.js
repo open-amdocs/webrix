@@ -15,16 +15,8 @@
  */
 
 import cls from 'classnames';
-import {getType} from 'utility/types';
 import {getRelativePosition} from 'utility/rect';
-
-/**
- * Returns true if all the given refs have a non-falsy 'current' property
- *
- * @param refs
- * @returns {boolean}
- */
-export const refsReady = (...refs) => refs.every(ref => ref instanceof DOMRect || ref.current);
+import {getBoundingRects as _getBoundingRects} from 'hooks/useBoundingRectObserver/useBoundingRectObserver';
 
 /**
  * Get the bounding rects of the given elements.
@@ -34,14 +26,13 @@ export const refsReady = (...refs) => refs.every(ref => ref instanceof DOMRect |
  * @param container
  * @returns {{cbr: *, rbr: *, tbr: *, wbr: *}}
  */
-export const getBoundingRects = (target, reference, container) => {
-    const wbr = new DOMRect(0, 0, window.innerWidth, window.innerHeight);
-    return ({
-        tbr: target.current.getBoundingClientRect(),
-        rbr: reference instanceof DOMRect ? reference : reference.current.getBoundingClientRect(),
-        cbr: getType(container.current) === 'window' ? wbr : container.current.getBoundingClientRect(),
-        wbr,
-    });
+export const getBoundingRects = (target, reference, container, placement) => {
+    const [rbr, tbr, cbr] = _getBoundingRects([reference, target, container]);
+    return {
+        rbr: rbr || new DOMRect(), // Could be undefined initially, before the reference exists
+        cbr: cbr || new DOMRect(),
+        tbr: new DOMRect(placement.left, placement.top, tbr?.width, tbr?.height),
+    };
 };
 
 /**

@@ -16,24 +16,25 @@
 
 import React, {useRef, forwardRef, memo, useCallback} from 'react';
 import classNames from 'classnames';
-import Stackable from '../Stackable';
 import {copyComponentRef} from 'utility/react';
 import puppet from 'tools/Puppeteer/Puppet.hoc';
 import Puppeteer from 'tools/Puppeteer/Puppeteer';
-import {usePosition, useBoundingRects} from './Poppable.hooks';
-import {getClassNames} from './Poppable.utils';
+import Stackable from '../Stackable';
+import {usePosition} from './Poppable.hooks';
+import {getClassNames, getBoundingRects} from './Poppable.utils';
 import PoppableContext from './Poppable.context';
 import {propTypes, defaultProps} from './Poppable.props';
+import './Poppable.scss';
 
 export const Poppable = forwardRef(({children, container, reference, placements, default: _default, onPlacement, placement, overflow, className, style, ...props}, ref) => {
     const target = useRef();
-    usePosition({target, container, reference, placements, default: _default, onPlacement, strategy: overflow});
-    const rects = useBoundingRects(target, reference, container, placement);
     const handleOnContextMenu = useCallback(e => e.stopPropagation(), []); // prevent onContextMenu event bubbling from the react portal to the react tree
+    const rects = getBoundingRects(target, reference, container, placement);
+    usePosition({target, container, reference, placements, default: _default, onPlacement, strategy: overflow});
 
     return (
         <Puppeteer.Break namespace='poppable'>
-            <Stackable {...props} className={classNames('poppable', className, getClassNames(rects.tbr, rects.rbr))} style={{...style, ...placement}}
+            <Stackable {...props} className={classNames('poppable', {[`placement-${placement.name}`]: placement.name}, className, getClassNames(rects.tbr, rects.rbr))} style={{...style, ...placement}}
                 ref={copyComponentRef(ref, target)} parent={reference} onContextMenu={handleOnContextMenu}>
                 <PoppableContext.Provider value={rects}>
                     {children}

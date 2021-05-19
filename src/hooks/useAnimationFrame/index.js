@@ -14,4 +14,6 @@
  * limitations under the License.
  */
 
-export const HIDDEN_PLACEMENT = {top: 0, left: 0, name: 'hidden'};
+import useAnimationFrame from './useAnimationFrame';
+
+export default useAnimationFrame;

@@ -13,9 +13,11 @@ const dom = new JSDOM(
 global.window = dom.window;
 global.document = dom.window.document;
 global.Element = dom.window.Element;
+global.window.requestAnimationFrame = sinon.spy();
+global.window.cancelAnimationFrame = sinon.spy();
 global.window.ResizeObserver = class {
     disconnect = sinon.spy();
     observe = sinon.spy();
 };
 
-global.DOMRect = function (x, y, width, height) {this.x = x; this.y = y; this.left = x; this.top = y; this.width = width; this.height = height; this.bottom = y + height; this.right = x + width;};
+global.DOMRect = function (x = 0, y = 0, width = 0, height = 0) {this.x = x; this.y = y; this.left = x; this.top = y; this.width = width; this.height = height; this.bottom = y + height; this.right = x + width;};

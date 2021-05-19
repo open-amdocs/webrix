@@ -214,13 +214,39 @@ describe('<Movable/>', () => {
         it('upadate()', () => {
             const {update} = Movable.Operations;
             const spy = sinon.spy();
-            const shared = {next: 'mock'};
+            const shared = {next: 0, prev: 0};
 
+            shared.next++;
             update(spy).onBeginMove({}, shared);
+            expect(spy.callCount).to.eql(1);
+            expect(spy.calledWith(shared.next)).to.eql(true);
+
+            shared.next++;
             update(spy).onMove({}, shared);
+            expect(spy.callCount).to.eql(2);
+            expect(spy.calledWith(shared.next)).to.eql(true);
+
+            // Should not call onUpdate when prev/next are the same
+            update(spy).onMove({}, shared);
+            expect(spy.callCount).to.eql(2);
+
+            shared.next++;
             update(spy).onEndMove({}, shared);
             expect(spy.callCount).to.eql(3);
             expect(spy.calledWith(shared.next)).to.eql(true);
+        });
+
+        it('relative()', () => {
+            const {relative} = Movable.Operations;
+            const shared = {next: {top: 10, left: 10}};
+            const ref = {current: {getBoundingClientRect: () => ({top: 10, left: 10})}};
+
+            relative(ref).onBeginMove({}, shared);
+            expect(shared.next).to.eql({top: 0, left: 0});
+
+            shared.next = {top: 20, left: 20};
+            relative(ref).onMove({}, shared);
+            expect(shared.next).to.eql({top: 10, left: 10});
         });
 
         it('transform()', () => {

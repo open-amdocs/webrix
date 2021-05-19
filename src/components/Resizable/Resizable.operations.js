@@ -16,6 +16,7 @@
 
 import {clamp} from 'utility/number';
 import {noop} from 'utility/memory';
+import {isEqual} from '../../utility/object';
 
 export const createOperation = handlers => ({
     onBeginResize: noop,
@@ -172,7 +173,33 @@ export const ratio = r => createOperation({
  * @returns {operation}
  */
 export const update = onUpdate => createOperation({
-    onBeginResize: (e, {next}) => onUpdate(next),
-    onResize: (e, {next}) => onUpdate(next),
-    onEndResize: (e, {next}) => onUpdate(next),
+    onBeginResize: _update(onUpdate),
+    onResize: _update(onUpdate),
+    onEndResize: _update(onUpdate),
+});
+const _update = onUpdate => (e, shared) => {
+    if (!isEqual(shared.prev, shared.next)) {
+        onUpdate(shared.next);
+        shared.prev = shared.next;
+    }
+};
+
+export const relative = ref => createOperation({
+    onBeginResize: (e, shared) => {
+        const reference = ref.current.getBoundingClientRect();
+        shared.reference = reference;
+        shared.next = {
+            ...shared.next,
+            left: shared.next.left - reference.left,
+            top: shared.next.top - reference.top,
+        };
+    },
+    onResize: (e, shared) => {
+        const {reference, next} = shared;
+        shared.next = {
+            ...shared.next,
+            left: next.left - reference.left,
+            top: next.top - reference.top,
+        };
+    },
 });

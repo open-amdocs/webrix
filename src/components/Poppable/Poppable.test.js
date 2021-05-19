@@ -4,7 +4,7 @@ import {expect} from 'chai';
 import Poppable from './Poppable';
 import defaultStrategy, {reposition, hide, trap} from './strategies';
 import {sortPlacements, filterPlacements} from './strategies/reposition';
-import {getBoundingRects, refsReady} from './Poppable.utils';
+import {getBoundingRects} from './Poppable.utils';
 import {vbefore, vcenter, vafter, hbefore, hcenter, hafter} from './Poppable.placements';
 import {HIDDEN_PLACEMENT} from './Poppable.constants';
 
@@ -23,17 +23,12 @@ describe('<Poppable/>', () => {
     });
 
     describe('Utils', () => {
-        it('refsReady()', () => {
-            expect(refsReady({})).to.eql(false);
-            expect(refsReady({}, {})).to.eql(false);
-            expect(refsReady({current: true})).to.eql(true);
-            expect(refsReady({current: true}, {current: false})).to.eql(false);
-            expect(refsReady({current: true}, {current: true})).to.eql(true);
-        });
         it('getBoundingRects()', () => {
-            const ref = {current: {getBoundingClientRect: () => 'mock'}};
-            const wbr = new DOMRect(0, 0, window.innerWidth, window.innerHeight);
-            expect(getBoundingRects(ref, ref, ref)).to.eql({tbr: 'mock', rbr: 'mock', cbr: 'mock', wbr});
+            const ref = {current: {getBoundingClientRect: () => new DOMRect()}};
+            expect(getBoundingRects(ref, ref, ref, {})).to.eql({tbr: new DOMRect(), rbr: new DOMRect(), cbr: new DOMRect()});
+
+            ref.current = undefined;
+            expect(getBoundingRects(ref, ref, ref, {})).to.eql({tbr: new DOMRect(), rbr: new DOMRect(), cbr: new DOMRect()});
         });
     });
 

@@ -31,6 +31,7 @@ export const Pannable = forwardRef(({children, className, ...props}, ref) => {
         // TODO: accessing the inner structure of scrollbar is bad practice
         // this is just a temporary solution until Scrollbar will expose its inner ref via forwardRef
         const scrollbar = scrollRef.current.container.current;
+        scrollbar.style.scrollBehavior = 'auto';
         initial.top = scrollbar.scrollTop;
         initial.left = scrollbar.scrollLeft;
         pannableRef.current.classList.add('dragging');
@@ -45,6 +46,7 @@ export const Pannable = forwardRef(({children, className, ...props}, ref) => {
 
     const handleOnEndMove = useCallback(() => {
         pannableRef.current.classList.remove('dragging');
+        scrollRef.current.container.current.style.scrollBehavior = '';
     }, [pannableRef]);
 
     return (

@@ -14,51 +14,14 @@
  * limitations under the License.
  */
 
-import {useRef, useEffect} from 'react';
-import {equal} from 'utility/rect';
-import {useTimeout} from 'hooks';
-import {refsReady, getBoundingRects} from './Poppable.utils';
-import {POLLING_INTERVAL} from './Poppable.constants';
-
-export const useBoundingRects = (target, reference, container, {top, left}) => {
-    if (refsReady(target, reference, container)) {
-        const {tbr, rbr, cbr} = getBoundingRects(target, reference, container);
-        return {tbr: new DOMRect(left, top, tbr.width, tbr.height), rbr, cbr}
-    }
-    return {tbr: {}, rbr: {}, cbr: {}};
-};
-
-const useBoundingRectListener = (target, container, reference, callback) => {
-    const prev = useRef({});
-    return () => {
-        if (refsReady(target, reference, container)) {
-            const {tbr, rbr, cbr, wbr} = getBoundingRects(target, reference, container);
-            if (!prev.current.cbr
-                || !equal(cbr, prev.current.cbr)
-                || !equal(rbr, prev.current.rbr)
-                || !equal(tbr, prev.current.tbr)) {
-                callback(rbr, tbr, cbr, wbr);
-                prev.current.cbr = cbr;
-                prev.current.rbr = rbr;
-                prev.current.tbr = tbr;
-            }
-        }
-    }
-}
+import {useBoundingRectObserver} from 'hooks';
 
 export const usePosition = ({target, container, reference, placements, default: _default, onPlacement, strategy}) => {
-    const {start, stop} = useTimeout(() => updatePosition(), POLLING_INTERVAL, true);
-    const updatePosition = useBoundingRectListener(target, container, reference, (rbr, tbr, cbr, wbr) => {
-        const {top, left} = strategy({tbr, cbr, rbr, wbr}, {default: _default, placements});
+    const {start} = useBoundingRectObserver((rbr, tbr, cbr, wbr) => {
+        const {top, left, name} = strategy({tbr, cbr, rbr, wbr}, {default: _default, placements});
         if (!tbr || top !== tbr.top || left !== tbr.left) {
-            onPlacement({top, left});
+            onPlacement({top, left, name});
         }
-    });
-
-    // Continuously update the position of the target (if the cbr/rbr have changed)
-    updatePosition();
-    useEffect(() => {
-        start();
-        return () => stop();
-    }, [start, stop]);
+    }, reference, target, container, window);
+    start();
 };
