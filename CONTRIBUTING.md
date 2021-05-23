@@ -6,7 +6,7 @@ largest projects. The purpose of this document is to make contributing easy and 
 If you are new to the concept of code contribution in open-source projects, 
 you can learn how from this free video series: 
 
-[How to Contribute to an Open Source Project on GitHub](https://egghead.io/courses/how-to-contribute-to-an-open-source-project-on-)
+[How to Contribute to an Open Source Project on GitHub](https://egghead.io/courses/how-to-contribute-to-an-open-source-project-on-github)
 
 ## Submitting a Pull Request
 
@@ -22,7 +22,7 @@ Below are the steps to create a pull request:
 1. Fork the repository.
 2. Clone the fork to your local machine and add upstream remote:
 ```
-git clone git@github.com:open-amdocs/webrix.git
+git clone git@github.com:<your_username>/webrix.git
 cd webrix
 git remote add upstream git@github.com:open-amdocs/webrix.git
 ```
