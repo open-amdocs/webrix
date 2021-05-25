@@ -22,16 +22,14 @@
  * object is OK since that code is only executed in the browser.
  */
 
-export const fallback = (a, b) => (
-    typeof window !== 'undefined' ? a : b
-);
+const isServer = typeof window === 'undefined';
 
-export const _window = fallback(window, {});
+export const _window = isServer ? {} : window;
 
-export const _document = fallback(document, {});
+export const _document = isServer ? {} : document;
 
-export const ResizeObserver = fallback(window.ResizeObserver, function ResizeObserver() {});
+export const ResizeObserver = isServer ? function ResizeObserver() {} : window.ResizeObserver;
 
-export const DOMRect = fallback(window.DOMRect, function DOMRect() {});
+export const DOMRect = isServer ? function DOMRect() {} : window.DOMRect;
 
-export const Element = fallback(window.Element, function Element() {});
+export const Element = isServer ? function Element() {} : window.Element;
