@@ -24,9 +24,9 @@
 
 const isServer = typeof window === 'undefined';
 
-export const _window = isServer ? {} : window;
+export const _window = isServer ? function window() {} : window;
 
-export const _document = isServer ? {} : document;
+export const _document = isServer ? function document() {} : document;
 
 export const ResizeObserver = isServer ? function ResizeObserver() {} : window.ResizeObserver;
 
