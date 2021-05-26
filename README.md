@@ -1,15 +1,39 @@
-![Webrix logo](https://github.com/open-amdocs/webrix-docs/raw/master/src/resources/images/webrix-logo-dark.png)
-  
-[![GitHub license](https://img.shields.io/badge/license-Apache%202-blue)](https://github.com/open-amdocs/webrix/blob/master/LICENSE)
-[![CircleCI Status](https://circleci.com/gh/open-amdocs/webrix.svg?style=shield&circle-token=:circle-token)](https://circleci.com/gh/open-amdocs/webrix)
-[![codecov](https://codecov.io/gh/open-amdocs/webrix/branch/master/graph/badge.svg)](https://codecov.io/gh/open-amdocs/webrix)
-[![npm version](https://badge.fury.io/js/webrix.svg)](https://www.npmjs.com/package/webrix)
-[![semantic-release](https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg)](https://github.com/semantic-release/semantic-release)
-[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/open-amdocs/webrix/blob/master/CONTRIBUTING.md)
+<p align="center">
+  <img src="https://github.com/open-amdocs/webrix-docs/raw/master/src/resources/images/webrix-logo-dark.png"/>
+</p>
+<p align="center">
+  Powerful building blocks for React-based web applications.<br/>
+  For documentation, API overview and live examples, visit <a href="https://webrix.amdocs.com">webrix.amdocs.com</a>.
+</p>
 
-Powerful building blocks for React-based web applications.
+---
 
-For the full documentation, API overview and live examples, visit the official [Webrix documentation site](https://webrix.amdocs.com).
+<p align="center">
+  <a href="https://www.npmjs.com/package/webrix">
+    <img src="https://img.shields.io/npm/dt/webrix.svg" />
+  </a>
+  <a href="https://www.npmjs.com/package/webrix">
+    <img src="https://badge.fury.io/js/webrix.svg" />
+  </a>
+  <a href="https://circleci.com/gh/open-amdocs/webrix">
+    <img src="https://circleci.com/gh/open-amdocs/webrix.svg?style=shield&circle-token=:circle-token" />
+  </a>
+  <a href="https://packagequality.com/#?package=webrix">
+    <img src="https://packagequality.com/shield/webrix.svg" />
+  </a>
+  <a href="https://github.com/semantic-release/semantic-release">
+    <img src="https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg" />
+  </a>
+  <a href="https://codecov.io/gh/open-amdocs/webrix">
+    <img src="https://codecov.io/gh/open-amdocs/webrix/branch/master/graph/badge.svg" />
+  </a>
+  <a href="https://github.com/open-amdocs/webrix/blob/master/CONTRIBUTING.md">
+    <img src="https://img.shields.io/badge/PRs-welcome-brightgreen.svg" />
+  </a>
+</p>
+
+<br/>
+<br/>
 
 ### What Is Webrix?
 
