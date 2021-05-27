@@ -18,6 +18,7 @@ import React from 'react';
 import {oneOfType, node, func, shape, instanceOf} from 'prop-types';
 import Movable from '../../../Movable';
 import {onUpdate} from './VerticalScrollbar.utils';
+import {Element} from 'utility/mocks';
 import './VerticalScrollbar.scss';
 
 export default class VerticalScrollbar extends React.PureComponent {

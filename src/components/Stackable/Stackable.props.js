@@ -15,6 +15,7 @@
  */
 
 import {instanceOf, node, shape, number} from 'prop-types';
+import {_document, Element} from 'utility/mocks';
 
 export const propTypes = {
     zIndex: number,
@@ -25,7 +26,7 @@ export const propTypes = {
 
 export const defaultProps = {
     zIndex: null,
-    target: document.body,
+    target: _document.body,
     parent: {},
     children: null,
 };

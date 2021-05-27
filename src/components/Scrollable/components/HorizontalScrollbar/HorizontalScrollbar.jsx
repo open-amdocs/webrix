@@ -16,6 +16,7 @@
 
 import React from 'react';
 import {oneOfType, node, func, shape, instanceOf} from 'prop-types';
+import {Element} from 'utility/mocks';
 import Movable from '../../../Movable';
 import {onUpdate} from './HorizontalScrollbar.utils';
 import './HorizontalScrollbar.scss';

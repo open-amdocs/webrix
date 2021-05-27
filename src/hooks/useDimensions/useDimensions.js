@@ -16,10 +16,11 @@
 
 import {useState, useRef, useEffect} from 'react';
 import {readResizeObserverEntry} from 'utility/rect';
+import {ResizeObserver} from 'utility/mocks';
 
 export default ref => {
     const [dimensions, setDimensions] = useState({width: 0, height: 0});
-    const observer = useRef(new window.ResizeObserver(entries => {
+    const observer = useRef(new ResizeObserver(entries => {
         setDimensions(readResizeObserverEntry(entries[0]));
     }));
     useEffect(() => {
