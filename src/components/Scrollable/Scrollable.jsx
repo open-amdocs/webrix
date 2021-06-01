@@ -44,7 +44,7 @@ export default class Scrollable extends React.PureComponent {
         this.updateScrollbars();
     }
 
-    componentDidUpdate(prevProps, prevState, {scrollTop, scrollLeft, scrollHeight, scrollWidth}) {
+    componentDidUpdate(prevProps, prevState, {scrollTop, scrollLeft}) {
         if (!this.props.scrollOnDOMChange) {
             // Sometimes DOM changes trigger a scroll by the browser.
             // On the other hand, we sometimes use the onScroll event to
