@@ -44,7 +44,7 @@ export default class Scrollable extends React.PureComponent {
         this.updateScrollbars();
     }
 
-    componentDidUpdate(prevProps, prevState, {scrollTop, scrollLeft}) {
+    componentDidUpdate(prevProps, prevState, {scrollTop, scrollLeft, scrollHeight, scrollWidth}) {
         if (!this.props.scrollOnDOMChange) {
             // Sometimes DOM changes trigger a scroll by the browser.
             // On the other hand, we sometimes use the onScroll event to
@@ -58,6 +58,13 @@ export default class Scrollable extends React.PureComponent {
             // we apply the scrollTop from the snapshot.
             this.container.current.scrollTop = scrollTop;
             this.container.current.scrollLeft = scrollLeft;
+        }
+
+        // While the <ResizeObserver/> observes dimension changes on the container,
+        // this part observes changes to the dimensions of the content.
+        if (scrollHeight !== this.container.current.scrollHeight ||
+            scrollWidth !== this.container.current.scrollWidth) {
+            this.updateScrollbars();
         }
     }
 
@@ -102,16 +109,21 @@ export default class Scrollable extends React.PureComponent {
         }
     };
 
+    handleOnTransitionEnd = e => {
+        if ('height' === e.propertyName || 'width' === e.propertyName) {
+            this.updateScrollbars();
+        }
+    };
+
     render() {
         const {children, style, element} = this.props;
         const vsb = findChildByType(children, VerticalScrollbarPlaceholder);
         const hsb = findChildByType(children, HorizontalScrollbarPlaceholder);
         const content = React.Children.toArray(children).filter(child => ![VerticalScrollbarPlaceholder, HorizontalScrollbarPlaceholder].includes(child.type));
-        const observedContent = <ResizeObserver onResize={this.updateScrollbars}><div>{content}</div></ResizeObserver>
         return (
             <ResizeObserver onResize={this.updateScrollbars}>
-                <div className='scrollbar' style={style}>
-                    {React.cloneElement(element, this.getElementProps(), observedContent)}
+                <div className='scrollbar' style={style} onTransitionEnd={this.handleOnTransitionEnd}>
+                    {React.cloneElement(element, this.getElementProps(), content)}
                     {React.cloneElement(vsb ? vsb.props.children : <VerticalScrollbar/>, {ref: this.vertical, container: this.container})}
                     {React.cloneElement(hsb ? hsb.props.children : <HorizontalScrollbar/>, {ref: this.horizontal, container: this.container})}
                 </div>

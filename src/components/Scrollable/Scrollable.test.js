@@ -14,7 +14,7 @@ describe('<Scrollable/>', () => {
         it('should render a Scrollbar', () => {
             const wrapper = mount(<Scrollable/>);
             expect(wrapper.find('.scrollbar')).to.have.length(1);
-            expect(wrapper.find('ResizeObserver')).to.have.length(2);
+            expect(wrapper.find('ResizeObserver')).to.have.length(1);
             expect(wrapper.find('VerticalScrollbar')).to.have.length(1);
             expect(wrapper.find('HorizontalScrollbar')).to.have.length(1);
         });
@@ -69,6 +69,14 @@ describe('<Scrollable/>', () => {
             s.componentDidUpdate(null, null, {scrollTop: 50, scrollLeft: 50});
             expect(s.container.current.scrollTop).to.eql(50);
             expect(s.container.current.scrollLeft).to.eql(50);
+
+            // Should call updateScrollbars()
+            s.container = {current: {scrollHeight: 50}};
+            s.updateScrollbars = sinon.spy();
+            s.componentDidUpdate(null, null, {scrollHeight: 50});
+            expect(s.updateScrollbars.callCount).to.eql(0);
+            s.componentDidUpdate(null, null, {scrollHeight: 100});
+            expect(s.updateScrollbars.callCount).to.eql(1);
         });
 
         it('ResizeUpdate', () => {
