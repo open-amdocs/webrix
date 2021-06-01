@@ -59,13 +59,6 @@ export default class Scrollable extends React.PureComponent {
             this.container.current.scrollTop = scrollTop;
             this.container.current.scrollLeft = scrollLeft;
         }
-
-        // While the <ResizeObserver/> observes dimension changes on the container,
-        // this part observes changes to the dimensions of the content.
-        if (scrollHeight !== this.container.current.scrollHeight ||
-            scrollWidth !== this.container.current.scrollWidth) {
-            this.updateScrollbars();
-        }
     }
 
     handleOnScroll = e => {
@@ -117,7 +110,7 @@ export default class Scrollable extends React.PureComponent {
         return (
             <ResizeObserver onResize={this.updateScrollbars}>
                 <div className='scrollbar' style={style}>
-                    {React.cloneElement(element, this.getElementProps(), content)}
+                    <ResizeObserver onResize={this.updateScrollbars}>{React.cloneElement(element, this.getElementProps(), content)}</ResizeObserver>
                     {React.cloneElement(vsb ? vsb.props.children : <VerticalScrollbar/>, {ref: this.vertical, container: this.container})}
                     {React.cloneElement(hsb ? hsb.props.children : <HorizontalScrollbar/>, {ref: this.horizontal, container: this.container})}
                 </div>
