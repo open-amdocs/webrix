@@ -107,10 +107,11 @@ export default class Scrollable extends React.PureComponent {
         const vsb = findChildByType(children, VerticalScrollbarPlaceholder);
         const hsb = findChildByType(children, HorizontalScrollbarPlaceholder);
         const content = React.Children.toArray(children).filter(child => ![VerticalScrollbarPlaceholder, HorizontalScrollbarPlaceholder].includes(child.type));
+        const observedContent = <ResizeObserver onResize={this.updateScrollbars}><div>{content}</div></ResizeObserver>
         return (
             <ResizeObserver onResize={this.updateScrollbars}>
                 <div className='scrollbar' style={style}>
-                    <ResizeObserver onResize={this.updateScrollbars}>{React.cloneElement(element, this.getElementProps(), content)}</ResizeObserver>
+                    {React.cloneElement(element, this.getElementProps(), observedContent)}
                     {React.cloneElement(vsb ? vsb.props.children : <VerticalScrollbar/>, {ref: this.vertical, container: this.container})}
                     {React.cloneElement(hsb ? hsb.props.children : <HorizontalScrollbar/>, {ref: this.horizontal, container: this.container})}
                 </div>
