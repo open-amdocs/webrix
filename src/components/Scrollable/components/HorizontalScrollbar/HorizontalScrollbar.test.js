@@ -40,6 +40,7 @@ describe('<HorizontalScrollbar/>', () => {
             const s = new HorizontalScrollbar({});
             s.props.container = {current: {clientWidth: 100, scrollWidth: 400}};
             s.thumb = {current: {clientWidth: 40}};
+            s.track = {current: {clientWidth: 100}};
             s.initialMousePos = 25;
             s.initialScroll = 20;
             s.handleOnMove({dx: 75});

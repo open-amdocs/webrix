@@ -69,24 +69,12 @@ export default class Scrollable extends React.PureComponent {
     }
 
     handleOnScroll = e => {
-        this.updateScrollbars();
         const container = this.container.current;
-        if (e.target === container) { // Avoid adding this className on ancestors, since the scroll event bubbles up
-            container.parentElement.classList.add('scrolling');
-            clearTimeout(this.timeout);
-            this.timeout = setTimeout(() => {
-                container.parentElement.classList.remove('scrolling');
-            }, SCROLLING_CLASS_REMOVAL_DELAY);
-        }
-    };
-
-    updateScrollbars = () => {
-        const {clientHeight, clientWidth, scrollTop: st, scrollLeft: sl, scrollHeight, scrollWidth} = this.container.current;
+        const {clientHeight, clientWidth, scrollTop: st, scrollLeft: sl, scrollHeight, scrollWidth} = container;
         const scrollTop = Math.ceil(st);
         const scrollLeft = Math.ceil(sl);
 
-        this.vertical.current.update();
-        this.horizontal.current.update();
+        this.updateScrollbars();
 
         this.props.onScroll({
             top: Math.min(1, scrollTop / Math.max(1, scrollHeight - clientHeight)),
@@ -98,6 +86,19 @@ export default class Scrollable extends React.PureComponent {
             clientHeight,
             clientWidth,
         });
+
+        if (e.target === container) { // Avoid adding this className on ancestors, since the scroll event bubbles up
+            container.parentElement.classList.add('scrolling');
+            clearTimeout(this.timeout);
+            this.timeout = setTimeout(() => {
+                container.parentElement.classList.remove('scrolling');
+            }, SCROLLING_CLASS_REMOVAL_DELAY);
+        }
+    };
+
+    updateScrollbars = () => {
+        this.vertical.current.update();
+        this.horizontal.current.update();
     };
 
     getElementProps = () => {

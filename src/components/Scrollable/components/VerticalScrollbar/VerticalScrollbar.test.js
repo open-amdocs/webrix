@@ -40,6 +40,7 @@ describe('<VerticalScrollbar/>', () => {
             const s = new VerticalScrollbar({});
             s.props.container = {current: {clientHeight: 100, scrollHeight: 400}};
             s.thumb = {current: {clientHeight: 40}};
+            s.track = {current: {clientHeight: 100}};
             s.initialMousePos = 25;
             s.initialScroll = 20;
             s.handleOnMove({dy: 75});
