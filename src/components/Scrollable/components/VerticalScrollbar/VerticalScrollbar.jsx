@@ -16,9 +16,9 @@
 
 import React from 'react';
 import {oneOfType, node, func, shape, instanceOf} from 'prop-types';
+import {Element} from 'utility/mocks';
 import Movable from '../../../Movable';
 import {onUpdate} from './VerticalScrollbar.utils';
-import {Element} from 'utility/mocks';
 import './VerticalScrollbar.scss';
 
 export default class VerticalScrollbar extends React.PureComponent {
@@ -52,7 +52,8 @@ export default class VerticalScrollbar extends React.PureComponent {
         const container = this.props.container.current;
         const {clientHeight, scrollHeight} = container;
         const handleHeight = this.thumb.current.clientHeight;
-        container.scrollTop = this.initialScroll + dy * (scrollHeight - clientHeight) / (clientHeight - handleHeight);
+        const trackHeight = this.track.current.clientHeight;
+        container.scrollTop = this.initialScroll + dy * (scrollHeight - clientHeight) / (trackHeight - handleHeight);
     };
 
     handleOnEndMove = () => {
