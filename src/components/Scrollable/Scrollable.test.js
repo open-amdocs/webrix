@@ -28,19 +28,30 @@ describe('<Scrollable/>', () => {
             expect(s.updateScrollbars.calledOnce).to.eql(true);
         });
 
+        it('getSnapshotBeforeUpdate()', () => {
+            const s = new Scrollable();
+            s.container = {current: {scrollHeight: 0, scrollWidth: 0}};
+            expect(s.getSnapshotBeforeUpdate().shouldUpdate).to.eql(true);
+            expect(s.getSnapshotBeforeUpdate().shouldUpdate).to.eql(false);
+            s.container = {current: {scrollHeight: 10, scrollWidth: 0}};
+            expect(s.getSnapshotBeforeUpdate().shouldUpdate).to.eql(true);
+            s.container = {current: {scrollHeight: 10, scrollWidth: 10}};
+            expect(s.getSnapshotBeforeUpdate().shouldUpdate).to.eql(true);
+        });
+
         it('componentDidUpdate()', () => {
             const s = new Scrollable({scrollOnDOMChange: false});
             s.container = {current: {scrollTop: 0}};
-            s.componentDidUpdate(null, null, {scrollTop: 50, scrollLeft: 50});
+            s.componentDidUpdate(null, null, {scrollTop: 50, scrollLeft: 50, shouldUpdate: false});
             expect(s.container.current.scrollTop).to.eql(50);
             expect(s.container.current.scrollLeft).to.eql(50);
 
             // Should call updateScrollbars()
             s.container = {current: {scrollHeight: 50}};
             s.updateScrollbars = sinon.spy();
-            s.componentDidUpdate(null, null, {scrollHeight: 50});
+            s.componentDidUpdate(null, null, {shouldUpdate: false});
             expect(s.updateScrollbars.callCount).to.eql(0);
-            s.componentDidUpdate(null, null, {scrollHeight: 100});
+            s.componentDidUpdate(null, null, {shouldUpdate: true});
             expect(s.updateScrollbars.callCount).to.eql(1);
         });
     });
