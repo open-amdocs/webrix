@@ -111,6 +111,10 @@ export default class Scrollable extends React.PureComponent {
     };
 
     handleOnTransitionEnd = e => {
+        // Sometimes internal dimension changes don't occur immediately due to transitions/animations.
+        // These changes are not detected by the <ResizeObserver/> since they are internal, and are
+        // detected too early by getSnapshotBeforeUpdate() since the transition/animation is completed
+        // some time after the DOM change. This handler covers for that.
         if ('height' === e.propertyName || 'width' === e.propertyName) {
             this.updateScrollbars();
         }
