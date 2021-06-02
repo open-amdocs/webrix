@@ -100,6 +100,17 @@ describe('<Scrollable/>', () => {
             expect(s.horizontal.current.update.callCount).to.eql(1);
             expect(s.props.onScroll.callCount).to.eql(1);
         });
+
+        it('onTransitionEnd()', () => {
+            const s = new Scrollable();
+            s.updateScrollbars = sinon.spy();
+            s.handleOnTransitionEnd({propertyName: 'foo'});
+            expect(s.updateScrollbars.callCount).to.eql(0);
+            s.handleOnTransitionEnd({propertyName: 'height'});
+            expect(s.updateScrollbars.callCount).to.eql(1);
+            s.handleOnTransitionEnd({propertyName: 'width'});
+            expect(s.updateScrollbars.callCount).to.eql(2);
+        });
     });
 
     describe('Utils', () => {

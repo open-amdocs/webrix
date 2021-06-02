@@ -109,6 +109,12 @@ export default class Scrollable extends React.PureComponent {
         }
     };
 
+    handleOnTransitionEnd = e => {
+        if ('height' === e.propertyName || 'width' === e.propertyName) {
+            this.updateScrollbars();
+        }
+    };
+
     render() {
         const {children, style, element} = this.props;
         const vsb = findChildByType(children, VerticalScrollbarPlaceholder);
@@ -116,7 +122,7 @@ export default class Scrollable extends React.PureComponent {
         const content = React.Children.toArray(children).filter(child => ![VerticalScrollbarPlaceholder, HorizontalScrollbarPlaceholder].includes(child.type));
         return (
             <ResizeObserver onResize={this.updateScrollbars}>
-                <div className='scrollbar' style={style}>
+                <div className='scrollbar' style={style} onTransitionEnd={this.handleOnTransitionEnd}>
                     {React.cloneElement(element, this.getElementProps(), content)}
                     {React.cloneElement(vsb ? vsb.props.children : <VerticalScrollbar/>, {ref: this.vertical, container: this.container})}
                     {React.cloneElement(hsb ? hsb.props.children : <HorizontalScrollbar/>, {ref: this.horizontal, container: this.container})}
