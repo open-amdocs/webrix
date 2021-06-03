@@ -184,22 +184,32 @@ const _update = onUpdate => (e, shared) => {
     }
 };
 
+/**
+ * Subtract the bounding rect of the given ref from the coordinates in shared.next
+ * to make the coordinate relative to it.
+ *
+ * @param ref
+ * @returns {*&{onResize: ((function(): null)|*), onBeginResize: ((function(): null)|*), onEndResize: ((function(): null)|*)}}
+ */
 export const relative = ref => createOperation({
     onBeginResize: (e, shared) => {
         const reference = ref.current.getBoundingClientRect();
         shared.reference = reference;
+        // When zooming in/out, the bounding rect receives non integer numbers with many decimal places
+        // so we compensate for that by rounding the numbers, since the distance between 2 elements should
+        // always be an integer.
         shared.next = {
             ...shared.next,
-            left: shared.next.left - reference.left,
-            top: shared.next.top - reference.top,
+            left: Math.round(shared.next.left - reference.left),
+            top: Math.round(shared.next.top - reference.top),
         };
     },
     onResize: (e, shared) => {
         const {reference, next} = shared;
         shared.next = {
             ...shared.next,
-            left: next.left - reference.left,
-            top: next.top - reference.top,
+            left: Math.round(next.left - reference.left),
+            top: Math.round(next.top - reference.top),
         };
     },
 });
