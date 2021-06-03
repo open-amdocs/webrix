@@ -34,7 +34,6 @@ describe('<HorizontalScrollbar/>', () => {
             const s = new HorizontalScrollbar({container: {current: {scrollLeft: 50, style}}});
             s.handleOnBeginMove({stopPropagation: noop, preventDefault: noop});
             expect(s.initialScroll).to.eql(s.props.container.current.scrollLeft);
-            expect(style.scrollBehavior).to.eql('auto');
         });
         it('handleOnMove()', () => {
             const s = new HorizontalScrollbar({});
@@ -45,12 +44,6 @@ describe('<HorizontalScrollbar/>', () => {
             s.initialScroll = 20;
             s.handleOnMove({dx: 75});
             expect(s.props.container.current.scrollLeft).to.eql(395);
-        });
-        it('handleOnEndMove()', () => {
-            const style = {};
-            const s = new HorizontalScrollbar({container: {current: {style}}});
-            s.handleOnEndMove();
-            expect(style.scrollBehavior).to.eql('smooth');
         });
     });
 

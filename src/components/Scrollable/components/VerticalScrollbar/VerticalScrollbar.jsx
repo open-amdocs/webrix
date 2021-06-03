@@ -45,7 +45,6 @@ export default class VerticalScrollbar extends React.PureComponent {
         e.stopPropagation();
         e.preventDefault();
         this.initialScroll = this.props.container.current.scrollTop;
-        this.props.container.current.style.scrollBehavior = 'auto'; // Remove smooth scrolling as it breaks the thumb dragging behavior
     };
 
     handleOnMove = ({dy}) => {

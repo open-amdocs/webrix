@@ -34,7 +34,6 @@ describe('<VerticalScrollbar/>', () => {
             const s = new VerticalScrollbar({container: {current: {scrollTop: 50, style}}});
             s.handleOnBeginMove({stopPropagation: noop, preventDefault: noop});
             expect(s.initialScroll).to.eql(s.props.container.current.scrollTop);
-            expect(style.scrollBehavior).to.eql('auto');
         });
         it('handleOnMove()', () => {
             const s = new VerticalScrollbar({});
@@ -45,12 +44,6 @@ describe('<VerticalScrollbar/>', () => {
             s.initialScroll = 20;
             s.handleOnMove({dy: 75});
             expect(s.props.container.current.scrollTop).to.eql(395);
-        });
-        it('handleOnEndMove()', () => {
-            const style = {};
-            const s = new VerticalScrollbar({container: {current: {style}}});
-            s.handleOnEndMove();
-            expect(style.scrollBehavior).to.eql('smooth');
         });
     });
 
