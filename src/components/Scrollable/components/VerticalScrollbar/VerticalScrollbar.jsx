@@ -16,6 +16,7 @@
 
 import React from 'react';
 import {oneOfType, node, func, shape, instanceOf} from 'prop-types';
+import {Element} from 'utility/mocks';
 import Movable from '../../../Movable';
 import {onUpdate} from './VerticalScrollbar.utils';
 import './VerticalScrollbar.scss';
@@ -44,18 +45,14 @@ export default class VerticalScrollbar extends React.PureComponent {
         e.stopPropagation();
         e.preventDefault();
         this.initialScroll = this.props.container.current.scrollTop;
-        this.props.container.current.style.scrollBehavior = 'auto'; // Remove smooth scrolling as it breaks the thumb dragging behavior
     };
 
     handleOnMove = ({dy}) => {
         const container = this.props.container.current;
         const {clientHeight, scrollHeight} = container;
         const handleHeight = this.thumb.current.clientHeight;
-        container.scrollTop = this.initialScroll + dy * (scrollHeight - clientHeight) / (clientHeight - handleHeight);
-    };
-
-    handleOnEndMove = () => {
-        this.props.container.current.style.scrollBehavior = 'smooth';
+        const trackHeight = this.track.current.clientHeight;
+        container.scrollTop = this.initialScroll + dy * (scrollHeight - clientHeight) / (trackHeight - handleHeight);
     };
 
     handleOnClick = e => {
@@ -66,7 +63,9 @@ export default class VerticalScrollbar extends React.PureComponent {
             const {top, height} = track.getBoundingClientRect();
             const {scrollHeight} = this.props.container.current;
             const ratio = (e.clientY - top) / height;
+            container.style.scrollBehavior = 'smooth';
             container.scrollTop = ratio * scrollHeight;
+            container.style.scrollBehavior = ''; // Remove smooth scrolling as it breaks the thumb dragging
         }
     };
 
@@ -91,7 +90,7 @@ export default class VerticalScrollbar extends React.PureComponent {
     render() {
         return (
             <div className='scrollbar-track vertical-scrollbar-track' ref={this.track} onClick={this.handleOnClick}>
-                <Movable className='scrollbar-thumb' ref={this.thumb} onBeginMove={this.handleOnBeginMove} onMove={this.handleOnMove} onEndMove={this.handleOnEndMove}>
+                <Movable className='scrollbar-thumb' ref={this.thumb} onBeginMove={this.handleOnBeginMove} onMove={this.handleOnMove}>
                     <div className='scrollbar-thumb-inner'/>
                 </Movable>
                 {this.props.children}
