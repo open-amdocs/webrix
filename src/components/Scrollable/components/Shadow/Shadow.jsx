@@ -14,13 +14,14 @@
  * limitations under the License.
  */
 
-import React, {forwardRef, useCallback, useRef, memo} from 'react';
+import React, {forwardRef, useCallback, useRef, memo, useEffect} from 'react';
 import {node} from 'prop-types';
 import {copyComponentRef} from 'utility/react';
 import {getBoxShadow} from './Shadow.utils';
 import './Shadow.scss';
 
 export const ScrollShadow = forwardRef(({children}, ref) => {
+    const scrollRef = useRef();
     const scrollbar = React.Children.only(children);
     const {onScroll} = scrollbar.props;
     const shadow = useRef();
@@ -29,10 +30,16 @@ export const ScrollShadow = forwardRef(({children}, ref) => {
         onScroll(e);
     }, [onScroll]);
 
+    useEffect(() => {
+        // Set the shadow initially
+        const {scrollTop, scrollLeft, scrollHeight, scrollWidth, clientHeight, clientWidth} = scrollRef.current.container.current;
+        shadow.current.style.boxShadow = getBoxShadow({scrollTop, scrollLeft, scrollHeight, scrollWidth, clientHeight, clientWidth});
+    }, []);
+
     return (
         <>
             <div className='scroll-shadow' ref={copyComponentRef(ref, shadow)}/>
-            {React.cloneElement(scrollbar, {onScroll: handleOnScroll})}
+            {React.cloneElement(scrollbar, {onScroll: handleOnScroll, ref: copyComponentRef(scrollbar.props.ref, scrollRef)})}
         </>
     );
 });
