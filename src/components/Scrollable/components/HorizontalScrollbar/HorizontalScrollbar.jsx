@@ -45,7 +45,6 @@ export default class HorizontalScrollbar extends React.PureComponent {
         e.stopPropagation();
         e.preventDefault();
         this.initialScroll = this.props.container.current.scrollLeft;
-        this.props.container.current.style.scrollBehavior = 'auto'; // Remove smooth scrolling as it breaks the thumb dragging behavior
     };
 
     handleOnMove = ({dx}) => {
@@ -56,10 +55,6 @@ export default class HorizontalScrollbar extends React.PureComponent {
         container.scrollLeft = this.initialScroll + dx * ((scrollWidth - clientWidth) / (trackWidth - handleWidth));
     };
 
-    handleOnEndMove = () => {
-        this.props.container.current.style.scrollBehavior = 'smooth';
-    };
-
     handleOnClick = e => {
         // Ignore clicks on the thumb itself
         if (!this.thumb.current.contains(e.target)) {
@@ -68,7 +63,9 @@ export default class HorizontalScrollbar extends React.PureComponent {
             const {left, width} = track.getBoundingClientRect();
             const {scrollWidth} = this.props.container.current;
             const ratio = (e.clientX - left) / width;
+            container.style.scrollBehavior = 'smooth';
             container.scrollLeft = ratio * scrollWidth;
+            container.style.scrollBehavior = ''; // Remove smooth scrolling as it breaks the thumb dragging
         }
     };
 
@@ -93,7 +90,7 @@ export default class HorizontalScrollbar extends React.PureComponent {
     render() {
         return (
             <div className='scrollbar-track horizontal-scrollbar-track' ref={this.track} onClick={this.handleOnClick}>
-                <Movable className='scrollbar-thumb' ref={this.thumb} onBeginMove={this.handleOnBeginMove} onMove={this.handleOnMove} onEndMove={this.handleOnEndMove}>
+                <Movable className='scrollbar-thumb' ref={this.thumb} onBeginMove={this.handleOnBeginMove} onMove={this.handleOnMove}>
                     <div className='scrollbar-thumb-inner'/>
                 </Movable>
                 {this.props.children}
