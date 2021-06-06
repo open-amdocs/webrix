@@ -14,40 +14,38 @@
  * limitations under the License.
  */
 
-import React, {useState, useCallback, useEffect, useRef} from 'react';
-import classNames from 'classnames';
-import {propTypes, defaultProps} from './Collapsible.props';
-import './Collapsible.scss';
+import React, {useState, useCallback, useEffect, useRef} from 'react'
+import classNames from 'classnames'
+import {propTypes, defaultProps} from './Collapsible.props'
+import './Collapsible.scss'
 
-export const Collapsible = ({expanded, children, duration, onTransitionEnd, ...props}) => {
-    const [{motion, height}, setState] = useState({motion: '', height: expanded ? 'auto' : 0});
-    const hasChildren = !!React.Children.count(children);
-    const timeout = useRef(), content = useRef();
+export const Collapsible = ({expanded, children, onTransitionEnd, ...props}) => {
+    const [{motion, height}, setState] = useState({motion: '', height: expanded ? 'auto' : 0})
+    const hasChildren = !!React.Children.count(children)
+    const contentRef = useRef();
     const handleOnTransitionEnd = useCallback(e => {
-        if (e.propertyName === 'height') {
+        // 'transform' is the longest transition property out of multiple ones
+        if (e.propertyName === 'transform') {
+            setState(state => ({...state, motion: '', height: state.height ? 'auto' : '0'}));
             onTransitionEnd(e);
         }
-    }, [onTransitionEnd]);
+    }, [onTransitionEnd])
 
     useEffect(() => {
-        if (hasChildren) {
-            setState({height: content.current.clientHeight, motion: expanded ? 'expanding' : 'collapsing'});
-            clearTimeout(timeout.current);
-            timeout.current = setTimeout(() => {
-                // requestAnimationFrame is used here so that the state is set after the transition has been completed.
-                // Without it, the state may be set too early, and the onTransitionEnd will not be triggered for certain
-                // properties.
-                window.requestAnimationFrame(() => {
-                    setState(state => ({...state, height: expanded ? 'auto' : 0}));
-                });
-                // Remove the motion after the transition has been completed
-                timeout.current = setTimeout(() => {
-                    setState(state => ({...state, motion: ''}));
-                }, expanded ? 0 : duration);
-            }, expanded ? duration : 0);
-        }
-        return () => clearTimeout(timeout.current);
-    }, [hasChildren, expanded, duration]);
+        contentRef.current && setState({
+            height: contentRef.current.clientHeight, // if was "auto" - measure again and change
+            motion: expanded ? 'expanding' : 'collapsing',
+        });
+    }, [expanded])
+
+    useEffect(() => {
+        // forces repaint so the next part will only take affect after previous height
+        // change and not have React merge both setStates
+        document.body.scrollTop;
+
+        if (motion === 'collapsing')
+            setState(state => ({...state, height: 0}))
+    }, [motion])
 
     return (
         <div {...props} className={classNames('collapsible', motion, {expanded}, props.className)}>
@@ -56,7 +54,7 @@ export const Collapsible = ({expanded, children, duration, onTransitionEnd, ...p
                     className='content-wrapper'
                     onTransitionEnd={handleOnTransitionEnd}
                     style={{height}}>
-                    <div className='content' ref={content}>{children}</div>
+                    <div className='content' ref={contentRef}>{children}</div>
                 </div>
             )}
         </div>
