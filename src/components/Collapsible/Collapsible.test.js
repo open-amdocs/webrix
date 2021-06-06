@@ -6,6 +6,12 @@ import Collapsible from './Collapsible';
 
 describe('<Collapsible/>', () => {
     describe('HTML Structure', () => {
+        it('should render empty Collapsible if no children supplied', () => {
+            const wrapper = mount(<Collapsible></Collapsible>);
+            expect(wrapper.find('.collapsible').children()).to.have.lengthOf(0)
+            wrapper.unmount();
+        });
+
         it('should render a collapsed Collapsible', () => {
             const wrapper = mount(<Collapsible>foo</Collapsible>);
             expect(wrapper.find('.collapsible')).to.have.length(1);
