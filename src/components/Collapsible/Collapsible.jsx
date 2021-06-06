@@ -14,14 +14,14 @@
  * limitations under the License.
  */
 
-import React, {useState, useCallback, useEffect, useRef} from 'react'
-import classNames from 'classnames'
-import {propTypes, defaultProps} from './Collapsible.props'
-import './Collapsible.scss'
+import React, {useState, useCallback, useEffect, useRef} from 'react';
+import classNames from 'classnames';
+import {propTypes, defaultProps} from './Collapsible.props';
+import './Collapsible.scss';
 
 export const Collapsible = ({expanded, children, onTransitionEnd, ...props}) => {
-    const [{motion, height}, setState] = useState({motion: '', height: expanded ? 'auto' : 0})
-    const hasChildren = !!React.Children.count(children)
+    const [{motion, height}, setState] = useState({motion: '', height: expanded ? 'auto' : 0});
+    const hasChildren = !!React.Children.count(children);
     const contentRef = useRef();
     const handleOnTransitionEnd = useCallback(e => {
         // 'transform' is the longest transition property out of multiple ones
@@ -29,14 +29,14 @@ export const Collapsible = ({expanded, children, onTransitionEnd, ...props}) => 
             setState(state => ({...state, motion: '', height: state.height ? 'auto' : '0'}));
             onTransitionEnd(e);
         }
-    }, [onTransitionEnd])
+    }, [onTransitionEnd]);
 
     useEffect(() => {
         contentRef.current && setState({
             height: contentRef.current.clientHeight, // if was "auto" - measure again and change
             motion: expanded ? 'expanding' : 'collapsing',
         });
-    }, [expanded])
+    }, [expanded]);
 
     useEffect(() => {
         // forces repaint so the next part will only take affect after previous height
@@ -45,7 +45,7 @@ export const Collapsible = ({expanded, children, onTransitionEnd, ...props}) => 
 
         if (motion === 'collapsing')
             setState(state => ({...state, height: 0}))
-    }, [motion])
+    }, [motion]);
 
     return (
         <div {...props} className={classNames('collapsible', motion, {expanded}, props.className)}>
