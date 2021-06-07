@@ -44,20 +44,21 @@ describe('<Collapsible/>', () => {
             expect(onTransitionEnd.callCount).to.eql(1);
             wrapper.unmount();
         });
-        it('should toggle visibility from collapsed to expanded', async () => {
+        it('should toggle from collapsed to expanded', async () => {
             const wrapper = mount(<Collapsible>foo</Collapsible>);
             expect(wrapper.find('.collapsible.expanded')).to.have.length(0);
 
             wrapper.setProps({expanded: true});
             wrapper.update();
-            expect(wrapper.find('.collapsible.expanded.expanding')).to.have.length(1);
+            expect(wrapper.find('.collapsible.expanded')).to.have.length(0); // should not have the "expanded" until transition is done
+            expect(wrapper.find('.collapsible.expanding')).to.have.length(1);
 
             wrapper.find('.content-wrapper').simulate('transitionEnd', {propertyName: 'transform'});
 
-            expect(wrapper.find('.collapsible.expanding')).to.have.length(0);
+            expect(wrapper.find('.collapsible.expanding')).to.have.length(0); // expading class should be removed once transition is done
             wrapper.unmount();
         });
-        it('should toggle visibility from expanded to collapsed', async () => {
+        it('should toggle from expanded to collapsed', async () => {
             const wrapper = mount(<Collapsible expanded>foo</Collapsible>);
             expect(wrapper.find('.collapsible.expanded')).to.have.length(1);
 

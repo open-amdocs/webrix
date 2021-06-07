@@ -16,7 +16,7 @@
     transform: var(--expanded, translateX(-40px)); // Slide from left
   }
 
-  &.expanded {
+  &.expanded, &.expanding {
     --expanded: 1;
   }
 }

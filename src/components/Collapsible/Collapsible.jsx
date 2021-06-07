@@ -23,6 +23,7 @@ export const Collapsible = ({expanded, children, onTransitionEnd, ...props}) => 
     const [{motion, height}, setState] = useState({motion: '', height: expanded ? 'auto' : 0});
     const hasChildren = !!React.Children.count(children);
     const contentRef = useRef();
+    const mounted = useRef();
     const handleOnTransitionEnd = useCallback(e => {
         // 'transform' is the longest transition property out of multiple ones
         if (e.propertyName === 'transform') {
@@ -32,10 +33,12 @@ export const Collapsible = ({expanded, children, onTransitionEnd, ...props}) => 
     }, [onTransitionEnd]);
 
     useEffect(() => {
-        contentRef.current && setState({
+        mounted.current && setState({
             height: contentRef.current.clientHeight, // if was "auto" - measure again and change
             motion: expanded ? 'expanding' : 'collapsing',
         });
+
+        mounted.current = true;
     }, [expanded]);
 
     useEffect(() => {
@@ -48,7 +51,7 @@ export const Collapsible = ({expanded, children, onTransitionEnd, ...props}) => 
     }, [motion]);
 
     return (
-        <div {...props} className={classNames('collapsible', motion, {expanded}, props.className)}>
+        <div {...props} className={classNames('collapsible', motion, {expanded: expanded && !motion}, props.className)}>
             {hasChildren && (
                 <div
                     className='content-wrapper'
