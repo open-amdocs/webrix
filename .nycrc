@@ -5,5 +5,5 @@
   "functions": 90,
   "statements": 90,
   "reporter": ["lcov", "text-summary", "html"],
-  "exclude": ["**/index.js"]
+  "exclude": ["**/index.js", "src/utility/mocks/mocks.js"]
 }

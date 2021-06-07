@@ -247,6 +247,10 @@ describe('<Movable/>', () => {
             shared.next = {top: 20, left: 20};
             relative(ref).onMove({}, shared);
             expect(shared.next).to.eql({top: 10, left: 10});
+
+            shared.next = {top: 20.013243, left: 20.0046234};
+            relative(ref).onBeginMove({}, shared);
+            expect(shared.next).to.eql({top: 10, left: 10});
         });
 
         it('transform()', () => {

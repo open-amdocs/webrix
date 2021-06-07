@@ -19,6 +19,7 @@ import {shallow, mount} from 'enzyme';
 import {expect} from 'chai';
 import sinon from 'sinon';
 import {ScrollShadow, __RewireAPI__ as rewireAPI} from './Shadow';
+import Scrollable from '../../Scrollable';
 import {getShadowCoefficient, getBoxShadow} from './Shadow.utils';
 import {SHADOW_THRESHOLD} from './Shadow.constants';
 
@@ -36,8 +37,7 @@ describe('<Scrollbar.Shadow/>', () => {
         it('should render a Scrollbar', () => {
             const spy = sinon.spy();
             rewireAPI.__Rewire__('getBoxShadow', spy);
-            const wrapper = mount(<ScrollShadow><div className='child' onScroll={() => null}/></ScrollShadow>);
-            wrapper.find('.child').props().onScroll({});
+            mount(<ScrollShadow><Scrollable/></ScrollShadow>);
             expect(spy.callCount).to.eql(1);
             rewireAPI.__ResetDependency__('getBoxShadow');
         });

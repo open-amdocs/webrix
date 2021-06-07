@@ -180,6 +180,11 @@ describe('<Resizable>', () => {
             shared.next = {top: 10, left: 10};
             relative({}).onResize({}, shared);
             expect(shared.next).to.eql({top: 0, left: 0});
+
+            shared.reference = {top: 10, left: 10};
+            shared.next = {top: 10.002547, left: 10.005236};
+            relative({}).onResize({}, shared);
+            expect(shared.next).to.eql({top: 0, left: 0});
         });
         it('upadate()', () => {
             const {update} = Resizable.Operations;
