@@ -22,12 +22,12 @@ import './Shadow.scss';
 
 export const ScrollShadow = forwardRef(({children}, ref) => {
     const scrollbar = React.Children.only(children);
-    const {onScroll} = scrollbar.props;
+    const {onUpdate} = scrollbar.props;
     const shadow = useRef();
     const handleOnUpdate = useCallback(e => {
         shadow.current.style.boxShadow = getBoxShadow(e);
-        onScroll(e);
-    }, [onScroll]);
+        onUpdate(e);
+    }, [onUpdate]);
 
     return (
         <>
