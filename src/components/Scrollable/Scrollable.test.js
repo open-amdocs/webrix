@@ -57,6 +57,22 @@ describe('<Scrollable/>', () => {
     });
 
     describe('Class Methods', () => {
+        it('generateEventObject()', async () => {
+            const container = {clientHeight: 100, clientWidth: 100, scrollHeight: 200, scrollWidth: 200, scrollTop: 50, scrollLeft: 50};
+            const s = new Scrollable({});
+
+            s.container = {current: container};
+            expect(s.generateEventObject()).to.eql({top: 0.5, left: 0.5, ...s.container.current});
+
+            s.container = {current: container};
+            s.container.current = {clientHeight: 100, clientWidth: 100, scrollHeight: 200, scrollWidth: 200, scrollTop: 100, scrollLeft: 100};
+            expect(s.generateEventObject()).to.eql({top: 1, left: 1, ...s.container.current});
+
+            s.container = {current: container};
+            s.container.current = {clientHeight: 100, clientWidth: 100, scrollHeight: 200, scrollWidth: 200, scrollTop: 99.5, scrollLeft: 99.5};
+            expect(s.generateEventObject()).to.eql({top: 1, left: 1, ...s.container.current, scrollTop: 100, scrollLeft: 100});
+        });
+
         it('handleOnScroll()', async () => {
             const add = sinon.spy(), remove = sinon.spy(), onScroll = sinon.spy();
             const container = {parentElement: {classList: {add, remove}}, clientHeight: 100, clientWidth: 100, scrollHeight: 200, scrollWidth: 200, scrollTop: 50, scrollLeft: 50};
@@ -83,16 +99,24 @@ describe('<Scrollable/>', () => {
         });
 
         it('updateScrollbars()', () => {
-            const s = new Scrollable({onScroll: sinon.spy()});
+            const onScroll = sinon.spy(), onUpdate = sinon.spy();
+            const s = new Scrollable({onScroll, onUpdate});
             s.vertical = {current: {update: sinon.spy()}};
             s.horizontal = {current: {update: sinon.spy()}};
             s.updateScrollbars();
             expect(s.vertical.current.update.calledOnce).to.eql(true);
             expect(s.horizontal.current.update.calledOnce).to.eql(true);
+            expect(onUpdate.callCount).to.eql(0);
+            expect(onScroll.callCount).to.eql(0);
+
+            s.container.current = {};
+            s.updateScrollbars();
+            expect(onUpdate.callCount).to.eql(1);
+            expect(onScroll.callCount).to.eql(0);
         });
 
         it('ResizeUpdate', () => {
-            const s = new Scrollable({onScroll: sinon.spy()});
+            const s = new Scrollable({onScroll: sinon.spy(), onUpdate: sinon.spy()});
             s.container = {current: {clientHeight: 100, clientWidth: 100, scrollHeight: 200, scrollWidth: 200, scrollTop: 50, scrollLeft: 50}};
             s.vertical = {current: {update: sinon.spy()}};
             s.horizontal = {current: {update: sinon.spy()}};

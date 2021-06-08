@@ -72,22 +72,9 @@ export default class Scrollable extends React.PureComponent {
 
     handleOnScroll = e => {
         const container = this.container.current;
-        const {clientHeight, clientWidth, scrollTop: st, scrollLeft: sl, scrollHeight, scrollWidth} = container;
-        const scrollTop = Math.ceil(st);
-        const scrollLeft = Math.ceil(sl);
 
         this.updateScrollbars();
-
-        this.props.onScroll({
-            top: Math.min(1, scrollTop / Math.max(1, scrollHeight - clientHeight)),
-            left: Math.min(1, scrollLeft / Math.max(1, scrollWidth - clientWidth)),
-            scrollTop,
-            scrollLeft,
-            scrollHeight,
-            scrollWidth,
-            clientHeight,
-            clientWidth,
-        });
+        this.props.onScroll(this.generateEventObject());
 
         if (e.target === container) { // Avoid adding this className on ancestors, since the scroll event bubbles up
             container.parentElement.classList.add('scrolling');
@@ -98,9 +85,31 @@ export default class Scrollable extends React.PureComponent {
         }
     };
 
+    generateEventObject = () => {
+        const container = this.container.current;
+        const {clientHeight, clientWidth, scrollTop: st, scrollLeft: sl, scrollHeight, scrollWidth} = container;
+        const scrollTop = Math.ceil(st);
+        const scrollLeft = Math.ceil(sl);
+
+        return {
+            top: Math.min(1, scrollTop / Math.max(1, scrollHeight - clientHeight)),
+            left: Math.min(1, scrollLeft / Math.max(1, scrollWidth - clientWidth)),
+            scrollTop,
+            scrollLeft,
+            scrollHeight,
+            scrollWidth,
+            clientHeight,
+            clientWidth,
+        };
+    };
+
     updateScrollbars = () => {
-        this.vertical.current.update();
-        this.horizontal.current.update();
+        this.vertical.current?.update();
+        this.horizontal.current?.update();
+
+        if (this.container.current) {
+            this.props.onUpdate(this.generateEventObject());
+        }
     };
 
     getElementProps = () => {
