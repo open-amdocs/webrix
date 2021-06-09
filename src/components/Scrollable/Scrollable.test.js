@@ -30,47 +30,37 @@ describe('<Scrollable/>', () => {
 
         it('getSnapshotBeforeUpdate()', () => {
             const s = new Scrollable();
-            s.container = {current: {scrollHeight: 0, scrollWidth: 0}};
-            expect(s.getSnapshotBeforeUpdate().shouldUpdate).to.eql(true);
-            expect(s.getSnapshotBeforeUpdate().shouldUpdate).to.eql(false);
-            s.container = {current: {scrollHeight: 10, scrollWidth: 0}};
-            expect(s.getSnapshotBeforeUpdate().shouldUpdate).to.eql(true);
-            s.container = {current: {scrollHeight: 10, scrollWidth: 10}};
-            expect(s.getSnapshotBeforeUpdate().shouldUpdate).to.eql(true);
+            s.container = {current: {scrollTop: 0, scrollLeft: 0}};
+            expect(s.getSnapshotBeforeUpdate()).to.eql(s.container.current);
         });
 
         it('componentDidUpdate()', () => {
             const s = new Scrollable({scrollOnDOMChange: false});
             s.container = {current: {scrollTop: 0}};
-            s.componentDidUpdate(null, null, {scrollTop: 50, scrollLeft: 50, shouldUpdate: false});
+            s.updateScrollbars = sinon.spy();
+            s.componentDidUpdate(null, null, {scrollTop: 50, scrollLeft: 50});
             expect(s.container.current.scrollTop).to.eql(50);
             expect(s.container.current.scrollLeft).to.eql(50);
-
-            // Should call updateScrollbars()
-            s.container = {current: {scrollHeight: 50}};
-            s.updateScrollbars = sinon.spy();
-            s.componentDidUpdate(null, null, {shouldUpdate: false});
-            expect(s.updateScrollbars.callCount).to.eql(0);
-            s.componentDidUpdate(null, null, {shouldUpdate: true});
             expect(s.updateScrollbars.callCount).to.eql(1);
         });
     });
 
     describe('Class Methods', () => {
-        it('generateEventObject()', async () => {
+        it('getEvent()', async () => {
             const container = {clientHeight: 100, clientWidth: 100, scrollHeight: 200, scrollWidth: 200, scrollTop: 50, scrollLeft: 50};
             const s = new Scrollable({});
 
             s.container = {current: container};
-            expect(s.generateEventObject()).to.eql({top: 0.5, left: 0.5, ...s.container.current});
+            expect(s.getEvent()).to.eql({top: 0.5, left: 0.5, ...s.container.current});
 
-            s.container = {current: container};
             s.container.current = {clientHeight: 100, clientWidth: 100, scrollHeight: 200, scrollWidth: 200, scrollTop: 100, scrollLeft: 100};
-            expect(s.generateEventObject()).to.eql({top: 1, left: 1, ...s.container.current});
+            expect(s.getEvent()).to.eql({top: 1, left: 1, ...s.container.current});
 
-            s.container = {current: container};
             s.container.current = {clientHeight: 100, clientWidth: 100, scrollHeight: 200, scrollWidth: 200, scrollTop: 99.5, scrollLeft: 99.5};
-            expect(s.generateEventObject()).to.eql({top: 1, left: 1, ...s.container.current, scrollTop: 100, scrollLeft: 100});
+            expect(s.getEvent()).to.eql({top: 1, left: 1, ...s.container.current, scrollTop: 100, scrollLeft: 100});
+
+            s.container.current = null;
+            expect(s.getEvent()).to.eql({});
         });
 
         it('handleOnScroll()', async () => {
@@ -81,12 +71,13 @@ describe('<Scrollable/>', () => {
             s.updateScrollbars = sinon.spy();
 
             // Should not add class
+            s.event.next = s.getEvent();
             s.handleOnScroll({});
             expect(s.updateScrollbars.callCount).to.eql(1);
             expect(add.callCount).to.eql(0);
             expect(remove.callCount).to.eql(0);
             expect(onScroll.callCount).to.eql(1);
-            expect(onScroll.calledWith({clientHeight: 100, clientWidth: 100, scrollTop: 50, scrollLeft: 50, scrollHeight: 200, scrollWidth: 200, top: 0.5, left: 0.5})).to.eql(true);
+            expect(onScroll.calledWith(s.event.next)).to.eql(true);
 
             // Should add and remove class
             s.handleOnScroll({target: container});
@@ -99,20 +90,20 @@ describe('<Scrollable/>', () => {
         });
 
         it('updateScrollbars()', () => {
-            const onScroll = sinon.spy(), onUpdate = sinon.spy();
-            const s = new Scrollable({onScroll, onUpdate});
+            const onUpdate = sinon.spy();
+            const s = new Scrollable({onUpdate});
             s.vertical = {current: {update: sinon.spy()}};
             s.horizontal = {current: {update: sinon.spy()}};
             s.updateScrollbars();
-            expect(s.vertical.current.update.calledOnce).to.eql(true);
-            expect(s.horizontal.current.update.calledOnce).to.eql(true);
+            expect(s.vertical.current.update.callCount).to.eql(0);
+            expect(s.horizontal.current.update.callCount).to.eql(0);
             expect(onUpdate.callCount).to.eql(0);
-            expect(onScroll.callCount).to.eql(0);
 
             s.container.current = {};
             s.updateScrollbars();
+            expect(s.vertical.current.update.callCount).to.eql(1);
+            expect(s.horizontal.current.update.callCount).to.eql(1);
             expect(onUpdate.callCount).to.eql(1);
-            expect(onScroll.callCount).to.eql(0);
         });
 
         it('ResizeUpdate', () => {

@@ -17,6 +17,7 @@
 import React from 'react';
 import classNames from 'classnames';
 import {copyComponentRef, findChildByType} from 'utility/react';
+import {isEqual} from 'utility/object';
 import ResizeObserver from 'tools/ResizeObserver';
 import {VerticalScrollbarPlaceholder, HorizontalScrollbarPlaceholder, VerticalScrollbar, HorizontalScrollbar} from './components';
 import {propTypes, defaultProps} from './Scrollable.props';
@@ -33,21 +34,19 @@ export default class Scrollable extends React.PureComponent {
         this.container = React.createRef();
         this.horizontal = React.createRef();
         this.vertical = React.createRef();
-        this.prev = {};
+        this.event = {prev: {}, next: {}};
     }
 
     getSnapshotBeforeUpdate() {
-        const {scrollTop, scrollLeft, scrollHeight, scrollWidth} = this.container.current;
-        const shouldUpdate = this.prev.scrollHeight !== scrollHeight || this.prev.scrollWidth !== scrollWidth;
-        this.prev = {scrollHeight, scrollWidth};
-        return {scrollTop, scrollLeft, shouldUpdate};
+        const {scrollTop, scrollLeft} = this.container.current;
+        return {scrollTop, scrollLeft};
     }
 
     componentDidMount() {
         this.updateScrollbars();
     }
 
-    componentDidUpdate(prevProps, prevState, {scrollTop, scrollLeft, shouldUpdate}) {
+    componentDidUpdate(prevProps, prevState, {scrollTop, scrollLeft}) {
         if (!this.props.scrollOnDOMChange) {
             // Sometimes DOM changes trigger a scroll by the browser.
             // On the other hand, we sometimes use the onScroll event to
@@ -65,16 +64,14 @@ export default class Scrollable extends React.PureComponent {
 
         // While the <ResizeObserver/> observes dimension changes on the container,
         // this part observes changes to the dimensions of the content.
-        if (shouldUpdate) {
-            this.updateScrollbars();
-        }
+        this.updateScrollbars();
     }
 
     handleOnScroll = e => {
         const container = this.container.current;
 
         this.updateScrollbars();
-        this.props.onScroll(this.generateEventObject());
+        this.props.onScroll(this.event.next);
 
         if (e.target === container) { // Avoid adding this className on ancestors, since the scroll event bubbles up
             container.parentElement.classList.add('scrolling');
@@ -85,7 +82,11 @@ export default class Scrollable extends React.PureComponent {
         }
     };
 
-    generateEventObject = () => {
+    getEvent = () => {
+        if (!this.container.current) {
+            return {};
+        }
+
         const container = this.container.current;
         const {clientHeight, clientWidth, scrollTop: st, scrollLeft: sl, scrollHeight, scrollWidth} = container;
         const scrollTop = Math.ceil(st);
@@ -104,12 +105,13 @@ export default class Scrollable extends React.PureComponent {
     };
 
     updateScrollbars = () => {
-        this.vertical.current?.update();
-        this.horizontal.current?.update();
-
-        if (this.container.current) {
-            this.props.onUpdate(this.generateEventObject());
+        this.event.next = this.getEvent();
+        if (!isEqual(this.event.prev, this.event.next)) {
+            this.vertical.current.update();
+            this.horizontal.current.update();
+            this.props.onUpdate(this.event.next);
         }
+        this.event.prev = this.event.next;
     };
 
     getElementProps = () => {
