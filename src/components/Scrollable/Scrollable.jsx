@@ -33,18 +33,21 @@ export default class Scrollable extends React.PureComponent {
         this.container = React.createRef();
         this.horizontal = React.createRef();
         this.vertical = React.createRef();
+        this.prev = {};
     }
 
     getSnapshotBeforeUpdate() {
         const {scrollTop, scrollLeft, scrollHeight, scrollWidth} = this.container.current;
-        return {scrollTop, scrollLeft, scrollHeight, scrollWidth};
+        const shouldUpdate = this.prev.scrollHeight !== scrollHeight || this.prev.scrollWidth !== scrollWidth;
+        this.prev = {scrollHeight, scrollWidth};
+        return {scrollTop, scrollLeft, shouldUpdate};
     }
 
     componentDidMount() {
         this.updateScrollbars();
     }
 
-    componentDidUpdate(prevProps, prevState, {scrollTop, scrollLeft, scrollHeight, scrollWidth}) {
+    componentDidUpdate(prevProps, prevState, {scrollTop, scrollLeft, shouldUpdate}) {
         if (!this.props.scrollOnDOMChange) {
             // Sometimes DOM changes trigger a scroll by the browser.
             // On the other hand, we sometimes use the onScroll event to
@@ -62,31 +65,18 @@ export default class Scrollable extends React.PureComponent {
 
         // While the <ResizeObserver/> observes dimension changes on the container,
         // this part observes changes to the dimensions of the content.
-        if (scrollHeight !== this.container.current.scrollHeight ||
-            scrollWidth !== this.container.current.scrollWidth) {
+        if (shouldUpdate) {
             this.updateScrollbars();
         }
     }
 
     handleOnScroll = e => {
-        this.updateScrollbars();
         const container = this.container.current;
-        if (e.target === container) { // Avoid adding this className on ancestors, since the scroll event bubbles up
-            container.parentElement.classList.add('scrolling');
-            clearTimeout(this.timeout);
-            this.timeout = setTimeout(() => {
-                container.parentElement.classList.remove('scrolling');
-            }, SCROLLING_CLASS_REMOVAL_DELAY);
-        }
-    };
-
-    updateScrollbars = () => {
-        const {clientHeight, clientWidth, scrollTop: st, scrollLeft: sl, scrollHeight, scrollWidth} = this.container.current;
+        const {clientHeight, clientWidth, scrollTop: st, scrollLeft: sl, scrollHeight, scrollWidth} = container;
         const scrollTop = Math.ceil(st);
         const scrollLeft = Math.ceil(sl);
 
-        this.vertical.current.update();
-        this.horizontal.current.update();
+        this.updateScrollbars();
 
         this.props.onScroll({
             top: Math.min(1, scrollTop / Math.max(1, scrollHeight - clientHeight)),
@@ -98,6 +88,19 @@ export default class Scrollable extends React.PureComponent {
             clientHeight,
             clientWidth,
         });
+
+        if (e.target === container) { // Avoid adding this className on ancestors, since the scroll event bubbles up
+            container.parentElement.classList.add('scrolling');
+            clearTimeout(this.timeout);
+            this.timeout = setTimeout(() => {
+                container.parentElement.classList.remove('scrolling');
+            }, SCROLLING_CLASS_REMOVAL_DELAY);
+        }
+    };
+
+    updateScrollbars = () => {
+        this.vertical.current.update();
+        this.horizontal.current.update();
     };
 
     getElementProps = () => {
@@ -109,6 +112,16 @@ export default class Scrollable extends React.PureComponent {
         }
     };
 
+    handleOnTransitionEnd = e => {
+        // Sometimes internal dimension changes don't occur immediately due to transitions/animations.
+        // These changes are not detected by the <ResizeObserver/> since they are internal, and are
+        // detected too early by getSnapshotBeforeUpdate() since the transition/animation is completed
+        // some time after the DOM change. This handler covers for that.
+        if ('height' === e.propertyName || 'width' === e.propertyName) {
+            this.updateScrollbars();
+        }
+    };
+
     render() {
         const {children, style, element} = this.props;
         const vsb = findChildByType(children, VerticalScrollbarPlaceholder);
@@ -116,7 +129,7 @@ export default class Scrollable extends React.PureComponent {
         const content = React.Children.toArray(children).filter(child => ![VerticalScrollbarPlaceholder, HorizontalScrollbarPlaceholder].includes(child.type));
         return (
             <ResizeObserver onResize={this.updateScrollbars}>
-                <div className='scrollbar' style={style}>
+                <div className='scrollbar' style={style} onTransitionEnd={this.handleOnTransitionEnd}>
                     {React.cloneElement(element, this.getElementProps(), content)}
                     {React.cloneElement(vsb ? vsb.props.children : <VerticalScrollbar/>, {ref: this.vertical, container: this.container})}
                     {React.cloneElement(hsb ? hsb.props.children : <HorizontalScrollbar/>, {ref: this.horizontal, container: this.container})}

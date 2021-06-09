@@ -18,12 +18,13 @@ import React, {useEffect, useRef} from 'react';
 import {node, func} from 'prop-types';
 import {copyComponentRef} from 'utility/react';
 import {readResizeObserverEntry} from 'utility/rect';
+import {ResizeObserver as NativeResizeObserver} from 'utility/mocks';
 import {noop} from 'utility/memory';
 
 const ResizeObserver = ({children, onResize}) => {
     const child = React.Children.only(children);
     const ref = useRef();
-    const observer = useRef(new window.ResizeObserver(entries => {
+    const observer = useRef(new NativeResizeObserver(entries => {
         onResize(readResizeObserverEntry(entries[0]));
     }));
     useEffect(() => {
