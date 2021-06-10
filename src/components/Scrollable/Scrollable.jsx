@@ -106,6 +106,8 @@ export default class Scrollable extends React.PureComponent {
 
     updateScrollbars = () => {
         this.event.next = this.getEvent();
+        // This check ensures that updates (which are a potentially expensive operation)
+        // are only executed if the applicable scroll properties have changed
         if (!isEqual(this.event.prev, this.event.next)) {
             this.vertical.current.update();
             this.horizontal.current.update();
