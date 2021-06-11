@@ -21,8 +21,8 @@
   <a href="https://packagequality.com/#?package=webrix">
     <img src="https://packagequality.com/shield/webrix.svg" />
   </a>
-  <a href="https://github.com/semantic-release/semantic-release">
-    <img src="https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg" />
+  <a href="https://bundlephobia.com/result?p=webrix@latest">
+    <img src="https://badgen.net/bundlephobia/minzip/webrix@latest" />
   </a>
   <a href="https://codecov.io/gh/open-amdocs/webrix">
     <img src="https://codecov.io/gh/open-amdocs/webrix/branch/master/graph/badge.svg" />
