@@ -1,0 +1,7 @@
+.draggable {
+
+  &.clone {
+    position: absolute;
+    pointer-events: none; // For detecting hover and other events on items below
+  }
+}

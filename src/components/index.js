@@ -1,4 +1,5 @@
 export {default as Collapsible} from './Collapsible';
+export {default as Draggable} from './Draggable';
 export {default as Movable} from './Movable';
 export {default as Resizable} from './Resizable';
 export {default as Scrollable} from './Scrollable';
