@@ -29,7 +29,7 @@ export const useSource = ({data = {}, onDrop = noop, canDrag = () => true, canDr
     return {
         onBeginDrag: useCallback(() => {
             setSource(source.current);
-        }, []),
+        }, [setSource]),
         onDrop: useCallback(() => {
             const target = getTarget();
             if (target) {
@@ -38,13 +38,13 @@ export const useSource = ({data = {}, onDrop = noop, canDrag = () => true, canDr
                 source.current.onDrop(target);
             }
             setSource(null);
-        }, []),
+        }, [setSource, getTarget]),
         canDrag: useCallback(() => {
             return source.current.canDrag();
         }, []),
         canDrop: useCallback(() => {
             return source.current.canDrop(getTarget());
-        }, []),
+        }, [getTarget]),
     };
 };
 
@@ -59,7 +59,7 @@ export const useTarget = ({data = {}, onDrop = noop, onBeginHover = noop, onEndH
             if (source) { // Hover can occur without dragging, in which case source will be null
                 target.current.onBeginHover(source);
             }
-        }, []),
+        }, [setTarget, getSource]),
         onEndHover: useCallback((e) => {
             e.stopPropagation(); // Allow nested targets
             const source = getSource();
@@ -67,7 +67,7 @@ export const useTarget = ({data = {}, onDrop = noop, onBeginHover = noop, onEndH
                 target.current.onEndHover(source);
             }
             setTarget(null);
-        }, []),
+        }, [setTarget, getSource]),
         canDrag: useCallback(() => false, []),
     }
 };

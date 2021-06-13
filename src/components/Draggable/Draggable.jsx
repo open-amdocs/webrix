@@ -17,6 +17,7 @@
 import React, {useRef, useMemo, useState, useContext} from 'react';
 import ReactDOM from 'react-dom';
 import cls from 'classnames';
+import {omit} from 'utility/object';
 import Movable from '../Movable';
 import {propTypes, defaultProps} from './Draggable.props';
 import {update} from './Draggable.operations';
@@ -25,14 +26,14 @@ import './Draggable.scss';
 
 const {move} = Movable.Operations;
 
-export const Draggable = ({children, canDrag, canDrop, onBeginDrag, onDrag, onDrop, onBeginHover, onEndHover, dragImage, ...props}) => {
+export const Draggable = ({children, canDrag, onBeginDrag, onDrag, onDrop, onBeginHover, onEndHover, dragImage, ...props}) => {
     const movable = useRef();
     const [rect, setRect] = useState();
     const context = useContext(Context);
     const movableProps = Movable.useMove(useMemo(() => [
         move(movable),
         update({ref: movable, setRect, canDrag, onBeginDrag, onDrag, onDrop, context}),
-    ], [movable, setRect, canDrag, onBeginDrag, onDrag, onDrop]));
+    ], [movable, setRect, canDrag, onBeginDrag, onDrag, onDrop, context]));
 
     return (
         <>
@@ -42,7 +43,7 @@ export const Draggable = ({children, canDrag, canDrop, onBeginDrag, onDrag, onDr
                 </div>
             ), document.body)}
             <Movable
-                {...props}
+                {...omit(props, 'canDrop')}
                 {...movableProps}
                 ref={movable}
                 className={cls('draggable', props.className)}
