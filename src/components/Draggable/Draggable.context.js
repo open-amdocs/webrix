@@ -21,12 +21,13 @@ export const Context = React.createContext({});
 
 const ContextProvider = ({children}) => {
     const monitor = useRef({source: null, target: null});
+    const event = useRef({});
     const getSource = () => monitor.current.source;
     const setSource = source => monitor.current.source = source;
     const getTarget = () => monitor.current.target;
     const setTarget = source => monitor.current.target = source;
     return (
-        <Context.Provider value={useMemo(() => ({getSource, setSource, getTarget, setTarget}), [])}>
+        <Context.Provider value={useMemo(() => ({getSource, setSource, getTarget, setTarget, event}), [])}>
             {children}
         </Context.Provider>
     );

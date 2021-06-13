@@ -14,22 +14,24 @@
  * limitations under the License.
  */
 
-import React, {useRef, useMemo, useState} from 'react';
+import React, {useRef, useMemo, useState, useContext} from 'react';
 import ReactDOM from 'react-dom';
 import cls from 'classnames';
 import Movable from '../Movable';
 import {propTypes, defaultProps} from './Draggable.props';
 import {update} from './Draggable.operations';
+import {Context} from './Draggable.context';
 import './Draggable.scss';
 
 const {move} = Movable.Operations;
 
-export const Draggable = ({children, canDrag, onBeginDrag, onDrag, onDrop, onBeginHover, onEndHover, dragImage, ...props}) => {
+export const Draggable = ({children, canDrag, canDrop, onBeginDrag, onDrag, onDrop, onBeginHover, onEndHover, dragImage, ...props}) => {
     const movable = useRef();
     const [rect, setRect] = useState();
+    const context = useContext(Context);
     const movableProps = Movable.useMove(useMemo(() => [
         move(movable),
-        update(movable, setRect, canDrag, onBeginDrag, onDrag, onDrop),
+        update({ref: movable, setRect, canDrag, onBeginDrag, onDrag, onDrop, context}),
     ], [movable, setRect, canDrag, onBeginDrag, onDrag, onDrop]));
 
     return (
@@ -44,8 +46,8 @@ export const Draggable = ({children, canDrag, onBeginDrag, onDrag, onDrop, onBeg
                 {...movableProps}
                 ref={movable}
                 className={cls('draggable', props.className)}
-                onMouseEnter={onBeginHover}
-                onMouseLeave={onEndHover}>
+                onMouseOver={onBeginHover}
+                onMouseOut={onEndHover}>
                 {children}
             </Movable>
         </>

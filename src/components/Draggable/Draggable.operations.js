@@ -16,25 +16,30 @@
 
 import Movable from '../Movable';
 
-export const update = (ref, setRect, canDrag, onBeginDrag, onDrag, onDrop) => Movable.Operations.createOperation({
+export const update = ({ref, setRect, canDrag, onBeginDrag, onDrag, onDrop, context}) => Movable.Operations.createOperation({
     onBeginMove: (e, shared) => {
-        shared.canDrag = canDrag(e);
+        context.event.current = e;
+        shared.canDrag = canDrag();
         if (shared.canDrag) {
-            onBeginDrag(e);
+            e.stopPropagation(); // Allow nested draggable by preventing the event from bubbling up
+            onBeginDrag();
         }
     },
     onMove: (e, shared) => {
+        context.event.current = e;
         if (shared.canDrag) {
-            onDrag(e);
+            onDrag();
             setRect({...shared.next});
             ref.current.classList.add('dragging');
         }
     },
     onEndMove: (e, shared) => {
+        context.event.current = e;
         if (shared.canDrag) {
-            onDrop(e);
+            onDrop();
             setRect(null);
             ref.current.classList.remove('dragging');
         }
+        context.event.current = {};
     },
 });

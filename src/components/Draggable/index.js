@@ -16,10 +16,11 @@
 
 import Draggable from './Draggable';
 import Context from './Draggable.context';
-import {useSource, useTarget} from './Draggable.hooks';
+import {useMonitor, useSource, useTarget} from './Draggable.hooks';
 
 Draggable.Context = Context;
 Draggable.useSource = useSource;
 Draggable.useTarget = useTarget;
+Draggable.useMonitor = useMonitor;
 
 export default Draggable;
