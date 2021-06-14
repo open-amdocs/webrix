@@ -3,6 +3,7 @@ export {default as Draggable} from './Draggable';
 export {default as Movable} from './Movable';
 export {default as Resizable} from './Resizable';
 export {default as Scrollable} from './Scrollable';
+export {default as Sortable} from './Sortable';
 export {default as Stackable} from './Stackable';
 export {default as Scalable} from './Scalable';
 export {default as Pannable} from './Pannable';
