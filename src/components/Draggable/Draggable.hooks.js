@@ -23,24 +23,29 @@ export const useMonitor = () => {
     return {getEvent: () => event.current, getSource, getTarget};
 };
 
-export const useSource = ({data = {}, onDrop = noop, canDrag = () => true, canDrop = () => true}) => {
+export const useSource = ({data = {}, onBeginDrag = noop, onDrag = noop, onDrop = noop, canDrag = () => true, canDrop = () => true}) => {
     const {setSource, getTarget} = useContext(Context);
-    const source = useRef({data, onDrop, canDrag, canDrop});
+    const source = useRef({});
+    source.current = {data, onDrop, onDrag, canDrag, canDrop, onBeginDrag};
     return {
         onBeginDrag: useCallback(() => {
-            setSource(source.current);
+            setSource(source);
+            source.current.onBeginDrag();
         }, [setSource]),
         onDrop: useCallback(() => {
             const target = getTarget();
             if (target) {
                 target.onDrop(source.current);
-                target.onEndHover();
+                target.onEndHover(source.current);
                 source.current.onDrop(target);
             }
-            setSource(null);
+            setSource({current: null});
         }, [setSource, getTarget]),
         canDrag: useCallback(() => {
             return source.current.canDrag();
+        }, []),
+        onDrag: useCallback(() => {
+            return source.current.onDrag();
         }, []),
         canDrop: useCallback(() => {
             return source.current.canDrop(getTarget());
@@ -50,24 +55,35 @@ export const useSource = ({data = {}, onDrop = noop, canDrag = () => true, canDr
 
 export const useTarget = ({data = {}, onDrop = noop, onBeginHover = noop, onEndHover = noop}) => {
     const {setTarget, getSource} = useContext(Context);
-    const target = useRef({data, onDrop, onBeginHover, onEndHover});
+    const target = useRef({});
+    target.current = {data, onDrop, onBeginHover, onEndHover};
     return {
-        onBeginHover: useCallback((e) => {
+        onBeginHover: useCallback(e => {
             e.stopPropagation(); // Allow nested targets
-            setTarget(target.current);
             const source = getSource();
-            if (source) { // Hover can occur without dragging, in which case source will be null
+            if (source && e.target.classList.contains('draggable')) { // Hover can occur without dragging, in which case source will be null
+                setTarget(target);
                 target.current.onBeginHover(source);
             }
         }, [setTarget, getSource]),
-        onEndHover: useCallback((e) => {
+        onEndHover: useCallback(e => {
             e.stopPropagation(); // Allow nested targets
             const source = getSource();
-            if (source) { // Hover can occur without dragging, in which case source will be null
+            if (source && e.target.classList.contains('draggable')) { // Hover can occur without dragging, in which case source will be null
                 target.current.onEndHover(source);
             }
-            setTarget(null);
+            setTarget({current: null});
         }, [setTarget, getSource]),
         canDrag: useCallback(() => false, []),
     }
 };
+
+export const useCombined = (source, target) => ({
+    onBeginDrag: source.onBeginDrag,
+    onDrop: source.onDrop,
+    canDrag: source.canDrag,
+    canDrop: source.canDrop,
+    onDrag: source.onDrag,
+    onBeginHover: target.onBeginHover,
+    onEndHover: target.onEndHover,
+});

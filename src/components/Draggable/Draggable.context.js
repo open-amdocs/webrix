@@ -20,12 +20,13 @@ import {node} from 'prop-types';
 export const Context = React.createContext({});
 
 const ContextProvider = ({children}) => {
-    const monitor = useRef({source: null, target: null});
+    const source = useRef({current: null});
+    const target = useRef({current: null});
     const event = useRef({});
-    const getSource = () => monitor.current.source;
-    const setSource = source => monitor.current.source = source;
-    const getTarget = () => monitor.current.target;
-    const setTarget = source => monitor.current.target = source;
+    const getSource = () => source.current.current;
+    const setSource = s => source.current = s;
+    const getTarget = () => target.current.current;
+    const setTarget = t => target.current = t;
     return (
         <Context.Provider value={useMemo(() => ({getSource, setSource, getTarget, setTarget, event}), [])}>
             {children}
