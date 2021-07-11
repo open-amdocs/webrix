@@ -21,6 +21,9 @@ import useAnimationFrame from 'hooks/useAnimationFrame';
 
 export const getBoundingRects = refs => (
     refs.map(ref => {
+        if (typeof window === 'undefined') {
+            return undefined;
+        }
         if (ref.current) {
             return ref.current.getBoundingClientRect();
         }
