@@ -15,6 +15,7 @@
  */
 
 import {useBoundingRectObserver} from 'hooks';
+import {_window} from 'utility/mocks';
 
 export const usePosition = ({target, container, reference, placements, default: _default, onPlacement, strategy}) => {
     const {start} = useBoundingRectObserver((rbr, tbr, cbr, wbr) => {
@@ -22,6 +23,6 @@ export const usePosition = ({target, container, reference, placements, default: 
         if (!tbr || top !== tbr.top || left !== tbr.left) {
             onPlacement({top, left, name});
         }
-    }, reference, target, container, window);
+    }, reference, target, container, _window);
     start();
 };

@@ -43,13 +43,13 @@ export const useClickOutside = callback => {
     const isClickedInside = useRef(false);
     const isClickedOutside = useContext(OverrideContext);
 
-    const handleDocumentMouseDown = useCallback(e =>
-        isClickedInside.current = !isClickedOutside(isClickedInside.current, e),
-    [isClickedInside, isClickedOutside]);
+    const handleDocumentMouseDown = useCallback(e => {
+        isClickedInside.current = !isClickedOutside(isClickedInside.current, e)
+    }, [isClickedInside, isClickedOutside]);
 
-    const handleDocumentMouseUp = useCallback(e =>
-        isClickedInside.current ? isClickedInside.current = false : callback(e),
-    [callback, isClickedInside]);
+    const handleDocumentMouseUp = useCallback(e => {
+        isClickedInside.current ? isClickedInside.current = false : callback(e)
+    }, [callback, isClickedInside]);
 
     useEffect(() => {
         document.addEventListener('mousedown', handleDocumentMouseDown);

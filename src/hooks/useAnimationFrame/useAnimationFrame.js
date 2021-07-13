@@ -15,6 +15,7 @@
  */
 
 import {useCallback, useEffect, useRef} from 'react';
+import {requestAnimationFrame, cancelAnimationFrame} from 'utility/mocks';
 
 export default (callback, recurring = false) => {
     const cb = useRef(callback);
@@ -23,8 +24,8 @@ export default (callback, recurring = false) => {
     cb.current = callback;
 
     const start = useCallback((...args) => {
-        window.cancelAnimationFrame(id.current);
-        id.current = window.requestAnimationFrame(() => {
+        cancelAnimationFrame(id.current);
+        id.current = requestAnimationFrame(() => {
             cb.current(...args);
             if (recurring) {
                 start(...args);
@@ -33,10 +34,10 @@ export default (callback, recurring = false) => {
     }, [recurring]);
 
     const stop = useCallback(() => {
-        window.cancelAnimationFrame(id.current);
+        cancelAnimationFrame(id.current);
     }, []);
 
-    useEffect(() => () => window.cancelAnimationFrame(id.current), []);
+    useEffect(() => () => cancelAnimationFrame(id.current), []);
 
     return {start, stop};
 };
