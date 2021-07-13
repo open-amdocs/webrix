@@ -1,5 +1,7 @@
+@use "sass:math";
+
 $size: 20px;
-$offset: $size / -2;
+$offset: math.div($size, -2);
 
 .resizable {
   position: absolute;
