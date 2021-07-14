@@ -16,6 +16,7 @@
 
 import React, {useRef, useCallback, useContext} from 'react';
 import {func, node} from 'prop-types';
+import {_document} from 'utility/mocks';
 import useEventListener from '../useEventListener';
 import OverrideContext from './useClickOutside.context';
 
@@ -46,11 +47,11 @@ export const useClickOutside = callback => {
 
     useEventListener('mousedown', e => {
         isClickedInside.current = !isClickedOutside(isClickedInside.current, e)
-    }, {current: document});
+    }, {current: _document});
 
     useEventListener('mouseup', e => {
         isClickedInside.current ? isClickedInside.current = false : callback(e)
-    }, {current: document});
+    }, {current: _document});
 
     return useCallback(() => {
         isClickedInside.current = true;
