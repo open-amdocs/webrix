@@ -1,6 +1,5 @@
 import React from 'react';
 import {act} from 'react-dom/test-utils';
-import {expect} from 'chai';
 import {mount} from 'enzyme';
 import useDimensions, {__RewireAPI__ as rewireAPI} from './useDimensions';
 
@@ -20,13 +19,13 @@ describe('useDimensions()', () => {
             observe = () => observed++;
         });
         act(() => {wrapper = mount(<Elem/>)});
-        expect(wrapper.text()).to.eql('0,0');
-        expect(observed).to.eql(1);
-        expect(disconnected).to.eql(0);
+        expect(wrapper.text()).toEqual('0,0');
+        expect(observed).toEqual(1);
+        expect(disconnected).toEqual(0);
 
         act(() => {wrapper.unmount()});
-        expect(observed).to.eql(1);
-        expect(disconnected).to.eql(1);
+        expect(observed).toEqual(1);
+        expect(disconnected).toEqual(1);
         rewireAPI.__ResetDependency__('ResizeObserver');
     });
 });

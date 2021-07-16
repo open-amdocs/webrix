@@ -1,6 +1,5 @@
 import React from 'react';
 import {mount} from 'enzyme';
-import {expect} from 'chai';
 import sinon from 'sinon';
 import {noop} from 'utility/memory';
 import VerticalScrollbar from './VerticalScrollbar.jsx';
@@ -11,8 +10,8 @@ describe('<VerticalScrollbar/>', () => {
     describe('HTML structure', () => {
         it('should render a Scrollbar', () => {
             const wrapper = mount(<VerticalScrollbar/>);
-            expect(wrapper.find('.scrollbar-thumb')).to.have.length(2);
-            expect(wrapper.find('.scrollbar-thumb-inner')).to.have.length(1);
+            expect(wrapper.find('.scrollbar-thumb')).toHaveLength(2);
+            expect(wrapper.find('.scrollbar-thumb-inner')).toHaveLength(1);
         });
     });
 
@@ -22,18 +21,18 @@ describe('<VerticalScrollbar/>', () => {
             const s = new VerticalScrollbar({container});
             s.thumb = {current: {contains: () => true}};
             s.handleOnClick({});
-            expect(container.current.scrollTop).to.eql(0);
+            expect(container.current.scrollTop).toEqual(0);
 
             s.track = {current: {getBoundingClientRect: () => ({top: 0, height: 100})}};
             s.thumb.current.contains = () => false;
             s.handleOnClick({clientY: 100});
-            expect(container.current.scrollTop).to.eql(200);
+            expect(container.current.scrollTop).toEqual(200);
         });
         it('handleOnBeginMove()', () => {
             const style = {};
             const s = new VerticalScrollbar({container: {current: {scrollTop: 50, style}}});
             s.handleOnBeginMove({stopPropagation: noop, preventDefault: noop});
-            expect(s.initialScroll).to.eql(s.props.container.current.scrollTop);
+            expect(s.initialScroll).toEqual(s.props.container.current.scrollTop);
         });
         it('handleOnMove()', () => {
             const s = new VerticalScrollbar({});
@@ -43,7 +42,7 @@ describe('<VerticalScrollbar/>', () => {
             s.initialMousePos = 25;
             s.initialScroll = 20;
             s.handleOnMove({dy: 75});
-            expect(s.props.container.current.scrollTop).to.eql(395);
+            expect(s.props.container.current.scrollTop).toEqual(395);
         });
     });
 
@@ -52,8 +51,8 @@ describe('<VerticalScrollbar/>', () => {
             const s = new VerticalScrollbar({container: {current: {clientHeight: 10, scrollHeight: 20}}, onUpdate: sinon.spy()});
             s.track = {current: {classList: {add: sinon.spy()}, style: {}}};
             s.update();
-            expect(s.track.current.classList.add.calledOnce).to.eql(true);
-            expect(s.props.onUpdate.calledOnce).to.eql(true);
+            expect(s.track.current.classList.add.calledOnce).toEqual(true);
+            expect(s.props.onUpdate.calledOnce).toEqual(true);
         });
     });
 
@@ -63,7 +62,7 @@ describe('<VerticalScrollbar/>', () => {
             const thumb = {style: {}};
             const container = {scrollHeight: 200, scrollTop: 50, clientHeight: 100};
             onUpdate(track, thumb, container);
-            expect(thumb.style).to.eql({top: '25px', height: '50px'});
+            expect(thumb.style).toEqual({top: '25px', height: '50px'});
         });
     });
 });
