@@ -1,6 +1,5 @@
 import React, {useState} from 'react';
 import {act} from 'react-dom/test-utils';
-import {expect} from 'chai';
 import {shallow} from 'enzyme';
 import usePrevious from './usePrevious';
 
@@ -16,6 +15,6 @@ describe('usePrevious()', () => {
     it('Should return the previous value', () => {
         let wrapper = null;
         act(() => {wrapper = shallow(<Elem next={1}/>)});
-        expect(wrapper.find('.prev').text()).to.eql('1');
+        expect(wrapper.find('.prev').text()).toEqual('1');
     });
 });

@@ -1,10 +1,9 @@
 import {_document, _window, Element, DOMRect, ResizeObserver} from './mocks';
-import {expect} from 'chai';
 
 it('Mock', () => {
-    expect(_window).to.eql(global.window);
-    expect(_document).to.eql(global.document);
-    expect(Element).to.eql(global.window.Element);
-    expect(DOMRect).to.eql(global.window.DOMRect);
-    expect(ResizeObserver).to.eql(global.window.ResizeObserver);
+    expect(_window).toEqual(global.window);
+    expect(_document).toEqual(global.document);
+    expect(Element).toEqual(global.window.Element);
+    expect(DOMRect).toEqual(global.window.DOMRect);
+    expect(ResizeObserver).toEqual(global.window.ResizeObserver);
 });
