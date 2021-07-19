@@ -18,31 +18,34 @@ const Elem = () => {
 
 describe('useDebounce()', () => {
     it('Should delay calls', async () => {
-        let wrapper = null;
-        act(() => {wrapper = mount(<Elem/>)});
-        expect(wrapper.find('.counter').text()).toEqual('0');
+        await act(async () => {
+            const wrapper = mount(<Elem/>);
+            expect(wrapper.find('.counter').text()).toEqual('0');
 
-        wrapper.find('.counter').simulate('click');
-        expect(wrapper.find('.counter').text()).toEqual('0');
-        await waitFor(DELAY);
-        wrapper.update();
-        expect(wrapper.find('.counter').text()).toEqual('1');
+            wrapper.find('.counter').simulate('click');
+            expect(wrapper.find('.counter').text()).toEqual('0');
+            await waitFor(DELAY);
+            wrapper.update();
+            expect(wrapper.find('.counter').text()).toEqual('1');
 
-        wrapper.find('.counter').simulate('click');
-        wrapper.find('.counter').simulate('click');
-        wrapper.find('.counter').simulate('click');
-        expect(wrapper.find('.counter').text()).toEqual('1');
-        await waitFor(DELAY);
-        wrapper.update();
-        expect(wrapper.find('.counter').text()).toEqual('2');
-        act(() => {wrapper.unmount()});
+            wrapper.find('.counter').simulate('click');
+            wrapper.find('.counter').simulate('click');
+            wrapper.find('.counter').simulate('click');
+            expect(wrapper.find('.counter').text()).toEqual('1');
+            await waitFor(DELAY);
+            wrapper.update();
+            expect(wrapper.find('.counter').text()).toEqual('2');
+            wrapper.unmount();
+        });
     });
     it('Should cleanup', async () => {
-        let wrapper = null;
-        const spy = sinon.spy(global, 'clearTimeout');
-        act(() => {wrapper = mount(<Elem/>)});
-        act(() => {wrapper.unmount()});
-        expect(spy.callCount).toEqual(1);
-        spy.restore();
+        await act(async () => {
+            const spy = sinon.spy(global, 'clearTimeout');
+            const wrapper = mount(<Elem/>);
+            wrapper.unmount();
+            await waitFor(0); // Wait for unmounting
+            expect(spy.callCount).toEqual(1);
+            spy.restore();
+        });
     });
 });

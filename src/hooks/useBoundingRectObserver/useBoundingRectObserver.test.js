@@ -6,7 +6,12 @@ import useBoundingRectObserver, {getBoundingRects} from './useBoundingRectObserv
 
 const Elem = ({onChange, refs}) => {
     const {start, stop} = useBoundingRectObserver(onChange, ...refs);
-    return <div start={start} stop={stop}/>;
+    return (
+        <>
+            <div className='start' onClick={start}/>
+            <div className='stop' onClick={stop}/>
+        </>
+    );
 };
 
 describe('useBoundingRectObserver()', () => {
@@ -17,7 +22,7 @@ describe('useBoundingRectObserver()', () => {
         act(() => {wrapper = mount(<Elem refs={[new DOMRect()]} onChange={onChange}/>)});
 
         // Verify that requestAnimationFrame() and onChange() are called, passing the DOMRect
-        wrapper.find('div').prop('start')();
+        wrapper.find('.start').prop('onClick')();
         expect(global.window.requestAnimationFrame.callCount).toEqual(1);
         global.window.requestAnimationFrame.args[0][0]();
         expect(onChange.callCount).toEqual(1);

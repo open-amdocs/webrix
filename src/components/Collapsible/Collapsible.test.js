@@ -1,6 +1,7 @@
 import React from 'react';
 import {mount} from 'enzyme';
 import sinon from 'sinon';
+import {act} from 'react-dom/test-utils';
 import Collapsible from './Collapsible';
 
 describe('<Collapsible/>', () => {
@@ -33,15 +34,17 @@ describe('<Collapsible/>', () => {
 
     describe('Events', () => {
         it('should trigger onTransitionEnd for transform', () => {
-            const onTransitionEnd = sinon.spy();
-            const wrapper = mount(<Collapsible onTransitionEnd={onTransitionEnd}><div/></Collapsible>);
+            act(() => {
+                const onTransitionEnd = sinon.spy();
+                const wrapper = mount(<Collapsible onTransitionEnd={onTransitionEnd}><div/></Collapsible>);
 
-            wrapper.find('.content-wrapper').prop('onTransitionEnd')({propertyName: 'transform'});
-            expect(onTransitionEnd.callCount).toEqual(1);
+                wrapper.find('.content-wrapper').prop('onTransitionEnd')({propertyName: 'transform'});
+                expect(onTransitionEnd.callCount).toEqual(1);
 
-            wrapper.find('.content-wrapper').prop('onTransitionEnd')({propertyName: 'width'});
-            expect(onTransitionEnd.callCount).toEqual(1);
-            wrapper.unmount();
+                wrapper.find('.content-wrapper').prop('onTransitionEnd')({propertyName: 'width'});
+                expect(onTransitionEnd.callCount).toEqual(1);
+                wrapper.unmount();
+            });
         });
         it('should toggle from collapsed to expanded', async () => {
             const wrapper = mount(<Collapsible>foo</Collapsible>);

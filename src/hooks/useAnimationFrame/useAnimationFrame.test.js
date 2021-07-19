@@ -6,7 +6,12 @@ import useAnimationFrame from './useAnimationFrame';
 
 const Elem = ({onChange, recurring}) => {
     const {start, stop} = useAnimationFrame(onChange, recurring);
-    return <div start={start} stop={stop}/>;
+    return (
+        <>
+            <div className='start' onClick={start}/>
+            <div className='stop' onClick={stop}/>
+        </>
+    );
 };
 
 describe('useAnimationFrame()', () => {
@@ -19,7 +24,7 @@ describe('useAnimationFrame()', () => {
         act(() => {wrapper = mount(<Elem onChange={onChange}/>)});
 
         // Verify a requestAnimationFrame() call is made
-        wrapper.find('div').prop('start')();
+        wrapper.find('.start').prop('onClick')();
         expect(global.window.cancelAnimationFrame.callCount).toEqual(1);
         expect(global.window.requestAnimationFrame.callCount).toEqual(1);
 
@@ -35,11 +40,11 @@ describe('useAnimationFrame()', () => {
         act(() => {wrapper = mount(<Elem onChange={() => null}/>)});
 
         // Verify a single cancelAnimationFrame() call is made initially
-        wrapper.find('div').prop('start')();
+        wrapper.find('.start').prop('onClick')();
         expect(global.window.cancelAnimationFrame.callCount).toEqual(1);
 
         // Verify a single cancelAnimationFrame() call is made when stopping
-        wrapper.find('div').prop('stop')();
+        wrapper.find('.stop').prop('onClick')();
         expect(global.window.cancelAnimationFrame.callCount).toEqual(2);
 
         // Verify a second cancelAnimationFrame() call is made when unmounting
@@ -53,7 +58,7 @@ describe('useAnimationFrame()', () => {
         act(() => {wrapper = mount(<Elem onChange={onChange} recurring/>)});
 
         // Verify a single cancelAnimationFrame() call is made initially
-        wrapper.find('div').prop('start')();
+        wrapper.find('.start').prop('onClick')();
         expect(global.window.requestAnimationFrame.callCount).toEqual(1);
 
         // Verify that onChange is called once

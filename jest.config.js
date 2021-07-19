@@ -13,7 +13,7 @@ module.exports = async () => {
         },
         setupFilesAfterEnv: ['<rootDir>/test/setup.js'],
         moduleNameMapper: {
-            '\.(css)$': '<rootDir>/test/mocks/styleMock.js',
+            '.(css)$': '<rootDir>/test/mocks/styleMock.js',
         },
     };
 };
