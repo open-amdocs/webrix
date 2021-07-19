@@ -16,5 +16,12 @@
                 "tools": "./src/tools"
             }
         }]
-    ]
+    ],
+    "env": {
+        "test": {
+            "plugins": [
+                "babel-plugin-rewire"
+            ]
+        }
+    }
 }

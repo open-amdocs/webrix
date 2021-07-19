@@ -32,7 +32,7 @@ jobs:
       - attach_workspace:
           at: .
       - node/install-packages
-      - run: npm test
+      - run: npm run test:coverage -- --max-workers=2 # See https://discuss.circleci.com/t/babel-7-jest-results-in-timeout/25383/6
       - codecov/upload:
           file: ./coverage/lcov.info
 

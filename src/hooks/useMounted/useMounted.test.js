@@ -1,6 +1,5 @@
 import React from 'react';
 import {act} from 'react-dom/test-utils';
-import {expect} from 'chai';
 import {mount} from 'enzyme';
 import {useMounted, useUnmounted} from './useMounted';
 
@@ -14,11 +13,11 @@ describe('useMounted()', () => {
         };
         let wrapper = null;
         act(() => {wrapper = mount(<Elem/>)});
-        expect(wrapper.find('.unmounted').length).to.eql(1);
-        expect(wrapper.find('.mounted').length).to.eql(0);
+        expect(wrapper.find('.unmounted').length).toEqual(1);
+        expect(wrapper.find('.mounted').length).toEqual(0);
         wrapper.setProps({foo: 'bar'}); // Force an update...
-        expect(wrapper.find('.mounted').length).to.eql(1);
-        expect(wrapper.find('.unmounted').length).to.eql(0);
+        expect(wrapper.find('.mounted').length).toEqual(1);
+        expect(wrapper.find('.unmounted').length).toEqual(0);
     });
 });
 
@@ -32,10 +31,10 @@ describe('useUnmounted()', () => {
         };
         let wrapper = null;
         act(() => {wrapper = mount(<Elem/>)});
-        expect(wrapper.find('.unmounted').length).to.eql(0);
-        expect(wrapper.find('.mounted').length).to.eql(1);
+        expect(wrapper.find('.unmounted').length).toEqual(0);
+        expect(wrapper.find('.mounted').length).toEqual(1);
         wrapper.setProps({foo: 'bar'}); // Force an update...
-        expect(wrapper.find('.mounted').length).to.eql(1);
-        expect(wrapper.find('.unmounted').length).to.eql(0);
+        expect(wrapper.find('.mounted').length).toEqual(1);
+        expect(wrapper.find('.unmounted').length).toEqual(0);
     });
 });

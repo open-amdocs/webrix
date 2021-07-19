@@ -1,7 +1,6 @@
 import React from 'react';
 import {mount} from 'enzyme';
 import {act} from 'react-dom/test-utils';
-import {expect} from 'chai';
 import sinon from 'sinon';
 import ResizeObserver, {__RewireAPI__ as rewireAPI} from './ResizeObserver';
 
@@ -16,12 +15,12 @@ describe('<ResizeObserver>', () => {
 
             const handleOnResize = sinon.spy();
             const wrapper = mount(<ResizeObserver onResize={handleOnResize}><div style={{width: 100}}/></ResizeObserver>);
-            expect(observed).to.eql(1);
-            expect(disconnected).to.eql(0);
+            expect(observed).toEqual(1);
+            expect(disconnected).toEqual(0);
 
             act(() => {wrapper.unmount()});
-            expect(observed).to.eql(1);
-            expect(disconnected).to.eql(1);
+            expect(observed).toEqual(1);
+            expect(disconnected).toEqual(1);
             rewireAPI.__ResetDependency__('NativeResizeObserver');
         });
     });
