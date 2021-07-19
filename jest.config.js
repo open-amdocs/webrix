@@ -2,7 +2,7 @@ module.exports = async () => {
     return {
         verbose: true,
         coverageReporters: ['lcov', 'text-summary', 'html'],
-        collectCoverageFrom: ['src/**/*.{js,jsx}', '!**/index.js', '!src/utility/mocks/mocks.js'],
+        collectCoverageFrom: ['src/**/*.{js,jsx}', '!**/index.js', '!**/*.props.js', '!**/*.context.js', '!src/utility/mocks/mocks.js'],
         coverageThreshold: {
             global: {
                 'branches': 90,
