@@ -14,32 +14,17 @@
  * limitations under the License.
  */
 
-import React, {useContext, useRef} from 'react';
-import {oneOfType, node, func, shape, instanceOf} from 'prop-types';
-import {Element} from 'utility/mocks';
-import {noop} from 'utility/memory';
+import React, {useContext, useMemo, useRef} from 'react';
 import Movable from 'components/Movable';
 import Context from '../../Scrollable.context';
+import {move} from './HorizontalScrollbar.operations';
 import './HorizontalScrollbar.scss';
 
 const HorizontalScrollbar = () => {
     const track = useRef();
     const thumb = useRef();
-    const initialScroll = useRef();
     const {container} = useContext(Context);
-
-    const handleOnBeginMove = e => {
-        e.stopPropagation();
-        e.preventDefault();
-        initialScroll.current = container.current.scrollLeft;
-    };
-
-    const handleOnMove = ({dx}) => {
-        const {clientWidth, scrollWidth} = container.current;
-        const handleWidth = thumb.current.clientWidth;
-        const trackWidth = track.current.clientWidth;
-        container.current.scrollLeft = initialScroll.current + dx * (scrollWidth - clientWidth) / (trackWidth - handleWidth);
-    };
+    const props = Movable.useMove(useMemo(() => [move(container, thumb, track)], [container]));
 
     const handleOnClick = e => {
         // Ignore clicks on the thumb itself
@@ -55,7 +40,7 @@ const HorizontalScrollbar = () => {
 
     return (
         <div className='scrollbar-track horizontal-scrollbar-track' ref={track} onClick={handleOnClick}>
-            <Movable className='scrollbar-thumb' ref={thumb} onBeginMove={handleOnBeginMove} onMove={handleOnMove}>
+            <Movable className='scrollbar-thumb' ref={thumb} {...props}>
                 <div className='scrollbar-thumb-inner'/>
             </Movable>
         </div>

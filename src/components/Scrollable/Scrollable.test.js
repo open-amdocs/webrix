@@ -2,8 +2,7 @@ import React from 'react';
 import {mount} from 'enzyme';
 import sinon from 'sinon';
 import Scrollable from './Scrollable';
-import {MIN_THUMB_LENGTH, SCROLLING_CLASS_REMOVAL_DELAY} from './Scrollable.constants';
-import {getThumbLength, getThumbPosition} from './Scrollable.utils';
+import {SCROLLING_CLASS_REMOVAL_DELAY} from './Scrollable.constants';
 
 const waitFor = delay => new Promise(resolve => setTimeout(resolve, delay));
 
@@ -90,38 +89,28 @@ describe('<Scrollable/>', () => {
 
         it('updateScrollbars()', () => {
             const onUpdate = sinon.spy();
+            const remove = sinon.spy();
+            const setProperty = sinon.spy();
             const s = new Scrollable({onUpdate});
-            s.vertical = {current: {update: sinon.spy()}};
-            s.horizontal = {current: {update: sinon.spy()}};
             s.updateScrollbars();
-            expect(s.vertical.current.update.callCount).toEqual(0);
-            expect(s.horizontal.current.update.callCount).toEqual(0);
             expect(onUpdate.callCount).toEqual(0);
+            expect(remove.callCount).toEqual(0);
 
-            s.container.current = {};
+            s.container.current = {parentElement: {style: {setProperty}, classList: {remove}}};
             s.updateScrollbars();
-            expect(s.vertical.current.update.callCount).toEqual(1);
-            expect(s.horizontal.current.update.callCount).toEqual(1);
             expect(onUpdate.callCount).toEqual(1);
+            expect(remove.callCount).toEqual(2);
+            expect(setProperty.callCount).toEqual(4);
         });
 
         it('ResizeUpdate', () => {
             const s = new Scrollable({onScroll: sinon.spy(), onUpdate: sinon.spy()});
-            s.container = {current: {clientHeight: 100, clientWidth: 100, scrollHeight: 200, scrollWidth: 200, scrollTop: 50, scrollLeft: 50}};
-            s.vertical = {current: {update: sinon.spy()}};
-            s.horizontal = {current: {update: sinon.spy()}};
+            const parentElement = {classList: {add: sinon.spy()}, style: {setProperty: sinon.spy()}};
+            s.container = {current: {parentElement, clientHeight: 100, clientWidth: 100, scrollHeight: 200, scrollWidth: 200, scrollTop: 50, scrollLeft: 50}};
 
             s.updateScrollbars();
-            expect(s.vertical.current.update.callCount).toEqual(1);
-            expect(s.horizontal.current.update.callCount).toEqual(1);
-
-            s.container = {current: {clientHeight: 100, clientWidth: 100, scrollHeight: 500, scrollWidth: 200, scrollTop: 50, scrollLeft: 50}};
-            expect(s.vertical.current.update.callCount).toEqual(1);
-            expect(s.horizontal.current.update.callCount).toEqual(1);
-
-            s.container = {current: {clientHeight: 100, clientWidth: 100, scrollHeight: 500, scrollWidth: 500, scrollTop: 50, scrollLeft: 50}};
-            expect(s.vertical.current.update.callCount).toEqual(1);
-            expect(s.horizontal.current.update.callCount).toEqual(1);
+            expect(parentElement.classList.add.callCount).toEqual(2);
+            expect(parentElement.style.setProperty.callCount).toEqual(4);
         });
 
         it('onTransitionEnd()', () => {
@@ -133,21 +122,6 @@ describe('<Scrollable/>', () => {
             expect(s.updateScrollbars.callCount).toEqual(1);
             s.handleOnTransitionEnd({propertyName: 'width'});
             expect(s.updateScrollbars.callCount).toEqual(2);
-        });
-    });
-
-    describe('Utils', () => {
-        it('getThumbLength()', () => {
-            expect(getThumbLength(100, 100, 100)).toEqual(100);
-            expect(getThumbLength(100, 100, 200)).toEqual(50);
-            expect(getThumbLength(100, 100, 300)).toEqual(33);
-            expect(getThumbLength(200, 100, 300)).toEqual(67);
-            expect(getThumbLength(100, 100, 20000)).toEqual(MIN_THUMB_LENGTH);
-        });
-        it('getThumbPosition()', () => {
-            expect(getThumbPosition(100, 100, 200, 0)).toEqual(0);
-            expect(getThumbPosition(100, 100, 200, 100)).toEqual(50);
-            expect(getThumbPosition(200, 100, 200, 100)).toEqual(100);
         });
     });
 });

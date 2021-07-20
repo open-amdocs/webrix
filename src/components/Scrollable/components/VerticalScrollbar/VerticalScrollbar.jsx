@@ -14,29 +14,17 @@
  * limitations under the License.
  */
 
-import React, {useContext, useRef} from 'react';
+import React, {useContext, useMemo, useRef} from 'react';
 import Movable from 'components/Movable';
 import Context from '../../Scrollable.context';
+import {move} from './VerticalScrollbar.operations';
 import './VerticalScrollbar.scss';
 
 const VerticalScrollbar = () => {
     const track = useRef();
     const thumb = useRef();
-    const initialScroll = useRef();
     const {container} = useContext(Context);
-
-    const handleOnBeginMove = e => {
-        e.stopPropagation();
-        e.preventDefault();
-        initialScroll.current = container.current.scrollTop;
-    };
-
-    const handleOnMove = ({dy}) => {
-        const {clientHeight, scrollHeight} = container.current;
-        const handleHeight = thumb.current.clientHeight;
-        const trackHeight = track.current.clientHeight;
-        container.current.scrollTop = initialScroll.current + dy * (scrollHeight - clientHeight) / (trackHeight - handleHeight);
-    };
+    const props = Movable.useMove(useMemo(() => [move(container, thumb, track)], [container]));
 
     const handleOnClick = e => {
         // Ignore clicks on the thumb itself
@@ -52,7 +40,7 @@ const VerticalScrollbar = () => {
 
     return (
         <div className='scrollbar-track vertical-scrollbar-track' ref={track} onClick={handleOnClick}>
-            <Movable className='scrollbar-thumb' ref={thumb} onBeginMove={handleOnBeginMove} onMove={handleOnMove}>
+            <Movable className='scrollbar-thumb' ref={thumb} {...props}>
                 <div className='scrollbar-thumb-inner'/>
             </Movable>
         </div>
