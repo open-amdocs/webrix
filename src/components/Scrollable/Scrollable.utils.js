@@ -26,6 +26,7 @@ import {MIN_THUMB_LENGTH} from './Scrollable.constants';
  * @return {number} The thumb length
  */
 export const getThumbLength = (trackLength, clientLength, scrollLength, minLength = MIN_THUMB_LENGTH) => {
+    console.warn('Scrollable.getThumbLength() is deprecated. Use the CSS API instead. See https://webrix.amdocs.com/docs/components/scrollable#examples-css-custom-properties');
     const length = Math.round((clientLength / scrollLength) * trackLength);
     return Math.max(minLength, length);
 };

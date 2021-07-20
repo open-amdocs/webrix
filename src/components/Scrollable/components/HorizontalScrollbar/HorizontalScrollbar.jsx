@@ -17,8 +17,8 @@
 import React from 'react';
 import {oneOfType, node, func, shape, instanceOf} from 'prop-types';
 import {Element} from 'utility/mocks';
-import Movable from '../../../Movable';
-import {onUpdate} from './HorizontalScrollbar.utils';
+import {noop} from 'utility/memory';
+import Movable from 'components/Movable';
 import './HorizontalScrollbar.scss';
 
 export default class HorizontalScrollbar extends React.PureComponent {
@@ -34,7 +34,7 @@ export default class HorizontalScrollbar extends React.PureComponent {
 
     static defaultProps = {
         container: {},
-        onUpdate: onUpdate,
+        onUpdate: noop,
         children: null,
     };
 

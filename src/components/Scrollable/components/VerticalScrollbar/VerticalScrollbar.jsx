@@ -17,8 +17,8 @@
 import React from 'react';
 import {oneOfType, node, func, shape, instanceOf} from 'prop-types';
 import {Element} from 'utility/mocks';
-import Movable from '../../../Movable';
-import {onUpdate} from './VerticalScrollbar.utils';
+import {noop} from 'utility/memory';
+import Movable from 'components/Movable';
 import './VerticalScrollbar.scss';
 
 export default class VerticalScrollbar extends React.PureComponent {
@@ -34,7 +34,7 @@ export default class VerticalScrollbar extends React.PureComponent {
 
     static defaultProps = {
         container: {},
-        onUpdate: onUpdate,
+        onUpdate: noop,
         children: null,
     };
 

@@ -109,9 +109,14 @@ export default class Scrollable extends React.PureComponent {
         // This check ensures that updates (which are a potentially expensive operation)
         // are only executed if the applicable scroll properties have changed
         if (!isEqual(this.event.prev, this.event.next)) {
+            const el = this.container.current.parentElement;
             this.vertical.current.update();
             this.horizontal.current.update();
             this.props.onUpdate(this.event.next);
+            el.style.setProperty('--scrollable-vertical-ratio', this.event.next.clientHeight / this.event.next.scrollHeight);
+            el.style.setProperty('--scrollable-horizontal-ratio', this.event.next.clientWidth / this.event.next.scrollWidth);
+            el.style.setProperty('--scrollable-scroll-top', this.event.next.top);
+            el.style.setProperty('--scrollable-scroll-left', this.event.next.left);
         }
         this.event.prev = this.event.next;
     };

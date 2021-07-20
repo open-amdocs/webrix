@@ -7,8 +7,11 @@
     top: 0;
 
     .scrollbar-thumb {
+      --thumb-height: max(calc((var(--scrollable-vertical-ratio, 1) * 100%)), var(--scrollable-min-thumb-length, 30px));
       right: 0;
       box-sizing: border-box;
+      top: calc(var(--scrollable-scroll-top, 0) * (100% - var(--thumb-height)));
+      height: var(--thumb-height);
 
       .scrollbar-thumb-inner {
         width: 6px;
