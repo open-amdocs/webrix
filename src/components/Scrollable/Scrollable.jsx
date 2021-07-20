@@ -20,6 +20,7 @@ import {copyComponentRef, findChildByType} from 'utility/react';
 import {isEqual} from 'utility/object';
 import ResizeObserver from 'tools/ResizeObserver';
 import {VerticalScrollbarPlaceholder, HorizontalScrollbarPlaceholder, VerticalScrollbar, HorizontalScrollbar} from './components';
+import Context from './Scrollable.context';
 import {propTypes, defaultProps} from './Scrollable.props';
 import {SCROLLING_CLASS_REMOVAL_DELAY} from './Scrollable.constants';
 import './Scrollable.scss';
@@ -32,8 +33,7 @@ export default class Scrollable extends React.PureComponent {
     constructor(props) {
         super(props);
         this.container = React.createRef();
-        this.horizontal = React.createRef();
-        this.vertical = React.createRef();
+        this.ctx = {container: this.container};
         this.event = {prev: {}, next: {}};
     }
 
@@ -110,11 +110,24 @@ export default class Scrollable extends React.PureComponent {
         // are only executed if the applicable scroll properties have changed
         if (!isEqual(this.event.prev, this.event.next)) {
             const el = this.container.current.parentElement;
-            this.vertical.current.update();
-            this.horizontal.current.update();
             this.props.onUpdate(this.event.next);
-            el.style.setProperty('--scrollable-vertical-ratio', this.event.next.clientHeight / this.event.next.scrollHeight);
-            el.style.setProperty('--scrollable-horizontal-ratio', this.event.next.clientWidth / this.event.next.scrollWidth);
+            const vRatio = this.event.next.clientHeight / this.event.next.scrollHeight;
+            const hRatio = this.event.next.clientWidth / this.event.next.scrollWidth;
+
+            if (vRatio < 1) {
+                el.classList.add('vertically-scrollable');
+            } else {
+                el.classList.remove('vertically-scrollable');
+            }
+
+            if (hRatio < 1) {
+                el.classList.add('horizontally-scrollable');
+            } else {
+                el.classList.remove('horizontally-scrollable');
+            }
+
+            el.style.setProperty('--scrollable-vertical-ratio', vRatio);
+            el.style.setProperty('--scrollable-horizontal-ratio', hRatio);
             el.style.setProperty('--scrollable-scroll-top', this.event.next.top);
             el.style.setProperty('--scrollable-scroll-left', this.event.next.left);
         }
@@ -149,8 +162,10 @@ export default class Scrollable extends React.PureComponent {
             <ResizeObserver onResize={this.updateScrollbars}>
                 <div className='scrollbar' style={style} onTransitionEnd={this.handleOnTransitionEnd}>
                     {React.cloneElement(element, this.getElementProps(), content)}
-                    {React.cloneElement(vsb ? vsb.props.children : <VerticalScrollbar/>, {ref: this.vertical, container: this.container})}
-                    {React.cloneElement(hsb ? hsb.props.children : <HorizontalScrollbar/>, {ref: this.horizontal, container: this.container})}
+                    <Context.Provider value={this.ctx}>
+                        {vsb ? vsb.props.children : <VerticalScrollbar/>}
+                        {hsb ? hsb.props.children : <HorizontalScrollbar/>}
+                    </Context.Provider>
                 </div>
             </ResizeObserver>
         );

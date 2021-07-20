@@ -1,4 +1,9 @@
 .scrollbar {
+  &.vertically-scrollable .vertical-scrollbar-track {
+    visibility: visible;
+    pointer-events: auto;
+  }
+
   .vertical-scrollbar-track {
     position: absolute;
     width: 12px;

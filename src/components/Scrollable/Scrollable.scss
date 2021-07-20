@@ -28,11 +28,6 @@
     visibility: hidden;
     pointer-events: none;
 
-    &.visible {
-      visibility: visible;
-      pointer-events: auto;
-    }
-
     .scrollbar-thumb {
       position: absolute;
       padding: 3px;

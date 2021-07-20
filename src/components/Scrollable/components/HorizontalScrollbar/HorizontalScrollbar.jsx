@@ -14,87 +14,52 @@
  * limitations under the License.
  */
 
-import React from 'react';
+import React, {useContext, useRef} from 'react';
 import {oneOfType, node, func, shape, instanceOf} from 'prop-types';
 import {Element} from 'utility/mocks';
 import {noop} from 'utility/memory';
 import Movable from 'components/Movable';
+import Context from '../../Scrollable.context';
 import './HorizontalScrollbar.scss';
 
-export default class HorizontalScrollbar extends React.PureComponent {
+const HorizontalScrollbar = () => {
+    const track = useRef();
+    const thumb = useRef();
+    const initialScroll = useRef();
+    const {container} = useContext(Context);
 
-    static propTypes = {
-        container: oneOfType([
-            func,
-            shape({current: instanceOf(Element)}),
-        ]),
-        onUpdate: func,
-        children: node,
-    };
-
-    static defaultProps = {
-        container: {},
-        onUpdate: noop,
-        children: null,
-    };
-
-    track = React.createRef();
-    thumb = React.createRef();
-
-    handleOnBeginMove = e => {
+    const handleOnBeginMove = e => {
         e.stopPropagation();
         e.preventDefault();
-        this.initialScroll = this.props.container.current.scrollLeft;
+        initialScroll.current = container.current.scrollLeft;
     };
 
-    handleOnMove = ({dx}) => {
-        const container = this.props.container.current;
-        const {clientWidth, scrollWidth} = container;
-        const handleWidth = this.thumb.current.clientWidth;
-        const trackWidth = this.track.current.clientWidth;
-        container.scrollLeft = this.initialScroll + dx * ((scrollWidth - clientWidth) / (trackWidth - handleWidth));
+    const handleOnMove = ({dx}) => {
+        const {clientWidth, scrollWidth} = container.current;
+        const handleWidth = thumb.current.clientWidth;
+        const trackWidth = track.current.clientWidth;
+        container.current.scrollLeft = initialScroll.current + dx * (scrollWidth - clientWidth) / (trackWidth - handleWidth);
     };
 
-    handleOnClick = e => {
+    const handleOnClick = e => {
         // Ignore clicks on the thumb itself
-        if (!this.thumb.current.contains(e.target)) {
-            const container = this.props.container.current;
-            const track = this.track.current;
-            const {left, width} = track.getBoundingClientRect();
-            const {scrollWidth} = this.props.container.current;
+        if (!thumb.current.contains(e.target)) {
+            const {left, width} = track.current.getBoundingClientRect();
+            const {scrollWidth} = container.current;
             const ratio = (e.clientX - left) / width;
-            container.style.scrollBehavior = 'smooth';
-            container.scrollLeft = ratio * scrollWidth;
-            container.style.scrollBehavior = ''; // Remove smooth scrolling as it breaks the thumb dragging
+            container.current.style.scrollBehavior = 'smooth';
+            container.current.scrollLeft = ratio * scrollWidth;
+            container.current.style.scrollBehavior = ''; // Remove smooth scrolling as it breaks the thumb dragging
         }
     };
 
-    update() {
-        const container = this.props.container.current;
-        const track = this.track.current;
-        const thumb = this.thumb.current;
+    return (
+        <div className='scrollbar-track horizontal-scrollbar-track' ref={track} onClick={handleOnClick}>
+            <Movable className='scrollbar-thumb' ref={thumb} onBeginMove={handleOnBeginMove} onMove={handleOnMove}>
+                <div className='scrollbar-thumb-inner'/>
+            </Movable>
+        </div>
+    );
+};
 
-        if (this.isScrollable()) {
-            this.props.onUpdate(track, thumb, container);
-            track.classList.add('visible');
-        } else {
-            track.classList.remove('visible');
-        }
-    }
-
-    isScrollable() {
-        const {clientWidth, scrollWidth} = this.props.container.current;
-        return clientWidth !== scrollWidth;
-    }
-
-    render() {
-        return (
-            <div className='scrollbar-track horizontal-scrollbar-track' ref={this.track} onClick={this.handleOnClick}>
-                <Movable className='scrollbar-thumb' ref={this.thumb} onBeginMove={this.handleOnBeginMove} onMove={this.handleOnMove}>
-                    <div className='scrollbar-thumb-inner'/>
-                </Movable>
-                {this.props.children}
-            </div>
-        );
-    }
-}
+export default HorizontalScrollbar;

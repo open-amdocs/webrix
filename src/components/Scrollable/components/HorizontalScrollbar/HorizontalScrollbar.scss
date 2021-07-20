@@ -1,4 +1,9 @@
 .scrollbar {
+  &.horizontally-scrollable .horizontal-scrollbar-track {
+    visibility: visible;
+    pointer-events: auto;
+  }
+
   .horizontal-scrollbar-track {
     position: absolute;
     height: 12px;
