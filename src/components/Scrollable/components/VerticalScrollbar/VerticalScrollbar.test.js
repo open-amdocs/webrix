@@ -1,9 +1,8 @@
 import React from 'react';
-import {mount} from 'enzyme';
-import sinon from 'sinon';
+import {mount, shallow} from 'enzyme';
 import {noop} from 'utility/memory';
-import VerticalScrollbar from './VerticalScrollbar.jsx';
-import {onUpdate} from './VerticalScrollbar.utils';
+import {move} from './VerticalScrollbar.operations';
+import VerticalScrollbar, {__RewireAPI__ as rewire} from './VerticalScrollbar';
 
 describe('<VerticalScrollbar/>', () => {
 
@@ -18,51 +17,38 @@ describe('<VerticalScrollbar/>', () => {
     describe('Events', () => {
         it('handleOnClick()', () => {
             const container = {current: {style: {}, scrollTop: 0, scrollHeight: 200}};
-            const s = new VerticalScrollbar({container});
-            s.thumb = {current: {contains: () => true}};
-            s.handleOnClick({});
+            const ref = {current: {contains: () => false, getBoundingClientRect: () => ({top: 0, height: 100})}};
+            rewire.__Rewire__('useRef', () => ref);
+            rewire.__Rewire__('useContext', () => ({container}));
+            const wrapper = shallow(<VerticalScrollbar/>);
+
+            wrapper.find('.scrollbar-track').prop('onClick')({clientY: 0});
             expect(container.current.scrollTop).toEqual(0);
 
-            s.track = {current: {getBoundingClientRect: () => ({top: 0, height: 100})}};
-            s.thumb.current.contains = () => false;
-            s.handleOnClick({clientY: 100});
-            expect(container.current.scrollTop).toEqual(200);
-        });
-        it('handleOnBeginMove()', () => {
-            const style = {};
-            const s = new VerticalScrollbar({container: {current: {scrollTop: 50, style}}});
-            s.handleOnBeginMove({stopPropagation: noop, preventDefault: noop});
-            expect(s.initialScroll).toEqual(s.props.container.current.scrollTop);
-        });
-        it('handleOnMove()', () => {
-            const s = new VerticalScrollbar({});
-            s.props.container = {current: {clientHeight: 100, scrollHeight: 400}};
-            s.thumb = {current: {clientHeight: 40}};
-            s.track = {current: {clientHeight: 100}};
-            s.initialMousePos = 25;
-            s.initialScroll = 20;
-            s.handleOnMove({dy: 75});
-            expect(s.props.container.current.scrollTop).toEqual(395);
+            wrapper.find('.scrollbar-track').prop('onClick')({clientY: 50});
+            expect(container.current.scrollTop).toEqual(100);
+
+            rewire.__ResetDependency__('useRef');
+            rewire.__ResetDependency__('useContext');
         });
     });
 
-    describe('Class Methods', () => {
-        it('update()', () => {
-            const s = new VerticalScrollbar({container: {current: {clientHeight: 10, scrollHeight: 20}}, onUpdate: sinon.spy()});
-            s.track = {current: {classList: {add: sinon.spy()}, style: {}}};
-            s.update();
-            expect(s.track.current.classList.add.calledOnce).toEqual(true);
-            expect(s.props.onUpdate.calledOnce).toEqual(true);
-        });
-    });
+    describe('Operations', () => {
+        it('move()', () => {
+            const container = {current: {clientHeight: 100, scrollHeight: 400}};
+            const thumb = {current: {}};
+            const track = {current: {}};
+            const shared = {};
+            const props = move(container, thumb, track);
 
-    describe('Utils', () => {
-        it('onUpdate()', () => {
-            const track = {style: {}, clientWidth: 5, clientHeight: 100};
-            const thumb = {style: {}};
-            const container = {scrollHeight: 200, scrollTop: 50, clientHeight: 100};
-            onUpdate(track, thumb, container);
-            expect(thumb.style).toEqual({top: '25px', height: '50px'});
+            props.onBeginMove({stopPropagation: noop, preventDefault: noop}, shared);
+            expect(shared.initial).toEqual(container.current.scrollTop);
+
+            thumb.current.clientHeight = 40;
+            track.current.clientHeight = 100;
+            shared.initial = 20;
+            props.onMove({dy: 75}, shared);
+            expect(container.current.scrollTop).toEqual(395)
         });
     });
 });
