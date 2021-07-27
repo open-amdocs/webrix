@@ -1,5 +1,6 @@
 module.exports = async () => {
     return {
+        testEnvironment: 'jsdom',
         verbose: true,
         coverageReporters: ['lcov', 'text-summary', 'html'],
         collectCoverageFrom: ['src/**/*.{js,jsx}', '!**/index.js', '!**/*.props.js', '!**/*.context.js', '!src/utility/mocks/mocks.js'],
