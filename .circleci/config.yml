@@ -65,7 +65,8 @@ jobs:
           command: |
             cp package.json README.md LICENSE ./build
             cd ./build
-            mv node_modules external
+            mv es/node_modules es/external
+            mv cjs/node_modules cjs/external
             find . -type f | xargs sed -i  's/node_modules/external/g'
       - run:
           name: release
