@@ -14,5 +14,4 @@
  * limitations under the License.
  */
 
-export const MIN_THUMB_LENGTH = 30; // In pixels
 export const SCROLLING_CLASS_REMOVAL_DELAY = 500; // In milliseconds

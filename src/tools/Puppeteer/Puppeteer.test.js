@@ -1,6 +1,5 @@
 import React from 'react';
 import {mount} from 'enzyme';
-import {expect} from 'chai';
 import Puppeteer from './Puppeteer';
 import puppet from './Puppet.hoc';
 
@@ -14,9 +13,9 @@ describe('Puppeteer', () => {
         const Puppet = puppet()(({value}) => <div>{value}</div>);
         const wrapper = mount(<Container value='foo'><Puppet value='bar'/></Container>);
 
-        expect(wrapper.find('Puppeteer')).to.have.length(1);
-        expect(wrapper.find('puppet()')).to.have.length(1);
-        expect(wrapper.find('div').text()).to.eql('foobar');
+        expect(wrapper.find('Puppeteer')).toHaveLength(1);
+        expect(wrapper.find('puppet()')).toHaveLength(1);
+        expect(wrapper.find('div').text()).toEqual('foobar');
     });
     it('should override the puppet\'s props based on namespace', () => {
         const Container = ({children, value}) => (
@@ -33,10 +32,10 @@ describe('Puppeteer', () => {
             </Container>
         );
 
-        expect(wrapper.find('Puppeteer')).to.have.length(1);
-        expect(wrapper.find('puppet()')).to.have.length(2);
-        expect(wrapper.find('.a').text()).to.eql('foobar');
-        expect(wrapper.find('.b').text()).to.eql('bar');
+        expect(wrapper.find('Puppeteer')).toHaveLength(1);
+        expect(wrapper.find('puppet()')).toHaveLength(2);
+        expect(wrapper.find('.a').text()).toEqual('foobar');
+        expect(wrapper.find('.b').text()).toEqual('bar');
     });
     it('should override the puppet\'s props for global namespace', () => {
         const Container = ({children, value}) => (
@@ -47,9 +46,9 @@ describe('Puppeteer', () => {
         const Puppet = puppet('mock')(({value}) => <div>{value}</div>);
         const wrapper = mount(<Container value='foo'><Puppet value='bar'/></Container>);
 
-        expect(wrapper.find('Puppeteer')).to.have.length(1);
-        expect(wrapper.find('puppet()')).to.have.length(1);
-        expect(wrapper.find('div').text()).to.eql('foobar');
+        expect(wrapper.find('Puppeteer')).toHaveLength(1);
+        expect(wrapper.find('puppet()')).toHaveLength(1);
+        expect(wrapper.find('div').text()).toEqual('foobar');
     });
     it('should break the overriding of the puppet\'s props', () => {
         const Container = ({children, value}) => (
@@ -66,9 +65,9 @@ describe('Puppeteer', () => {
             </Container>
         );
 
-        expect(wrapper.find('Puppeteer')).to.have.length(1);
-        expect(wrapper.find('puppet()')).to.have.length(1);
-        expect(wrapper.find('div').text()).to.eql('bar');
+        expect(wrapper.find('Puppeteer')).toHaveLength(1);
+        expect(wrapper.find('puppet()')).toHaveLength(1);
+        expect(wrapper.find('div').text()).toEqual('bar');
 
         // Should break overriding of all the props when no props are provided
         wrapper.setProps({children: (
@@ -77,6 +76,6 @@ describe('Puppeteer', () => {
             </Puppeteer.Break>
         )});
         wrapper.update();
-        expect(wrapper.find('div').text()).to.eql('bar');
+        expect(wrapper.find('div').text()).toEqual('bar');
     });
 });

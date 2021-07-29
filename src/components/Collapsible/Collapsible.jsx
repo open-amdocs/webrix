@@ -27,7 +27,7 @@ export const Collapsible = ({expanded, children, onTransitionEnd, ...props}) => 
     const handleOnTransitionEnd = useCallback(e => {
         // 'transform' is the longest transition property out of multiple ones
         if (e.propertyName === 'transform') {
-            setState(state => ({...state, motion: '', height: state.height ? 'auto' : '0'}));
+            setState(state => ({...state, motion: '', height: state.height ? 'auto' : 0}));
             onTransitionEnd(e);
         }
     }, [onTransitionEnd]);

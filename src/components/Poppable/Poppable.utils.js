@@ -15,6 +15,7 @@
  */
 
 import cls from 'classnames';
+import {DOMRect} from 'utility/mocks';
 import {getRelativePosition} from 'utility/rect';
 import {getBoundingRects as _getBoundingRects} from 'hooks/useBoundingRectObserver/useBoundingRectObserver';
 
@@ -24,6 +25,7 @@ import {getBoundingRects as _getBoundingRects} from 'hooks/useBoundingRectObserv
  * @param target
  * @param reference
  * @param container
+ * @param placement
  * @returns {{cbr: *, rbr: *, tbr: *, wbr: *}}
  */
 export const getBoundingRects = (target, reference, container, placement) => {

@@ -17,6 +17,7 @@
 import {useRef} from 'react';
 import {equal} from 'utility/rect';
 import {getType} from 'utility/types';
+import {Element, DOMRect} from 'utility/mocks';
 import useAnimationFrame from 'hooks/useAnimationFrame';
 
 export const getBoundingRects = refs => (

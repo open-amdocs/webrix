@@ -1,7 +1,6 @@
 import React from 'react';
 import {act} from 'react-dom/test-utils';
 import sinon from 'sinon';
-import {expect} from 'chai';
 import {mount} from 'enzyme';
 import useEventListener from './useEventListener';
 
@@ -17,11 +16,11 @@ describe('useEventListener()', () => {
         };
 
         act(() => {wrapper = mount(<Component/>)});
-        expect(addEventListener.callCount).to.eql(1);
-        expect(removeEventListener.callCount).to.eql(0);
+        expect(addEventListener.callCount).toEqual(1);
+        expect(removeEventListener.callCount).toEqual(0);
 
         act(() => {wrapper.unmount()});
-        expect(addEventListener.callCount).to.eql(1);
-        expect(removeEventListener.callCount).to.eql(1);
+        expect(addEventListener.callCount).toEqual(1);
+        expect(removeEventListener.callCount).toEqual(1);
     });
 });

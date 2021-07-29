@@ -14,8 +14,10 @@
  * limitations under the License.
  */
 
-import React, {useRef, useCallback, useEffect, useContext} from 'react';
+import React, {useRef, useCallback, useContext} from 'react';
 import {func, node} from 'prop-types';
+import {_document} from 'utility/mocks';
+import useEventListener from '../useEventListener';
 import OverrideContext from './useClickOutside.context';
 
 /**
@@ -43,22 +45,13 @@ export const useClickOutside = callback => {
     const isClickedInside = useRef(false);
     const isClickedOutside = useContext(OverrideContext);
 
-    const handleDocumentMouseDown = useCallback(e =>
-        isClickedInside.current = !isClickedOutside(isClickedInside.current, e),
-    [isClickedInside, isClickedOutside]);
+    useEventListener('mousedown', e => {
+        isClickedInside.current = !isClickedOutside(isClickedInside.current, e)
+    }, {current: _document});
 
-    const handleDocumentMouseUp = useCallback(e =>
-        isClickedInside.current ? isClickedInside.current = false : callback(e),
-    [callback, isClickedInside]);
-
-    useEffect(() => {
-        document.addEventListener('mousedown', handleDocumentMouseDown);
-        document.addEventListener('mouseup', handleDocumentMouseUp);
-        return () => {
-            document.removeEventListener('mousedown', handleDocumentMouseDown);
-            document.removeEventListener('mouseup', handleDocumentMouseUp);
-        }
-    }, [handleDocumentMouseDown, handleDocumentMouseUp]);
+    useEventListener('mouseup', e => {
+        isClickedInside.current ? isClickedInside.current = false : callback(e)
+    }, {current: _document});
 
     return useCallback(() => {
         isClickedInside.current = true;

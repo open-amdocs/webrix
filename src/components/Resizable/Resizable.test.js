@@ -2,7 +2,6 @@ import React, {useRef} from 'react';
 import {act} from 'react-dom/test-utils';
 import {mount} from 'enzyme';
 import sinon from 'sinon';
-import {expect} from 'chai';
 import Resizable from './';
 
 describe('<Resizable>', () => {
@@ -13,19 +12,19 @@ describe('<Resizable>', () => {
                     <Resizable.Resizer.All/>
                 </Resizable>
             );
-            expect(wrapper.find('Movable.resizable')).to.have.length(8);
+            expect(wrapper.find('Movable.resizable')).toHaveLength(8);
         });
     });
     describe('Methods', () => {
         let addEventListener;
         const events = {};
 
-        before(() => {
+        beforeAll(() => {
             addEventListener = document.addEventListener;
             document.addEventListener = (type, callback) => events[type] = callback;
         });
 
-        after(() => {
+        afterAll(() => {
             document.addEventListener = addEventListener;
         });
 
@@ -48,9 +47,9 @@ describe('<Resizable>', () => {
                 events.mousemove({dx: 1, dy: 1});
                 events.mouseup({dx: 1, dy: 1});
 
-                expect(onBeginResize.calledOnce).to.eql(true);
-                expect(onResize.calledOnce).to.eql(true);
-                expect(onEndResize.calledOnce).to.eql(true);
+                expect(onBeginResize.calledOnce).toEqual(true);
+                expect(onResize.calledOnce).toEqual(true);
+                expect(onEndResize.calledOnce).toEqual(true);
             });
         });
     });
@@ -77,20 +76,20 @@ describe('<Resizable>', () => {
             });
             wrapper.find('Resizable').prop('onBeginResize')();
             wrapper.find('Resizable').prop('onResize')({delta: r(0, 0, 0, 0)});
-            expect(onResize.callCount).to.eql(1);
-            expect(onResize.calledWith(r(0, 0, 20, 20))).to.eql(true);
+            expect(onResize.callCount).toEqual(1);
+            expect(onResize.calledWith(r(0, 0, 20, 20))).toEqual(true);
 
             wrapper.find('Resizable').prop('onResize')({delta: r(10, 10, -10, -10)});
-            expect(onResize.callCount).to.eql(2);
-            expect(onResize.calledWith(r(10, 10, 10, 10))).to.eql(true);
+            expect(onResize.callCount).toEqual(2);
+            expect(onResize.calledWith(r(10, 10, 10, 10))).toEqual(true);
 
             wrapper.find('Resizable').prop('onResize')({delta: r(0, 0, 10, 10)});
-            expect(onResize.callCount).to.eql(3);
-            expect(onResize.calledWith(r(0, 0, 30, 30))).to.eql(true);
+            expect(onResize.callCount).toEqual(3);
+            expect(onResize.calledWith(r(0, 0, 30, 30))).toEqual(true);
 
             wrapper.find('Resizable').prop('onResize')({delta: r(30, 30, -30, -30)});
-            expect(onResize.callCount).to.eql(4);
-            expect(onResize.calledWith(r(20, 20, 0, 0))).to.eql(true);
+            expect(onResize.callCount).toEqual(4);
+            expect(onResize.calledWith(r(20, 20, 0, 0))).toEqual(true);
         });
     });
 
@@ -105,7 +104,7 @@ describe('<Resizable>', () => {
             shared.next = shared.initial;
             shared.max = r(0, 0, 20, 20);
             contain({}).onResize({delta: r(0, 0, 0, 0)}, shared);
-            expect(shared.next).to.eql(r(10, 10, 10, 10));
+            expect(shared.next).toEqual(r(10, 10, 10, 10));
         });
         it('min()', () => {
             const {min} = Resizable.Operations;
@@ -113,11 +112,11 @@ describe('<Resizable>', () => {
 
             shared.next = {width: 30, height: 30};
             min(20, 20).onResize({}, shared);
-            expect(shared.next).to.eql({width: 30, height: 30});
+            expect(shared.next).toEqual({width: 30, height: 30});
 
             shared.next = {width: 30, height: 30};
             min(40, 40).onResize({}, shared);
-            expect(shared.next).to.eql({width: 40, height: 40});
+            expect(shared.next).toEqual({width: 40, height: 40});
         });
         it('max()', () => {
             const {max} = Resizable.Operations;
@@ -125,11 +124,11 @@ describe('<Resizable>', () => {
 
             shared.next = {width: 30, height: 30};
             max(40, 40).onResize({}, shared);
-            expect(shared.next).to.eql({width: 30, height: 30});
+            expect(shared.next).toEqual({width: 30, height: 30});
 
             shared.next = {width: 30, height: 30};
             max(20, 20).onResize({}, shared);
-            expect(shared.next).to.eql({width: 20, height: 20});
+            expect(shared.next).toEqual({width: 20, height: 20});
         });
         it('snap()', () => {
             const {snap} = Resizable.Operations;
@@ -137,23 +136,23 @@ describe('<Resizable>', () => {
 
             shared.next = {width: 30, height: 30};
             snap(20, 20).onResize({}, shared);
-            expect(shared.next).to.eql({width: 40, height: 40});
+            expect(shared.next).toEqual({width: 40, height: 40});
 
             shared.next = {width: 30, height: 30};
             snap(10, 10).onResize({}, shared);
-            expect(shared.next).to.eql({width: 30, height: 30});
+            expect(shared.next).toEqual({width: 30, height: 30});
 
             shared.next = {width: 30, height: 30};
             snap(20, 20, 0.3).onResize({}, shared);
-            expect(shared.next).to.eql({width: 30, height: 30});
+            expect(shared.next).toEqual({width: 30, height: 30});
 
             shared.next = {width: 23, height: 23};
             snap(20, 20, 0.3).onResize({}, shared);
-            expect(shared.next).to.eql({width: 20, height: 20});
+            expect(shared.next).toEqual({width: 20, height: 20});
 
             shared.next = {width: 24, height: 24};
             snap(20, 20, 0.3).onResize({}, shared);
-            expect(shared.next).to.eql({width: 24, height: 24});
+            expect(shared.next).toEqual({width: 24, height: 24});
         });
         it('ratio()', () => {
             const {ratio} = Resizable.Operations;
@@ -161,11 +160,11 @@ describe('<Resizable>', () => {
 
             shared.next = {width: 30, height: 30};
             ratio(2).onResize({}, shared);
-            expect(shared.next).to.eql({width: 60, height: 30});
+            expect(shared.next).toEqual({width: 60, height: 30});
 
             shared.next = {width: 90, height: 30};
             ratio(2).onResize({}, shared);
-            expect(shared.next).to.eql({width: 90, height: 45});
+            expect(shared.next).toEqual({width: 90, height: 45});
         });
         it('relative()', () => {
             const {relative} = Resizable.Operations;
@@ -174,17 +173,17 @@ describe('<Resizable>', () => {
             shared.reference = {top: 10, left: 10};
             shared.next = {top: 10, left: 10};
             relative({current: {getBoundingClientRect: () => ({top: 10, left: 10})}}).onBeginResize({}, shared);
-            expect(shared.next).to.eql({top: 0, left: 0});
+            expect(shared.next).toEqual({top: 0, left: 0});
 
             shared.reference = {top: 10, left: 10};
             shared.next = {top: 10, left: 10};
             relative({}).onResize({}, shared);
-            expect(shared.next).to.eql({top: 0, left: 0});
+            expect(shared.next).toEqual({top: 0, left: 0});
 
             shared.reference = {top: 10, left: 10};
             shared.next = {top: 10.002547, left: 10.005236};
             relative({}).onResize({}, shared);
-            expect(shared.next).to.eql({top: 0, left: 0});
+            expect(shared.next).toEqual({top: 0, left: 0});
         });
         it('upadate()', () => {
             const {update} = Resizable.Operations;
@@ -193,22 +192,22 @@ describe('<Resizable>', () => {
 
             shared.next++;
             update(spy).onBeginResize({}, shared);
-            expect(spy.callCount).to.eql(1);
-            expect(spy.calledWith(shared.next)).to.eql(true);
+            expect(spy.callCount).toEqual(1);
+            expect(spy.calledWith(shared.next)).toEqual(true);
 
             shared.next++;
             update(spy).onResize({}, shared);
-            expect(spy.callCount).to.eql(2);
-            expect(spy.calledWith(shared.next)).to.eql(true);
+            expect(spy.callCount).toEqual(2);
+            expect(spy.calledWith(shared.next)).toEqual(true);
 
             // Should not call onUpdate when prev/next are the same
             update(spy).onResize({}, shared);
-            expect(spy.callCount).to.eql(2);
+            expect(spy.callCount).toEqual(2);
 
             shared.next++;
             update(spy).onEndResize({}, shared);
-            expect(spy.callCount).to.eql(3);
-            expect(spy.calledWith(shared.next)).to.eql(true);
+            expect(spy.callCount).toEqual(3);
+            expect(spy.calledWith(shared.next)).toEqual(true);
         });
     });
 });
