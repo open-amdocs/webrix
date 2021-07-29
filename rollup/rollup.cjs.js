@@ -7,8 +7,8 @@ export const production = {
     output: {
         dir: 'build',
         format: 'cjs',
-        chunkFileNames: '[name].[format].js',
-        entryFileNames: '[name].[format].js',
+        chunkFileNames: '[name].js',
+        entryFileNames: '[name].js',
         preserveModules: true,
         preserveModulesRoot: 'src',
         sourcemap: false,
@@ -26,8 +26,8 @@ export const development = {
     output: {
         dir: 'build',
         format: 'cjs',
-        chunkFileNames: '[name].[format].js',
-        entryFileNames: '[name].[format].js',
+        chunkFileNames: '[name].js',
+        entryFileNames: '[name].js',
         preserveModules: true,
         preserveModulesRoot: 'src',
         sourcemap: true,
