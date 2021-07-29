@@ -12,44 +12,44 @@
   "bugs": "https://github.com/open-amdocs/webrix/issues",
   "homepage": "https://webrix.amdocs.com",
   "license": "Apache-2.0",
-  "main": "cjs/index.js",
-  "types": "typs/index.d.ts",
-  "module": "es/index.js",
+  "main": "index.cjs.js",
+  "types": "index.d.ts",
+  "module": "index.es.js",
   "exports": {
     "./": {
-      "require": "./cjs/index.js",
-      "import": "./es/index.js",
-      "default": "./cjs/index.js"
+      "require": "./index.cjs.js",
+      "import": "./index.es.js",
+      "default": "./index.cjs.js"
     },
     "./hooks": {
-      "require": "./cjs/hooks/index.js",
-      "import": "./es/hooks/index.js",
-      "default": "./cjs/hooks/index.js"
+      "require": "./hooks/index.cjs.js",
+      "import": "./hooks/index.es.js",
+      "default": "./hooks/index.cjs.js"
     },
     "./hooks/*": {
-      "require": "./cjs/hooks/*/index.js",
-      "import": "./es/hooks/*/index.js",
-      "default": "./cjs/hooks/*/index.js"
+      "require": "./hooks/*/index.cjs.js",
+      "import": "./hooks/*/index.es.js",
+      "default": "./hooks/*/index.cjs.js"
     },
     "./components": {
-      "require": "./cjs/components/index.js",
-      "import": "./es/components/index.js",
-      "default": "./cjs/components/index.js"
+      "require": "./components/index.cjs.js",
+      "import": "./components/index.es.js",
+      "default": "./components/index.cjs.js"
     },
     "./components/*": {
-      "require": "./cjs/components/*/index.js",
-      "import": "./es/components/*/index.js",
-      "default": "./cjs/components/*/index.js"
+      "require": "./components/*/index.cjs.js",
+      "import": "./components/*/index.es.js",
+      "default": "./components/*/index.cjs.js"
     },
     "./tools": {
-      "require": "./cjs/tools/index.js",
-      "import": "./es/tools/index.js",
-      "default": "./cjs/tools/index.js"
+      "require": "./tools/index.cjs.js",
+      "import": "./tools/index.es.js",
+      "default": "./tools/index.cjs.js"
     },
     "./tools/*": {
-      "require": "./cjs/tools/*/index.js",
-      "import": "./es/tools/*/index.js",
-      "default": "./cjs/tools/*/index.js"
+      "require": "./tools/*/index.cjs.js",
+      "import": "./tools/*/index.es.js",
+      "default": "./tools/*/index.cjs.js"
     }
   },
   "dependencies": {

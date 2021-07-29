@@ -12,7 +12,7 @@ const globals = {
 export const production = {
     ...base,
     output: {
-        file: 'build/umd/webrix.umd.min.js',
+        file: 'build/webrix.umd.min.js',
         format: 'umd',
         plugins: [terser()],
         name: 'Webrix',
@@ -27,7 +27,7 @@ export const production = {
 export const development = {
     ...base,
     output: {
-        file: 'build/umd/webrix.umd.js',
+        file: 'build/webrix.umd.js',
         format: 'umd',
         name: 'Webrix',
         globals,

@@ -5,8 +5,10 @@ import {terser} from 'rollup-plugin-terser';
 export const production = {
     ...base,
     output: {
-        dir: 'build/es',
+        dir: 'build',
         format: 'es',
+        chunkFileNames: '[name].[format].js',
+        entryFileNames: '[name].[format].js',
         preserveModules: true,
         preserveModulesRoot: 'src',
         sourcemap: false,
@@ -22,8 +24,10 @@ export const production = {
 export const development = {
     ...base,
     output: {
-        dir: 'build/es',
+        dir: 'build',
         format: 'es',
+        chunkFileNames: '[name].[format].js',
+        entryFileNames: '[name].[format].js',
         preserveModules: true,
         preserveModulesRoot: 'src',
         sourcemap: true,
