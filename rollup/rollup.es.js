@@ -5,8 +5,8 @@ import {terser} from 'rollup-plugin-terser';
 export const production = {
     ...base,
     output: {
-        dir: 'build/cjs',
-        format: 'cjs',
+        dir: 'build/es',
+        format: 'es',
         preserveModules: true,
         preserveModulesRoot: 'src',
         sourcemap: false,
@@ -22,8 +22,8 @@ export const production = {
 export const development = {
     ...base,
     output: {
-        dir: 'build/cjs',
-        format: 'cjs',
+        dir: 'build/es',
+        format: 'es',
         preserveModules: true,
         preserveModulesRoot: 'src',
         sourcemap: true,
@@ -33,4 +33,4 @@ export const development = {
         ...base.plugins(),
         postcss({sourceMap: true}),
     ],
-};
+}
