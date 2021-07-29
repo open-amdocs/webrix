@@ -11,7 +11,7 @@
     "allowJs": true,
     "declaration": true,
     "emitDeclarationOnly": true,
-    "outDir": "build",
+    "outDir": "build/types",
     "isolatedModules": true
   }
 }

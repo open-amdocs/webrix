@@ -12,16 +12,45 @@
   "bugs": "https://github.com/open-amdocs/webrix/issues",
   "homepage": "https://webrix.amdocs.com",
   "license": "Apache-2.0",
-  "main": "index.js",
-  "types": "index.d.ts",
+  "main": "cjs/index.js",
+  "types": "typs/index.d.ts",
+  "module": "es/index.js",
   "exports": {
-    "./": "./index.js",
-    "./hooks": "./hooks/index.js",
-    "./hooks/*": "./hooks/*/index.js",
-    "./components": "./components/index.js",
-    "./components/*": "./components/*/index.js",
-    "./tools": "./tools/index.js",
-    "./tools/*": "./tools/*/index.js"
+    "./": {
+      "require": "./cjs/index.js",
+      "import": "./es/index.js",
+      "default": "./cjs/index.js"
+    },
+    "./hooks": {
+      "require": "./cjs/hooks/index.js",
+      "import": "./es/hooks/index.js",
+      "default": "./cjs/hooks/index.js"
+    },
+    "./hooks/*": {
+      "require": "./cjs/hooks/*/index.js",
+      "import": "./es/hooks/*/index.js",
+      "default": "./cjs/hooks/*/index.js"
+    },
+    "./components": {
+      "require": "./cjs/components/index.js",
+      "import": "./es/components/index.js",
+      "default": "./cjs/components/index.js"
+    },
+    "./components/*": {
+      "require": "./cjs/components/*/index.js",
+      "import": "./es/components/*/index.js",
+      "default": "./cjs/components/*/index.js"
+    },
+    "./tools": {
+      "require": "./cjs/tools/index.js",
+      "import": "./es/tools/index.js",
+      "default": "./cjs/tools/index.js"
+    },
+    "./tools/*": {
+      "require": "./cjs/tools/*/index.js",
+      "import": "./es/tools/*/index.js",
+      "default": "./cjs/tools/*/index.js"
+    }
   },
   "dependencies": {
     "@babel/runtime": "7.14.8",
