@@ -18,6 +18,7 @@ import React from 'react';
 import classNames from 'classnames';
 import {copyComponentRef, findChildByType} from 'utility/react';
 import {isEqual} from 'utility/object';
+import {normalizeScrollPosition} from './Scrollable.utils';
 import ResizeObserver from 'tools/ResizeObserver';
 import {VerticalScrollbarPlaceholder, HorizontalScrollbarPlaceholder, VerticalScrollbar, HorizontalScrollbar} from './components';
 import Context from './Scrollable.context';
@@ -93,8 +94,8 @@ export default class Scrollable extends React.PureComponent {
         const scrollLeft = Math.ceil(sl);
 
         return {
-            top: Math.min(1, scrollTop / Math.max(1, scrollHeight - clientHeight)),
-            left: Math.min(1, scrollLeft / Math.max(1, scrollWidth - clientWidth)),
+            top: normalizeScrollPosition(scrollHeight, clientHeight, scrollTop),
+            left: normalizeScrollPosition(scrollWidth, clientWidth, scrollLeft),
             scrollTop,
             scrollLeft,
             scrollHeight,

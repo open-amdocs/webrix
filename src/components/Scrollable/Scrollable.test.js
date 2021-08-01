@@ -2,6 +2,7 @@ import React from 'react';
 import {mount} from 'enzyme';
 import sinon from 'sinon';
 import Scrollable from './Scrollable';
+import {normalizeScrollPosition} from './Scrollable.utils';
 import {SCROLLING_CLASS_REMOVAL_DELAY} from './Scrollable.constants';
 
 const waitFor = delay => new Promise(resolve => setTimeout(resolve, delay));
@@ -122,6 +123,17 @@ describe('<Scrollable/>', () => {
             expect(s.updateScrollbars.callCount).toEqual(1);
             s.handleOnTransitionEnd({propertyName: 'width'});
             expect(s.updateScrollbars.callCount).toEqual(2);
+        });
+    });
+
+    describe('Utils', () => {
+        it('normalizeScrollPosition()', () => {
+            expect(normalizeScrollPosition(100, 100, 0)).toEqual(0);
+            expect(normalizeScrollPosition(101, 100, 0.5)).toEqual(0.5);
+            expect(normalizeScrollPosition(200, 100, 0)).toEqual(0);
+            expect(normalizeScrollPosition(200, 100, 50)).toEqual(0.5);
+            expect(normalizeScrollPosition(200, 100, 33)).toEqual(0.33);
+            expect(normalizeScrollPosition(2000, 1000, 333)).toEqual(0.333);
         });
     });
 });
