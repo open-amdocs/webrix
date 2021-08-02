@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://github.com/open-amdocs/webrix-docs/raw/master/src/resources/images/webrix-logo-dark.png"/>
+  <img src="https://github.com/open-amdocs/webrix-docs/raw/master/src/resources/images/og-image.png" height="300"/>
 </p>
 <p align="center">
   Powerful building blocks for React-based web applications.<br/>
