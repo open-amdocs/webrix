@@ -22,10 +22,10 @@ describe('<VerticalScrollbar/>', () => {
             rewire.__Rewire__('useContext', () => ({container}));
             const wrapper = shallow(<VerticalScrollbar/>);
 
-            wrapper.find('.scrollbar-track').prop('onClick')({clientY: 0});
+            wrapper.find('.scrollbar-track').prop('onClick')({clientY: 0, stopPropagation: noop});
             expect(container.current.scrollTop).toEqual(0);
 
-            wrapper.find('.scrollbar-track').prop('onClick')({clientY: 50});
+            wrapper.find('.scrollbar-track').prop('onClick')({clientY: 50, stopPropagation: noop});
             expect(container.current.scrollTop).toEqual(100);
 
             rewire.__ResetDependency__('useRef');
