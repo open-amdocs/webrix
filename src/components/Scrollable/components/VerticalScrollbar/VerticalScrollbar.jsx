@@ -27,7 +27,7 @@ const VerticalScrollbar = () => {
     const props = Movable.useMove(useMemo(() => [move(container, thumb, track)], [container]));
 
     const handleOnClick = e => {
-        e.stopPropagation();
+        e?.stopPropagation();
         // Ignore clicks on the thumb itself
         if (!thumb.current.contains(e.target)) {
             const {top, height} = track.current.getBoundingClientRect();
