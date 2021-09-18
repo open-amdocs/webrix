@@ -18,12 +18,6 @@
   <a href="https://circleci.com/gh/open-amdocs/webrix">
     <img src="https://circleci.com/gh/open-amdocs/webrix.svg?style=shield&circle-token=:circle-token" />
   </a>
-  <a href="https://packagequality.com/#?package=webrix">
-    <img src="https://packagequality.com/shield/webrix.svg" />
-  </a>
-  <a href="https://bundlephobia.com/result?p=webrix@latest">
-    <img src="https://badgen.net/bundlephobia/minzip/webrix@latest" />
-  </a>
   <a href="https://codecov.io/gh/open-amdocs/webrix">
     <img src="https://codecov.io/gh/open-amdocs/webrix/branch/master/graph/badge.svg" />
   </a>
