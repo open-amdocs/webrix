@@ -89,29 +89,34 @@ describe('<Scrollable/>', () => {
         });
 
         it('updateScrollbars()', () => {
+            global.window.requestAnimationFrame.resetHistory();
             const onUpdate = sinon.spy();
-            const remove = sinon.spy();
+            const toggle = sinon.spy();
             const setProperty = sinon.spy();
+
             const s = new Scrollable({onUpdate});
             s.updateScrollbars();
             expect(onUpdate.callCount).toEqual(0);
-            expect(remove.callCount).toEqual(0);
+            expect(toggle.callCount).toEqual(0);
 
-            s.container.current = {parentElement: {style: {setProperty}, classList: {remove}}};
+            s.container.current = {parentElement: {style: {setProperty}, classList: {toggle}}};
             s.updateScrollbars();
             expect(onUpdate.callCount).toEqual(1);
-            expect(remove.callCount).toEqual(2);
+            expect(global.window.requestAnimationFrame.callCount).toEqual(1);
+            global.window.requestAnimationFrame.args[0][0]();
+            expect(toggle.callCount).toEqual(2);
             expect(setProperty.callCount).toEqual(4);
         });
 
+        // makes sure the change was detected the the re-calc in requestAnimationFrame is fired
         it('ResizeUpdate', () => {
+            global.window.requestAnimationFrame.resetHistory();
             const s = new Scrollable({onScroll: sinon.spy(), onUpdate: sinon.spy()});
-            const parentElement = {classList: {add: sinon.spy()}, style: {setProperty: sinon.spy()}};
+            const parentElement = {classList: {toggle: sinon.spy()}, style: {setProperty: sinon.spy()}};
             s.container = {current: {parentElement, clientHeight: 100, clientWidth: 100, scrollHeight: 200, scrollWidth: 200, scrollTop: 50, scrollLeft: 50}};
 
             s.updateScrollbars();
-            expect(parentElement.classList.add.callCount).toEqual(2);
-            expect(parentElement.style.setProperty.callCount).toEqual(4);
+            expect(global.window.requestAnimationFrame.callCount).toEqual(1);
         });
 
         it('onTransitionEnd()', () => {

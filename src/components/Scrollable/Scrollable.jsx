@@ -17,7 +17,7 @@
 import React from 'react';
 import classNames from 'classnames';
 import {copyComponentRef, findChildByType} from 'utility/react';
-import {isEqual} from 'utility/object';
+import {requestAnimationFrame} from 'utility/mocks';
 import {normalizeScrollPosition} from './Scrollable.utils';
 import ResizeObserver from 'tools/ResizeObserver';
 import {VerticalScrollbarPlaceholder, HorizontalScrollbarPlaceholder, VerticalScrollbar, HorizontalScrollbar} from './components';
@@ -27,13 +27,14 @@ import {SCROLLING_CLASS_REMOVAL_DELAY} from './Scrollable.constants';
 import './Scrollable.scss';
 
 export default class Scrollable extends React.PureComponent {
-
     static propTypes = propTypes;
     static defaultProps = defaultProps;
 
     constructor(props) {
         super(props);
         this.container = React.createRef();
+        this.vTrack = React.createRef();
+        this.hTrack = React.createRef();
         this.ctx = {container: this.container};
         this.event = {prev: {}, next: {}};
     }
@@ -84,11 +85,12 @@ export default class Scrollable extends React.PureComponent {
     };
 
     getEvent = () => {
-        if (!this.container.current) {
+        const container = this.container.current;
+
+        if (!container) {
             return {};
         }
 
-        const container = this.container.current;
         const {clientHeight, clientWidth, scrollTop: st, scrollLeft: sl, scrollHeight, scrollWidth} = container;
         const scrollTop = Math.ceil(st);
         const scrollLeft = Math.ceil(sl);
@@ -107,32 +109,41 @@ export default class Scrollable extends React.PureComponent {
 
     updateScrollbars = () => {
         this.event.next = this.getEvent();
-        // This check ensures that updates (which are a potentially expensive operation)
+
+        const nextEvent = this.event.next,
+            prevEvent = this.event.prev,
+            changed = nextEvent.scrollHeight !== prevEvent.scrollHeight ||
+            nextEvent.scrollWidth !== prevEvent.scrollWidth ||
+            nextEvent.top !== prevEvent.top ||
+            nextEvent.left !== prevEvent.left;
+
+        // Ensures that updates (which are a potentially expensive operation)
         // are only executed if the applicable scroll properties have changed
-        if (!isEqual(this.event.prev, this.event.next)) {
+        if (changed) {
             const el = this.container.current.parentElement;
-            this.props.onUpdate(this.event.next);
-            const vRatio = this.event.next.clientHeight / this.event.next.scrollHeight;
-            const hRatio = this.event.next.clientWidth / this.event.next.scrollWidth;
+            this.props.onUpdate(nextEvent);
+            const vRatio = nextEvent.clientHeight / nextEvent.scrollHeight;
+            const hRatio = nextEvent.clientWidth / nextEvent.scrollWidth;
 
-            if (vRatio < 1) {
-                el.classList.add('vertically-scrollable');
-            } else {
-                el.classList.remove('vertically-scrollable');
-            }
+            requestAnimationFrame(() => {
+                el.classList.toggle('vertically-scrollable', vRatio < 1);
+                el.classList.toggle('horizontally-scrollable', hRatio < 1);
 
-            if (hRatio < 1) {
-                el.classList.add('horizontally-scrollable');
-            } else {
-                el.classList.remove('horizontally-scrollable');
-            }
+                el.style.setProperty('--scrollable-vertical-ratio', vRatio);
+                el.style.setProperty('--scrollable-horizontal-ratio', hRatio);
 
-            el.style.setProperty('--scrollable-vertical-ratio', vRatio);
-            el.style.setProperty('--scrollable-horizontal-ratio', hRatio);
-            el.style.setProperty('--scrollable-scroll-top', this.event.next.top);
-            el.style.setProperty('--scrollable-scroll-left', this.event.next.left);
+                if( this.props.cssVarsOnTracks ) {
+                    this.vTrack.current.style.setProperty('--scrollable-scroll-top', nextEvent.top);
+                    this.hTrack.current.style.setProperty('--scrollable-scroll-top', nextEvent.left);
+                }
+                else {
+                    el.style.setProperty('--scrollable-scroll-top', nextEvent.top);
+                    el.style.setProperty('--scrollable-scroll-left', nextEvent.left);
+                }
+            });
         }
-        this.event.prev = this.event.next;
+
+        this.event.prev = nextEvent;
     };
 
     getElementProps = () => {
@@ -159,13 +170,14 @@ export default class Scrollable extends React.PureComponent {
         const vsb = findChildByType(children, VerticalScrollbarPlaceholder);
         const hsb = findChildByType(children, HorizontalScrollbarPlaceholder);
         const content = React.Children.toArray(children).filter(child => ![VerticalScrollbarPlaceholder, HorizontalScrollbarPlaceholder].includes(child.type));
+
         return (
             <ResizeObserver onResize={this.updateScrollbars}>
                 <div className='scrollbar' style={style} onTransitionEnd={this.handleOnTransitionEnd}>
                     {React.cloneElement(element, this.getElementProps(), content)}
                     <Context.Provider value={this.ctx}>
-                        {vsb ? vsb.props.children : <VerticalScrollbar/>}
-                        {hsb ? hsb.props.children : <HorizontalScrollbar/>}
+                        {vsb ? vsb.props.children : <VerticalScrollbar xRef={this.vTrack}/>}
+                        {hsb ? hsb.props.children : <HorizontalScrollbar xRef={this.hTrack}/>}
                     </Context.Provider>
                 </div>
             </ResizeObserver>

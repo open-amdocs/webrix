@@ -19,9 +19,11 @@ import Movable from 'components/Movable';
 import Context from '../../Scrollable.context';
 import {move} from './VerticalScrollbar.operations';
 import './VerticalScrollbar.scss';
+import {propTypes} from './VerticalScrollbar.props';
 
-const VerticalScrollbar = () => {
-    const track = useRef();
+const VerticalScrollbar = ({xRef}) => {
+    let track = useRef();
+    track = xRef || track;
     const thumb = useRef();
     const {container} = useContext(Context);
     const props = Movable.useMove(useMemo(() => [move(container, thumb, track)], [container]));
@@ -47,5 +49,7 @@ const VerticalScrollbar = () => {
         </div>
     );
 };
+
+VerticalScrollbar.propTypes = propTypes;
 
 export default VerticalScrollbar;
