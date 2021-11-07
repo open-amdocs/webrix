@@ -134,7 +134,7 @@ export default class Scrollable extends React.PureComponent {
 
                 if( this.props.cssVarsOnTracks ) {
                     this.vTrack.current.style.setProperty('--scrollable-scroll-top', nextEvent.top);
-                    this.hTrack.current.style.setProperty('--scrollable-scroll-top', nextEvent.left);
+                    this.hTrack.current.style.setProperty('--scrollable-scroll-left', nextEvent.left);
                 }
                 else {
                     el.style.setProperty('--scrollable-scroll-top', nextEvent.top);
