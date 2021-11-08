@@ -113,15 +113,15 @@ export default class Scrollable extends React.PureComponent {
         const nextEvent = this.event.next,
             prevEvent = this.event.prev,
             changed = nextEvent.scrollHeight !== prevEvent.scrollHeight ||
-            nextEvent.scrollWidth !== prevEvent.scrollWidth ||
-            nextEvent.top !== prevEvent.top ||
-            nextEvent.left !== prevEvent.left;
+                      nextEvent.scrollWidth !== prevEvent.scrollWidth ||
+                      nextEvent.top !== prevEvent.top ||
+                      nextEvent.left !== prevEvent.left;
 
         // Ensures that updates (which are a potentially expensive operation)
         // are only executed if the applicable scroll properties have changed
         if (changed) {
-            const el = this.container.current.parentElement;
             this.props.onUpdate(nextEvent);
+            const el = this.container.current.parentElement;
             const vRatio = nextEvent.clientHeight / nextEvent.scrollHeight;
             const hRatio = nextEvent.clientWidth / nextEvent.scrollWidth;
 
@@ -132,14 +132,8 @@ export default class Scrollable extends React.PureComponent {
                 el.style.setProperty('--scrollable-vertical-ratio', vRatio);
                 el.style.setProperty('--scrollable-horizontal-ratio', hRatio);
 
-                if( this.props.cssVarsOnTracks ) {
-                    this.vTrack.current.style.setProperty('--scrollable-scroll-top', nextEvent.top);
-                    this.hTrack.current.style.setProperty('--scrollable-scroll-left', nextEvent.left);
-                }
-                else {
-                    el.style.setProperty('--scrollable-scroll-top', nextEvent.top);
-                    el.style.setProperty('--scrollable-scroll-left', nextEvent.left);
-                }
+                (this.props.cssVarsOnTracks ? this.vTrack.current : el).style.setProperty('--scrollable-scroll-top', nextEvent.top);
+                (this.props.cssVarsOnTracks ? this.hTrack.current : el).style.setProperty('--scrollable-scroll-left', nextEvent.left);
             });
         }
 
