@@ -2,6 +2,7 @@ import React from 'react';
 import {mount, shallow} from 'enzyme';
 import {noop} from 'utility/memory';
 import {move} from './HorizontalScrollbar.operations';
+import {CSS_VARS} from '../../Scrollable.constants';
 import HorizontalScrollbar, {__RewireAPI__ as rewire} from './HorizontalScrollbar';
 
 describe('<HorizontalScrollbar/>', () => {
@@ -11,6 +12,19 @@ describe('<HorizontalScrollbar/>', () => {
             const wrapper = mount(<HorizontalScrollbar/>);
             expect(wrapper.find('.scrollbar-thumb')).toHaveLength(2);
             expect(wrapper.find('.scrollbar-thumb-inner')).toHaveLength(1);
+            expect(wrapper.find('.scrollbar-track').prop('style')).toBeUndefined();
+        });
+
+        it('should have correct style with CSS variable', () => {
+            const context = {
+                container: {},
+                scrollLeft: 10,
+                cssVarsOnTracks: true,
+            };
+            rewire.__Rewire__('useContext', () => context);
+
+            const wrapper = shallow(<HorizontalScrollbar/>);
+            expect(wrapper.find('.scrollbar-track').prop('style')).toEqual({[CSS_VARS.scrollLeft]: context.scrollLeft});
         });
     });
 

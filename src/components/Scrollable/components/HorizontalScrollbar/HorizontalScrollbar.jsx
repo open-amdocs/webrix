@@ -41,7 +41,7 @@ const HorizontalScrollbar = () => {
     };
 
     return (
-        <div className='scrollbar-track horizontal-scrollbar-track' style={cssVarsOnTracks ? {[CSS_VARS.scrollLeft]: scrollLeft} : {}} ref={track} onClick={handleOnClick}>
+        <div className='scrollbar-track horizontal-scrollbar-track' style={cssVarsOnTracks ? {[CSS_VARS.scrollLeft]: scrollLeft} : undefined} ref={track} onClick={handleOnClick}>
             <Movable className='scrollbar-thumb' ref={thumb} {...props}>
                 <div className='scrollbar-thumb-inner'/>
             </Movable>

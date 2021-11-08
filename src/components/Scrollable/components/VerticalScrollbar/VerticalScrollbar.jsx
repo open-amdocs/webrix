@@ -41,7 +41,7 @@ const VerticalScrollbar = () => {
     };
 
     return (
-        <div className='scrollbar-track vertical-scrollbar-track' style={cssVarsOnTracks ? {[CSS_VARS.scrollTop]: scrollTop} : {}} ref={track} onClick={handleOnClick}>
+        <div className='scrollbar-track vertical-scrollbar-track' style={cssVarsOnTracks ? {[CSS_VARS.scrollTop]: scrollTop} : undefined} ref={track} onClick={handleOnClick}>
             <Movable className='scrollbar-thumb' ref={thumb} {...props}>
                 <div className='scrollbar-thumb-inner'/>
             </Movable>

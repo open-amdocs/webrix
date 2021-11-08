@@ -2,6 +2,7 @@ import React from 'react';
 import {mount, shallow} from 'enzyme';
 import {noop} from 'utility/memory';
 import {move} from './VerticalScrollbar.operations';
+import {CSS_VARS} from '../../Scrollable.constants';
 import VerticalScrollbar, {__RewireAPI__ as rewire} from './VerticalScrollbar';
 
 describe('<VerticalScrollbar/>', () => {
@@ -11,6 +12,19 @@ describe('<VerticalScrollbar/>', () => {
             const wrapper = mount(<VerticalScrollbar/>);
             expect(wrapper.find('.scrollbar-thumb')).toHaveLength(2);
             expect(wrapper.find('.scrollbar-thumb-inner')).toHaveLength(1);
+            expect(wrapper.find('.scrollbar-track').prop('style')).toBeUndefined();
+        });
+
+        it('should have correct style with CSS variable', () => {
+            const context = {
+                container: {},
+                scrollTop: 10,
+                cssVarsOnTracks: true,
+            };
+            rewire.__Rewire__('useContext', () => context);
+
+            const wrapper = shallow(<VerticalScrollbar/>);
+            expect(wrapper.find('.scrollbar-track').prop('style')).toEqual({[CSS_VARS.scrollTop]: context.scrollTop});
         });
     });
 
