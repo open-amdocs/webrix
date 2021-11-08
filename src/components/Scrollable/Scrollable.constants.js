@@ -15,3 +15,10 @@
  */
 
 export const SCROLLING_CLASS_REMOVAL_DELAY = 500; // In milliseconds
+
+export const CSS_VARS = {
+    verticalRatio: '--scrollable-vertical-ratio',
+    horizontalRatio: '--scrollable-horizontal-ratio',
+    scrollTop: '--scrollable-scroll-top',
+    scrollLeft: '--scrollable-scroll-left',
+};
