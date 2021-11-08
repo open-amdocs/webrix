@@ -2,7 +2,7 @@ import React from 'react';
 import {mount} from 'enzyme';
 import sinon from 'sinon';
 import {noop} from 'utility/memory';
-import Scrollable from './Scrollable';
+import Scrollable from './';
 import {normalizeScrollPosition} from './Scrollable.utils';
 import {SCROLLING_CLASS_REMOVAL_DELAY} from './Scrollable.constants';
 
@@ -17,6 +17,17 @@ describe('<Scrollable/>', () => {
             expect(wrapper.find('ResizeObserver')).toHaveLength(1);
             expect(wrapper.find('VerticalScrollbar')).toHaveLength(1);
             expect(wrapper.find('HorizontalScrollbar')).toHaveLength(1);
+        });
+
+        it('should render a Scrollbar with custom vertical & horizontal scrollbars', () => {
+            const wrapper = mount(<Scrollable>
+                <Scrollable.VerticalScrollbar><div className='vsb-child'></div></Scrollable.VerticalScrollbar>
+                <Scrollable.HorizontalScrollbar><div className='hsb-child'></div></Scrollable.HorizontalScrollbar>
+            </Scrollable>);
+            expect(wrapper.find('.scrollbar')).toHaveLength(1);
+            expect(wrapper.find('ResizeObserver')).toHaveLength(1);
+            expect(wrapper.find('.vsb-child')).toHaveLength(1);
+            expect(wrapper.find('.hsb-child')).toHaveLength(1);
         });
     });
 
@@ -34,14 +45,26 @@ describe('<Scrollable/>', () => {
             expect(s.getSnapshotBeforeUpdate()).toEqual(s.container.current);
         });
 
-        it('componentDidUpdate()', () => {
-            const s = new Scrollable({scrollOnDOMChange: false});
-            s.container = {current: {scrollTop: 0}};
-            s.updateScrollbars = sinon.spy();
-            s.componentDidUpdate(null, null, {scrollTop: 50, scrollLeft: 50});
-            expect(s.container.current.scrollTop).toEqual(50);
-            expect(s.container.current.scrollLeft).toEqual(50);
-            expect(s.updateScrollbars.callCount).toEqual(1);
+        describe('componentDidUpdate', () => {
+            it('scrollOnDOMChange prop "true"', () => {
+                const s = new Scrollable({scrollOnDOMChange: true});
+                s.container = {current: {scrollTop: 0, scrollLeft: 0}};
+                s.updateScrollbars = sinon.spy();
+                s.componentDidUpdate(null, null, {scrollTop: 50, scrollLeft: 50});
+                expect(s.container.current.scrollTop).toEqual(0);
+                expect(s.container.current.scrollLeft).toEqual(0);
+                expect(s.updateScrollbars.callCount).toEqual(1);
+            });
+
+            it('scrollOnDOMChange prop "false"', () => {
+                const s = new Scrollable({scrollOnDOMChange: false});
+                s.container = {current: {scrollTop: 0}};
+                s.updateScrollbars = sinon.spy();
+                s.componentDidUpdate(null, null, {scrollTop: 50, scrollLeft: 50});
+                expect(s.container.current.scrollTop).toEqual(50);
+                expect(s.container.current.scrollLeft).toEqual(50);
+                expect(s.updateScrollbars.callCount).toEqual(1);
+            });
         });
     });
 
