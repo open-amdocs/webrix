@@ -19,9 +19,11 @@ import Movable from 'components/Movable';
 import Context from '../../Scrollable.context';
 import {move} from './HorizontalScrollbar.operations';
 import './HorizontalScrollbar.scss';
+import {propTypes} from '../VerticalScrollbar/VerticalScrollbar.props';
 
-const HorizontalScrollbar = () => {
-    const track = useRef();
+const HorizontalScrollbar = ({xRef}) => {
+    let track = useRef();
+    track = xRef || track;
     const thumb = useRef();
     const {container} = useContext(Context);
     const props = Movable.useMove(useMemo(() => [move(container, thumb, track)], [container]));
@@ -47,5 +49,7 @@ const HorizontalScrollbar = () => {
         </div>
     );
 };
+
+HorizontalScrollbar.propTypes = propTypes;
 
 export default HorizontalScrollbar;

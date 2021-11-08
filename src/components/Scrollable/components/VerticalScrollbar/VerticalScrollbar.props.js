@@ -13,27 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-import React from 'react';
-import {func, shape, node, bool} from 'prop-types';
-import {noop} from 'utility/memory';
+import {oneOfType, func, shape, instanceOf} from 'prop-types';
 
 export const propTypes = {
-    style: shape({}),
-    onScroll: func,
-    onUpdate: func,
-    scrollOnDOMChange: bool,
-    children: node,
-    element: node,
-    cssVarsOnTracks: bool, // temporary workaround for Blink bug: https://bugs.chromium.org/p/chromium/issues/detail?id=1266517
-};
-
-export const defaultProps = {
-    style: null,
-    onScroll: noop,
-    onUpdate: noop,
-    scrollOnDOMChange: true,
-    children: null,
-    element: <div/>,
-    cssVarsOnTracks: false,
+    xRef: oneOfType([
+        // Either a function
+        func,
+        // Or the instance of a DOM native element (see the note about SSR)
+        shape({ current: instanceOf(Element) }),
+    ]),
 };
