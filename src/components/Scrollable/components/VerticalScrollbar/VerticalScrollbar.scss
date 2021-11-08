@@ -1,27 +1,3 @@
-.scrollbar {
-  &.vertically-scrollable .vertical-scrollbar-track {
-    visibility: visible;
-    pointer-events: auto;
-  }
+@import '../tracks';
 
-  .vertical-scrollbar-track {
-    position: absolute;
-    width: 12px;
-    height: 100%;
-    right: 0;
-    top: 0;
-
-    .scrollbar-thumb {
-      --thumb-height: max(calc((var(--scrollable-vertical-ratio, 1) * 100%)), var(--scrollable-min-thumb-length, 30px));
-      right: 0;
-      box-sizing: border-box;
-      top: calc(var(--scrollable-scroll-top, 0) * (100% - var(--thumb-height)));
-      height: var(--thumb-height);
-
-      .scrollbar-thumb-inner {
-        width: 6px;
-        height: 100%;
-      }
-    }
-  }
-}
+@include tracks(true);
