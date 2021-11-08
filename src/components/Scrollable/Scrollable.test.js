@@ -162,6 +162,7 @@ describe('<Scrollable/>', () => {
                 expect(global.window.requestAnimationFrame.callCount).toEqual(1);
                 global.window.requestAnimationFrame.args[0][0]();
                 expect(toggle.callCount).toEqual(2);
+
                 expect(containerSetProperty.callCount).toEqual(2);
                 expect(hTrackSetProperty.callCount).toEqual(1);
                 expect(vTrackSetProperty.callCount).toEqual(1);
