@@ -45,6 +45,20 @@ describe('<HorizontalScrollbar/>', () => {
             rewire.__ResetDependency__('useRef');
             rewire.__ResetDependency__('useContext');
         });
+
+        it('handleOnClick() on thumb', () => {
+            const container = {current: {style: {}, scrollLeft: 0, scrollHeight: 200}};
+            const ref = {current: {contains: () => true, getBoundingClientRect: () => ({left: 0, width: 100})}};
+            rewire.__Rewire__('useRef', () => ref);
+            rewire.__Rewire__('useContext', () => ({container}));
+            const wrapper = shallow(<HorizontalScrollbar/>);
+
+            wrapper.find('.scrollbar-track').prop('onClick')({clientX: 50, stopPropagation: noop});
+            expect(container.current.scrollLeft).toEqual(0);
+
+            rewire.__ResetDependency__('useRef');
+            rewire.__ResetDependency__('useContext');
+        });
     });
 
     describe('Operations', () => {

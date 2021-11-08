@@ -45,6 +45,20 @@ describe('<VerticalScrollbar/>', () => {
             rewire.__ResetDependency__('useRef');
             rewire.__ResetDependency__('useContext');
         });
+
+        it('handleOnClick() on thumb', () => {
+            const container = {current: {style: {}, scrollTop: 0, scrollHeight: 200}};
+            const ref = {current: {contains: () => true, getBoundingClientRect: () => ({top: 0, height: 100})}};
+            rewire.__Rewire__('useRef', () => ref);
+            rewire.__Rewire__('useContext', () => ({container}));
+            const wrapper = shallow(<VerticalScrollbar/>);
+
+            wrapper.find('.scrollbar-track').prop('onClick')({clientY: 50, stopPropagation: noop});
+            expect(container.current.scrollTop).toEqual(0);
+
+            rewire.__ResetDependency__('useRef');
+            rewire.__ResetDependency__('useContext');
+        });
     });
 
     describe('Operations', () => {
