@@ -23,7 +23,7 @@ import ResizeObserver from 'tools/ResizeObserver';
 import {VerticalScrollbarPlaceholder, HorizontalScrollbarPlaceholder, VerticalScrollbar, HorizontalScrollbar} from './components';
 import Context from './Scrollable.context';
 import {propTypes, defaultProps} from './Scrollable.props';
-import {SCROLLING_CLASS_REMOVAL_DELAY} from './Scrollable.constants';
+import {SCROLLING_CLASS_REMOVAL_DELAY, CSS_VARS} from './Scrollable.constants';
 import './Scrollable.scss';
 
 export default class Scrollable extends React.PureComponent {
@@ -33,10 +33,13 @@ export default class Scrollable extends React.PureComponent {
     constructor(props) {
         super(props);
         this.container = React.createRef();
-        this.vTrack = React.createRef();
-        this.hTrack = React.createRef();
-        this.ctx = {container: this.container};
         this.event = {prev: {}, next: {}};
+        this.state = {
+            cssVarsOnTracks: props.cssVarsOnTracks,
+            scrollTop: 0,
+            scrollLeft: 0,
+            container: this.container,
+        }
     }
 
     getSnapshotBeforeUpdate() {
@@ -129,11 +132,15 @@ export default class Scrollable extends React.PureComponent {
                 el.classList.toggle('vertically-scrollable', vRatio < 1);
                 el.classList.toggle('horizontally-scrollable', hRatio < 1);
 
-                el.style.setProperty('--scrollable-vertical-ratio', vRatio);
-                el.style.setProperty('--scrollable-horizontal-ratio', hRatio);
+                el.style.setProperty(CSS_VARS.verticalRatio, vRatio);
+                el.style.setProperty(CSS_VARS.horizontalRatio, hRatio);
 
-                (this.props.cssVarsOnTracks ? this.vTrack.current : el).style.setProperty('--scrollable-scroll-top', nextEvent.top);
-                (this.props.cssVarsOnTracks ? this.hTrack.current : el).style.setProperty('--scrollable-scroll-left', nextEvent.left);
+                this.setState(state => ({...state, scrollTop: nextEvent.top, scrollLeft: nextEvent.left}));
+
+                if (!this.props.cssVarsOnTracks) {
+                    el.style.setProperty(CSS_VARS.scrollTop, nextEvent.top);
+                    el.style.setProperty(CSS_VARS.scrollLeft, nextEvent.left);
+                }
             });
         }
 
@@ -169,9 +176,9 @@ export default class Scrollable extends React.PureComponent {
             <ResizeObserver onResize={this.updateScrollbars}>
                 <div className='scrollbar' style={style} onTransitionEnd={this.handleOnTransitionEnd}>
                     {React.cloneElement(element, this.getElementProps(), content)}
-                    <Context.Provider value={this.ctx}>
-                        {vsb ? vsb.props.children : <VerticalScrollbar xRef={this.vTrack}/>}
-                        {hsb ? hsb.props.children : <HorizontalScrollbar xRef={this.hTrack}/>}
+                    <Context.Provider value={this.state}>
+                        {vsb ? vsb.props.children : <VerticalScrollbar/>}
+                        {hsb ? hsb.props.children : <HorizontalScrollbar/>}
                     </Context.Provider>
                 </div>
             </ResizeObserver>

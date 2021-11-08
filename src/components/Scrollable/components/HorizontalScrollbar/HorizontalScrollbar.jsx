@@ -17,15 +17,14 @@
 import React, {useContext, useMemo, useRef} from 'react';
 import Movable from 'components/Movable';
 import Context from '../../Scrollable.context';
+import {CSS_VARS} from '../../Scrollable.constants';
 import {move} from './HorizontalScrollbar.operations';
 import './HorizontalScrollbar.scss';
-import {propTypes} from '../VerticalScrollbar/VerticalScrollbar.props';
 
-const HorizontalScrollbar = ({xRef}) => {
-    let track = useRef();
-    track = xRef || track;
+const HorizontalScrollbar = () => {
+    const track = useRef();
     const thumb = useRef();
-    const {container} = useContext(Context);
+    const {container, scrollLeft, cssVarsOnTracks} = useContext(Context);
     const props = Movable.useMove(useMemo(() => [move(container, thumb, track)], [container]));
 
     const handleOnClick = e => {
@@ -42,14 +41,12 @@ const HorizontalScrollbar = ({xRef}) => {
     };
 
     return (
-        <div className='scrollbar-track horizontal-scrollbar-track' ref={track} onClick={handleOnClick}>
+        <div className='scrollbar-track horizontal-scrollbar-track' style={cssVarsOnTracks ? {[CSS_VARS.scrollLeft]: scrollLeft} : {}} ref={track} onClick={handleOnClick}>
             <Movable className='scrollbar-thumb' ref={thumb} {...props}>
                 <div className='scrollbar-thumb-inner'/>
             </Movable>
         </div>
     );
 };
-
-HorizontalScrollbar.propTypes = propTypes;
 
 export default HorizontalScrollbar;
