@@ -20,10 +20,12 @@ describe('<Scrollable/>', () => {
         });
 
         it('should render a Scrollbar with custom vertical & horizontal scrollbars', () => {
-            const wrapper = mount(<Scrollable>
-                <Scrollable.VerticalScrollbar><div className='vsb-child'></div></Scrollable.VerticalScrollbar>
-                <Scrollable.HorizontalScrollbar><div className='hsb-child'></div></Scrollable.HorizontalScrollbar>
-            </Scrollable>);
+            const wrapper = mount(
+                <Scrollable>
+                    <Scrollable.VerticalScrollbar><div className='vsb-child'></div></Scrollable.VerticalScrollbar>
+                    <Scrollable.HorizontalScrollbar><div className='hsb-child'></div></Scrollable.HorizontalScrollbar>
+                </Scrollable>
+            );
             expect(wrapper.find('.scrollbar')).toHaveLength(1);
             expect(wrapper.find('ResizeObserver')).toHaveLength(1);
             expect(wrapper.find('.vsb-child')).toHaveLength(1);
