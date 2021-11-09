@@ -35,14 +35,14 @@ describe('<Scrollable/>', () => {
 
     describe('Life Cycle', () => {
         it('componentDidMount()', () => {
-            const s = new Scrollable();
+            const s = new Scrollable({});
             s.updateScrollbars = sinon.spy();
             s.componentDidMount();
             expect(s.updateScrollbars.calledOnce).toEqual(true);
         });
 
         it('getSnapshotBeforeUpdate()', () => {
-            const s = new Scrollable();
+            const s = new Scrollable({});
             s.container = {current: {scrollTop: 0, scrollLeft: 0}};
             expect(s.getSnapshotBeforeUpdate()).toEqual(s.container.current);
         });
@@ -114,24 +114,64 @@ describe('<Scrollable/>', () => {
             expect(onScroll.callCount).toEqual(2);
         });
 
-        it('updateScrollbars()', () => {
-            global.window.requestAnimationFrame.resetHistory();
-            const onUpdate = sinon.spy();
-            const toggle = sinon.spy();
-            const setProperty = sinon.spy();
+        describe('updateScrollbars()', () => {
+            it('updateScrollbars()', () => {
+                global.window.requestAnimationFrame.resetHistory();
+                const onUpdate = sinon.spy();
+                const toggle = sinon.spy();
+                const setProperty = sinon.spy();
 
-            const s = new Scrollable({onUpdate});
-            s.updateScrollbars();
-            expect(onUpdate.callCount).toEqual(0);
-            expect(toggle.callCount).toEqual(0);
+                const s = new Scrollable({onUpdate});
+                s.updateScrollbars();
+                expect(onUpdate.callCount).toEqual(0);
+                expect(toggle.callCount).toEqual(0);
 
-            s.container.current = {parentElement: {style: {setProperty}, classList: {toggle}}};
-            s.updateScrollbars();
-            expect(onUpdate.callCount).toEqual(1);
-            expect(global.window.requestAnimationFrame.callCount).toEqual(1);
-            global.window.requestAnimationFrame.args[0][0]();
-            expect(toggle.callCount).toEqual(2);
-            expect(setProperty.callCount).toEqual(4);
+                s.container.current = {parentElement: {style: {setProperty}, classList: {toggle}}};
+
+                // setState spy
+                const setState = jest.fn();
+                const setStateSpy = jest.spyOn(s, 'setState');
+                setStateSpy.mockImplementation(state => setState(state()));
+
+                s.updateScrollbars();
+
+                expect(onUpdate.callCount).toEqual(1);
+                expect(global.window.requestAnimationFrame.callCount).toEqual(1);
+                global.window.requestAnimationFrame.args[0][0]();
+                expect(toggle.callCount).toEqual(2);
+                expect(setProperty.callCount).toEqual(4);
+                expect(setState).toHaveBeenCalledTimes(1);
+            });
+
+            it('should not add CSS variables on the component', () => {
+                global.window.requestAnimationFrame.resetHistory();
+                const toggle = sinon.spy();
+                const containerSetProperty = sinon.spy();
+
+                const s = new Scrollable({onUpdate: noop, cssVarsOnTracks:true});
+                s.container.current = {parentElement: {style: {setProperty: containerSetProperty}, classList: {toggle}}};
+                s.event = {next: {top:5, left:10}, prev: {top:0, left:0}};
+
+                // setState spy
+                const setState = jest.fn();
+                const setStateSpy = jest.spyOn(s, 'setState');
+                setStateSpy.mockImplementation(state => setState(state()));
+
+                s.updateScrollbars();
+
+                expect(global.window.requestAnimationFrame.callCount).toEqual(1);
+                global.window.requestAnimationFrame.args[0][0]();
+                expect(toggle.callCount).toEqual(2);
+                expect(containerSetProperty.callCount).toEqual(2);
+
+                // expect(s.setState.calledWith( sinon.match(newState) )).toEqual(true);
+                expect(setState).toHaveBeenCalledWith(
+                    expect.objectContaining({
+                        scrollTop : s.event.next.top,
+                        scrollLeft: s.event.next.left,
+                    })
+                );
+            });
         });
 
         // makes sure the change was detected the the re-calc in requestAnimationFrame is fired
@@ -146,7 +186,7 @@ describe('<Scrollable/>', () => {
         });
 
         it('onTransitionEnd()', () => {
-            const s = new Scrollable();
+            const s = new Scrollable({});
             s.updateScrollbars = sinon.spy();
             s.handleOnTransitionEnd({propertyName: 'foo'});
             expect(s.updateScrollbars.callCount).toEqual(0);
@@ -165,35 +205,6 @@ describe('<Scrollable/>', () => {
             expect(normalizeScrollPosition(200, 100, 50)).toEqual(0.5);
             expect(normalizeScrollPosition(200, 100, 33)).toEqual(0.33);
             expect(normalizeScrollPosition(2000, 1000, 333)).toEqual(0.333);
-        });
-    });
-
-    describe('Props', () => {
-        describe('cssVarsOnTracks', () => {
-            it('updateScrollbars()', () => {
-                global.window.requestAnimationFrame.resetHistory();
-                const toggle = sinon.spy();
-                const containerSetProperty = sinon.spy();
-                const hTrackSetProperty = sinon.spy();
-                const vTrackSetProperty = sinon.spy();
-
-                const s = new Scrollable({onUpdate: noop, cssVarsOnTracks:true});
-                s.container.current = {parentElement: {style: {setProperty: containerSetProperty}, classList: {toggle}}};
-                s.hTrack.current = {style: {setProperty: hTrackSetProperty}};
-                s.vTrack.current = {style: {setProperty: vTrackSetProperty}};
-                s.event = {next: {top:5, left:10}, prev: {top:0, left:0}};
-
-                s.updateScrollbars();
-                expect(global.window.requestAnimationFrame.callCount).toEqual(1);
-                global.window.requestAnimationFrame.args[0][0]();
-                expect(toggle.callCount).toEqual(2);
-                expect(containerSetProperty.callCount).toEqual(2);
-                expect(hTrackSetProperty.callCount).toEqual(1);
-                expect(vTrackSetProperty.callCount).toEqual(1);
-
-                expect(hTrackSetProperty.calledWith('--scrollable-scroll-left', s.event.next.left)).toEqual(true);
-                expect(vTrackSetProperty.calledWith('--scrollable-scroll-top', s.event.next.top)).toEqual(true);
-            });
         });
     });
 });

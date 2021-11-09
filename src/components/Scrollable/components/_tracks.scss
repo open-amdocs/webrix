@@ -1,0 +1,41 @@
+@mixin tracks($isVertical) {
+  .scrollbar {
+    &.#{if($isVertical, "vertically", "horizontally")}-scrollable .#{if($isVertical, "vertical", "horizontal")}-scrollbar-track {
+      visibility: visible;
+      pointer-events: auto;
+    }
+
+    .#{if($isVertical, "vertical", "horizontal")}-scrollbar-track {
+      position: absolute;
+
+      #{if($isVertical, width, height)}: var(--scrollable-track-thickness, 12px);
+      #{if($isVertical, height, width)}: 100%;
+      #{if($isVertical, right, bottom)}: 0;
+      #{if($isVertical, top, left)}: 0;
+
+      .scrollbar-thumb {
+        --ratio: var(--scrollable-#{if($isVertical, "vertical", "horizontal")}-ratio, 1);
+        --thumb-size: max(calc((var(--ratio) * 100%)), var(--scrollable-min-thumb-length, 30px));
+
+        @if $isVertical {
+          top: calc(var(--scrollable-scroll-top, 0) * (100% - var(--thumb-size)));
+        }
+        @else {
+          left: calc(var(--scrollable-scroll-left, 0) * (100% - var(--thumb-size)));
+        }
+
+        #{if($isVertical, height, width)}: var(--thumb-size);
+        #{if($isVertical, width, height)}: 100%;
+        #{if($isVertical, right, bottom)}: 0;
+
+        padding: var(--scrollable-thumb-offset);
+        box-sizing: border-box;
+
+        .scrollbar-thumb-inner {
+          #{if($isVertical, width, height)}: var(--scrollable-thumb-thickness);
+          #{if($isVertical, height, width)}: 100%;
+        }
+      }
+    }
+  }
+}

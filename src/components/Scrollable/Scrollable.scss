@@ -1,4 +1,8 @@
 .scrollbar {
+  --scrollable-track-thickness: 12px;
+  --scrollable-thumb-thickness: Calc(var(--scrollable-track-thickness)/2);
+  --scrollable-thumb-offset: 3px;
+
   position: relative;
   max-height: 100%;
   max-width: 100%;
@@ -30,14 +34,13 @@
 
     .scrollbar-thumb {
       position: absolute;
-      padding: 3px;
       cursor: pointer;
 
       .scrollbar-thumb-inner {
         background-color: rgba(28, 34, 43, 0.6);
         border-radius: 4px;
         opacity: 0;
-        transition: opacity 0.2s ease-out 0.5s; // The transition delay is used to keep the thumb visible for a short time when the cursor leaves
+        transition: opacity 0.2s ease-out 0.5s; // The transition delay is used to keep the thumb visible for a short time when the cursor leaves. (see `Scrollable.constants.js`)
       }
     }
   }

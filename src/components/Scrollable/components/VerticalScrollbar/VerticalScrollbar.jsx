@@ -17,15 +17,14 @@
 import React, {useContext, useMemo, useRef} from 'react';
 import Movable from 'components/Movable';
 import Context from '../../Scrollable.context';
+import {CSS_VARS} from '../../Scrollable.constants';
 import {move} from './VerticalScrollbar.operations';
 import './VerticalScrollbar.scss';
-import {propTypes} from './VerticalScrollbar.props';
 
-const VerticalScrollbar = ({xRef}) => {
-    let track = useRef();
-    track = xRef || track;
+const VerticalScrollbar = () => {
+    const track = useRef();
     const thumb = useRef();
-    const {container} = useContext(Context);
+    const {container, scrollTop, cssVarsOnTracks} = useContext(Context);
     const props = Movable.useMove(useMemo(() => [move(container, thumb, track)], [container]));
 
     const handleOnClick = e => {
@@ -42,14 +41,12 @@ const VerticalScrollbar = ({xRef}) => {
     };
 
     return (
-        <div className='scrollbar-track vertical-scrollbar-track' ref={track} onClick={handleOnClick}>
+        <div className='scrollbar-track vertical-scrollbar-track' style={cssVarsOnTracks ? {[CSS_VARS.scrollTop]: scrollTop} : undefined} ref={track} onClick={handleOnClick}>
             <Movable className='scrollbar-thumb' ref={thumb} {...props}>
                 <div className='scrollbar-thumb-inner'/>
             </Movable>
         </div>
     );
 };
-
-VerticalScrollbar.propTypes = propTypes;
 
 export default VerticalScrollbar;
