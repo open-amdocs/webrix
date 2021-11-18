@@ -34,6 +34,6 @@ export const DOMRect = isServer ? function DOMRect() {} : window.DOMRect;
 
 export const Element = isServer ? function Element() {} : window.Element;
 
-export const requestAnimationFrame = isServer || !window.requestAnimationFrame ? function requestAnimationFrame() {} : window.requestAnimationFrame.bind(window);
+export const requestAnimationFrame = isServer ? function requestAnimationFrame() {} : window.requestAnimationFrame.bind(window);
 
-export const cancelAnimationFrame = isServer || !window.cancelAnimationFrame ? function cancelAnimationFrame() {} : window.cancelAnimationFrame.bind(window);
+export const cancelAnimationFrame = isServer ? function cancelAnimationFrame() {} : window.cancelAnimationFrame.bind(window);
