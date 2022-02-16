@@ -14,5 +14,6 @@
  * limitations under the License.
  */
 
-import {useClickOutside} from './useClickOutside';
-export default useClickOutside;
+import useResizeObserver from './useResizeObserver';
+
+export default useResizeObserver;

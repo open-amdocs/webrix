@@ -15,7 +15,6 @@
  */
 
 import React, {useRef, useCallback, useContext} from 'react';
-import {func, node} from 'prop-types';
 import {_document} from 'utility/mocks';
 import useEventListener from '../useEventListener';
 import OverrideContext from './useClickOutside.context';
@@ -39,6 +38,8 @@ import OverrideContext from './useClickOutside.context';
  * element (for example, when dragging). In such cases the click is still considered as an inside click,
  * since it originated inside the element.
  *
+ * For class components use ClickOutside from 'webrix/tools/ClickOutside'
+ *
  * @param {Function} callback
  */
 export const useClickOutside = callback => {
@@ -56,27 +57,4 @@ export const useClickOutside = callback => {
     return useCallback(() => {
         isClickedInside.current = true;
     }, [isClickedInside]);
-};
-
-// Use this for class components
-export const ClickOutside = ({children, onClickOutside}) => {
-    const handleOnMouseDownCapture = useClickOutside(onClickOutside);
-    // We're updating the contained element instead of adding a wrapper since adding
-    // a wrapper can may affect the styling/behavior
-    return React.cloneElement(
-        React.Children.only(children), {onMouseDownCapture: handleOnMouseDownCapture}
-    );
-};
-
-// It is sometimes necessary to modify the condition of the click-outside handler
-// of one or more elements. This can be done using the ClickOutsideOverride
-export const ClickOutsideOverride = ({condition, children}) => (
-    <OverrideContext.Provider value={condition}>
-        {children}
-    </OverrideContext.Provider>
-);
-
-ClickOutsideOverride.propTypes = {
-    condition: func,
-    children: node,
 };

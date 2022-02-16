@@ -14,6 +14,6 @@
  * limitations under the License.
  */
 
-import useDimensions from './useDimensions';
-
-export default useDimensions;
+import {ClickOutside} from './ClickOutside';
+export {ClickOutsideOverride} from './ClickOutside';
+export default ClickOutside;
