@@ -1,4 +1,4 @@
-.scrollbar {
+.scrollable {
   --scrollable-track-thickness: 12px;
   --scrollable-thumb-thickness: Calc(var(--scrollable-track-thickness)/2);
   --scrollable-thumb-offset: 3px;
@@ -13,7 +13,7 @@
     transition-delay: 0s;
   }
 
-  .scrollbar-inner {
+  .scrollable-inner {
     position: relative;
     overflow: auto;
     flex: 1;

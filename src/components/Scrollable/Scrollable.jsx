@@ -150,7 +150,7 @@ export default class Scrollable extends React.PureComponent {
     getElementProps = () => {
         const {element} = this.props;
         return {
-            className: classNames('scrollbar-inner', element.props.className),
+            className: classNames('scrollable-inner', element.props.className),
             ref: copyComponentRef(element.ref, this.container),
             onScroll: this.handleOnScroll,
         }
@@ -174,7 +174,7 @@ export default class Scrollable extends React.PureComponent {
 
         return (
             <ResizeObserver onResize={this.updateScrollbars}>
-                <div className='scrollbar' style={style} onTransitionEnd={this.handleOnTransitionEnd}>
+                <div className='scrollable' style={style} onTransitionEnd={this.handleOnTransitionEnd}>
                     {React.cloneElement(element, this.getElementProps(), content)}
                     <Context.Provider value={this.state}>
                         {vsb ? vsb.props.children : <VerticalScrollbar/>}
