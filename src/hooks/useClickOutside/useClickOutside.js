@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import React, {useRef, useCallback, useContext} from 'react';
+import {useRef, useCallback, useContext} from 'react';
 import {_document} from 'utility/mocks';
 import useEventListener from '../useEventListener';
 import OverrideContext from './useClickOutside.context';
