@@ -14,4 +14,11 @@
  * limitations under the License.
  */
 
-export const MIN_THUMB_LENGTH = 30; // In pixels
+export const SCROLLING_CLASS_REMOVAL_DELAY = 500; // In milliseconds
+
+export const CSS_VARS = {
+    verticalRatio: '--scrollable-vertical-ratio',
+    horizontalRatio: '--scrollable-horizontal-ratio',
+    scrollTop: '--scrollable-scroll-top',
+    scrollLeft: '--scrollable-scroll-left',
+};

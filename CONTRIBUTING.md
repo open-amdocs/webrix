@@ -6,7 +6,7 @@ largest projects. The purpose of this document is to make contributing easy and 
 If you are new to the concept of code contribution in open-source projects, 
 you can learn how from this free video series: 
 
-[How to Contribute to an Open Source Project on GitHub](https://egghead.io/courses/how-to-contribute-to-an-open-source-project-on-)
+[How to Contribute to an Open Source Project on GitHub](https://egghead.io/courses/how-to-contribute-to-an-open-source-project-on-github)
 
 ## Submitting a Pull Request
 
@@ -22,7 +22,7 @@ Below are the steps to create a pull request:
 1. Fork the repository.
 2. Clone the fork to your local machine and add upstream remote:
 ```
-git clone git@github.com:open-amdocs/webrix.git
+git clone git@github.com:<your_username>/webrix.git
 cd webrix
 git remote add upstream git@github.com:open-amdocs/webrix.git
 ```
@@ -54,3 +54,20 @@ git config --global http.proxy <proxy_url>
 npm config set proxy <proxy_url>
 npm config set https-proxy <proxy_url>
 ```
+
+For installing dependencies, create a `.npmrc` file with the following:
+
+```
+proxy=<proxy_url>
+https-proxy=<proxy_url>
+```
+
+## Settings for Amdocs Employees
+
+Since we use git for our internal projects with a work email/password, you may face issues login into GitHub with your personal username/password.
+The best way to avoid it is to create a personal access token:
+
+1. [Create a personal access token](https://docs.github.com/en/github/authenticating-to-github/creating-a-personal-access-token)
+2. Clone the repo
+3. When prompted for a username, use the access token you generated in step 1. Leave the password blank.
+

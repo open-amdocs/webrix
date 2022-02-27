@@ -1,31 +1,51 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import {act} from 'react-dom/test-utils';
-import {expect} from 'chai';
+import sinon from 'sinon';
 import {mount} from 'enzyme';
 import useDebounce from './useDebounce';
 
 const waitFor = delay => new Promise(resolve => setTimeout(resolve, delay));
-
-const Elem = ({value}) => {
-    const [classname, setClassname] = useState('');
-    const debounce = useDebounce(value => {
-        setClassname(value);
-    }, 10);
-    useEffect(() => {
-        debounce(value);
-    }, [value, debounce]);
+const DELAY = 10;
+const Elem = () => {
+    const [count, setCount] = useState(0);
+    const increment = useDebounce(() => {
+        setCount(c => c + 1);
+    }, DELAY);
     return (
-        <div className={classname}/>
+        <div className='counter' onClick={increment}>{count}</div>
     );
 };
 
 describe('useDebounce()', () => {
-    it('Should return the previous value', async () => {
-        let wrapper = null;
-        act(() => {wrapper = mount(<Elem value='one'/>)});
-        expect(wrapper.find('.one').length).to.eql(0);
-        await waitFor(20);
-        wrapper.update();
-        expect(wrapper.find('.one').length).to.eql(1);
+    it('Should delay calls', async () => {
+        await act(async () => {
+            const wrapper = mount(<Elem/>);
+            expect(wrapper.find('.counter').text()).toEqual('0');
+
+            wrapper.find('.counter').simulate('click');
+            expect(wrapper.find('.counter').text()).toEqual('0');
+            await waitFor(DELAY);
+            wrapper.update();
+            expect(wrapper.find('.counter').text()).toEqual('1');
+
+            wrapper.find('.counter').simulate('click');
+            wrapper.find('.counter').simulate('click');
+            wrapper.find('.counter').simulate('click');
+            expect(wrapper.find('.counter').text()).toEqual('1');
+            await waitFor(DELAY);
+            wrapper.update();
+            expect(wrapper.find('.counter').text()).toEqual('2');
+            wrapper.unmount();
+        });
+    });
+    it('Should cleanup', async () => {
+        await act(async () => {
+            const spy = sinon.spy(global, 'clearTimeout');
+            const wrapper = mount(<Elem/>);
+            wrapper.unmount();
+            await waitFor(0); // Wait for unmounting
+            expect(spy.callCount).toEqual(1);
+            spy.restore();
+        });
     });
 });

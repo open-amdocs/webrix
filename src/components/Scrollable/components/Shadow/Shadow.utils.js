@@ -38,12 +38,13 @@ export const getBoxShadow = ({scrollTop, scrollLeft, scrollHeight, scrollWidth, 
     const ls = getShadowCoefficient(scrollLeft) * SHADOW_SPREAD;
     const bs = getShadowCoefficient(scrollHeight - scrollTop - clientHeight) * SHADOW_SPREAD;
     const rs = getShadowCoefficient(scrollWidth - scrollLeft - clientWidth) * SHADOW_SPREAD;
+    const c = `var(--shadow-color, ${SHADOW_COLOR})`;
 
     // For each orientation create a double-layered shadow based on the shadow coefficient
     return (
-        `inset 0 ${ts / 2}px ${ts / 4}px ${-ts / 4}px ${SHADOW_COLOR}, inset 0 ${ts * 2}px ${ts}px ${-ts}px ${SHADOW_COLOR},` + // Top shadow
-        `inset ${ls / 2}px 0 ${ls / 4}px ${-ls / 4}px ${SHADOW_COLOR}, inset ${ls * 2}px 0 ${ls}px ${-ls}px ${SHADOW_COLOR},` + // Left shadow
-        `inset 0 -${bs / 2}px ${bs / 4}px ${-bs / 4}px ${SHADOW_COLOR}, inset 0 -${bs * 2}px ${bs}px ${-bs}px ${SHADOW_COLOR},` + // Bottom shadow
-        `inset -${rs / 2}px 0 ${rs / 4}px ${-rs / 4}px ${SHADOW_COLOR}, inset -${rs * 2}px 0 ${rs}px ${-rs}px ${SHADOW_COLOR}` // Right shadow
+        `inset 0 ${ts / 2}px ${ts / 4}px ${-ts / 4}px ${c}, inset 0 ${ts * 2}px ${ts}px ${-ts}px ${c},` + // Top shadow
+        `inset ${ls / 2}px 0 ${ls / 4}px ${-ls / 4}px ${c}, inset ${ls * 2}px 0 ${ls}px ${-ls}px ${c},` + // Left shadow
+        `inset 0 -${bs / 2}px ${bs / 4}px ${-bs / 4}px ${c}, inset 0 -${bs * 2}px ${bs}px ${-bs}px ${c},` + // Bottom shadow
+        `inset -${rs / 2}px 0 ${rs / 4}px ${-rs / 4}px ${c}, inset -${rs * 2}px 0 ${rs}px ${-rs}px ${c}` // Right shadow
     );
 }

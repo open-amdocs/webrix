@@ -14,11 +14,6 @@
  * limitations under the License.
  */
 
-import {getThumbPosition, getThumbLength} from '../../Scrollable.utils';
+import useEventListener from './useEventListener';
 
-export const onUpdate = (track, thumb, container) => {
-    const {clientWidth, scrollWidth, scrollLeft} = container;
-    const {clientWidth: trackWidth} = track;
-    thumb.style.width = `${getThumbLength(trackWidth, clientWidth, scrollWidth)}px`;
-    thumb.style.left = `${getThumbPosition(trackWidth, clientWidth, scrollWidth, scrollLeft)}px`;
-};
+export default useEventListener;

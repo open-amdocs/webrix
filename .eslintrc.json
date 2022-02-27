@@ -1,6 +1,6 @@
 {
-  "extends": ["eslint:recommended", "plugin:react/recommended"],
-  "parser": "babel-eslint",
+  "extends": ["eslint:recommended", "plugin:react/recommended", "plugin:react-hooks/recommended"],
+  "parser": "@babel/eslint-parser",
   "parserOptions": {
     "ecmaVersion": 6,
     "sourceType": "module",
@@ -14,7 +14,7 @@
   "env": {
     "browser": true,
     "es6": true,
-    "mocha": true,
+    "jest": true,
     "node": true
   },
   "plugins": [

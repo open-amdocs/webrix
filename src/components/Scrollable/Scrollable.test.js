@@ -1,96 +1,210 @@
 import React from 'react';
 import {mount} from 'enzyme';
-import {expect} from 'chai';
 import sinon from 'sinon';
-import Scrollable from './Scrollable';
-import {MIN_THUMB_LENGTH} from './Scrollable.constants';
-import {getThumbLength, getThumbPosition} from './Scrollable.utils';
+import {noop} from 'utility/memory';
+import Scrollable from './';
+import {normalizeScrollPosition} from './Scrollable.utils';
+import {SCROLLING_CLASS_REMOVAL_DELAY} from './Scrollable.constants';
+
+const waitFor = delay => new Promise(resolve => setTimeout(resolve, delay));
 
 describe('<Scrollable/>', () => {
 
     describe('HTML structure', () => {
         it('should render a Scrollbar', () => {
             const wrapper = mount(<Scrollable/>);
-            expect(wrapper.find('.scrollbar')).to.have.length(1);
-            expect(wrapper.find('ResizeObserver')).to.have.length(1);
-            expect(wrapper.find('VerticalScrollbar')).to.have.length(1);
-            expect(wrapper.find('HorizontalScrollbar')).to.have.length(1);
+            expect(wrapper.find('.scrollbar')).toHaveLength(1);
+            expect(wrapper.find('ResizeObserver')).toHaveLength(1);
+            expect(wrapper.find('VerticalScrollbar')).toHaveLength(1);
+            expect(wrapper.find('HorizontalScrollbar')).toHaveLength(1);
+        });
+
+        it('should render a Scrollbar with custom vertical & horizontal scrollbars', () => {
+            const wrapper = mount(
+                <Scrollable>
+                    <Scrollable.VerticalScrollbar><div className='vsb-child'></div></Scrollable.VerticalScrollbar>
+                    <Scrollable.HorizontalScrollbar><div className='hsb-child'></div></Scrollable.HorizontalScrollbar>
+                </Scrollable>
+            );
+            expect(wrapper.find('.scrollbar')).toHaveLength(1);
+            expect(wrapper.find('ResizeObserver')).toHaveLength(1);
+            expect(wrapper.find('.vsb-child')).toHaveLength(1);
+            expect(wrapper.find('.hsb-child')).toHaveLength(1);
         });
     });
 
     describe('Life Cycle', () => {
         it('componentDidMount()', () => {
-            const s = new Scrollable();
+            const s = new Scrollable({});
             s.updateScrollbars = sinon.spy();
             s.componentDidMount();
-            expect(s.updateScrollbars.calledOnce).to.eql(true);
+            expect(s.updateScrollbars.calledOnce).toEqual(true);
+        });
+
+        it('getSnapshotBeforeUpdate()', () => {
+            const s = new Scrollable({});
+            s.container = {current: {scrollTop: 0, scrollLeft: 0}};
+            expect(s.getSnapshotBeforeUpdate()).toEqual(s.container.current);
+        });
+
+        describe('componentDidUpdate', () => {
+            it('scrollOnDOMChange prop "true"', () => {
+                const s = new Scrollable({scrollOnDOMChange: true});
+                s.container = {current: {scrollTop: 0, scrollLeft: 0}};
+                s.updateScrollbars = sinon.spy();
+                s.componentDidUpdate(null, null, {scrollTop: 50, scrollLeft: 50});
+                expect(s.container.current.scrollTop).toEqual(0);
+                expect(s.container.current.scrollLeft).toEqual(0);
+                expect(s.updateScrollbars.callCount).toEqual(1);
+            });
+
+            it('scrollOnDOMChange prop "false"', () => {
+                const s = new Scrollable({scrollOnDOMChange: false});
+                s.container = {current: {scrollTop: 0}};
+                s.updateScrollbars = sinon.spy();
+                s.componentDidUpdate(null, null, {scrollTop: 50, scrollLeft: 50});
+                expect(s.container.current.scrollTop).toEqual(50);
+                expect(s.container.current.scrollLeft).toEqual(50);
+                expect(s.updateScrollbars.callCount).toEqual(1);
+            });
         });
     });
 
     describe('Class Methods', () => {
-        it('updateScrollbars()', () => {
-            const s = new Scrollable({onScroll: sinon.spy()});
-            s.container = {current: {clientHeight: 100, clientWidth: 100, scrollHeight: 200, scrollWidth: 200, scrollTop: 50, scrollLeft: 50}};
-            s.vertical = {current: {update: sinon.spy()}};
-            s.horizontal = {current: {update: sinon.spy()}};
-            s.updateScrollbars();
-            expect(s.vertical.current.update.calledOnce).to.eql(true);
-            expect(s.horizontal.current.update.calledOnce).to.eql(true);
-            expect(s.props.onScroll.calledOnce).to.eql(true);
-            expect(s.props.onScroll.calledWith({clientHeight: 100, clientWidth: 100, scrollTop: 50, scrollLeft: 50, scrollHeight: 200, scrollWidth: 200, top: 0.5, left: 0.5})).to.eql(true);
+        it('getEvent()', async () => {
+            const container = {clientHeight: 100, clientWidth: 100, scrollHeight: 200, scrollWidth: 200, scrollTop: 50, scrollLeft: 50};
+            const s = new Scrollable({});
+
+            s.container = {current: container};
+            expect(s.getEvent()).toEqual({top: 0.5, left: 0.5, ...s.container.current});
+
+            s.container.current = {clientHeight: 100, clientWidth: 100, scrollHeight: 200, scrollWidth: 200, scrollTop: 100, scrollLeft: 100};
+            expect(s.getEvent()).toEqual({top: 1, left: 1, ...s.container.current});
+
+            s.container.current = {clientHeight: 100, clientWidth: 100, scrollHeight: 200, scrollWidth: 200, scrollTop: 99.5, scrollLeft: 99.5};
+            expect(s.getEvent()).toEqual({top: 1, left: 1, ...s.container.current, scrollTop: 100, scrollLeft: 100});
+
+            s.container.current = null;
+            expect(s.getEvent()).toEqual({});
         });
 
-        it('componentDidUpdate()', () => {
-            const s = new Scrollable({scrollOnDOMChange: false});
-            s.container = {current: {scrollTop: 0}};
-            s.componentDidUpdate(null, null, {scrollTop: 50, scrollLeft: 50});
-            expect(s.container.current.scrollTop).to.eql(50);
-            expect(s.container.current.scrollLeft).to.eql(50);
-
-            // Should call updateScrollbars()
-            s.container = {current: {scrollHeight: 50}};
+        it('handleOnScroll()', async () => {
+            const add = sinon.spy(), remove = sinon.spy(), onScroll = sinon.spy();
+            const container = {parentElement: {classList: {add, remove}}, clientHeight: 100, clientWidth: 100, scrollHeight: 200, scrollWidth: 200, scrollTop: 50, scrollLeft: 50};
+            const s = new Scrollable({onScroll});
+            s.container = {current: container};
             s.updateScrollbars = sinon.spy();
-            s.componentDidUpdate(null, null, {scrollHeight: 50});
-            expect(s.updateScrollbars.callCount).to.eql(0);
-            s.componentDidUpdate(null, null, {scrollHeight: 100});
-            expect(s.updateScrollbars.callCount).to.eql(1);
+
+            // Should not add class
+            s.event.next = s.getEvent();
+            s.handleOnScroll({});
+            expect(s.updateScrollbars.callCount).toEqual(1);
+            expect(add.callCount).toEqual(0);
+            expect(remove.callCount).toEqual(0);
+            expect(onScroll.callCount).toEqual(1);
+            expect(onScroll.calledWith(s.event.next)).toEqual(true);
+
+            // Should add and remove class
+            s.handleOnScroll({target: container});
+            expect(s.updateScrollbars.callCount).toEqual(2);
+            expect(add.callCount).toEqual(1);
+            expect(remove.callCount).toEqual(0);
+            await waitFor(SCROLLING_CLASS_REMOVAL_DELAY);
+            expect(remove.callCount).toEqual(1);
+            expect(onScroll.callCount).toEqual(2);
         });
 
+        describe('updateScrollbars()', () => {
+            it('updateScrollbars()', () => {
+                global.window.requestAnimationFrame.resetHistory();
+                const onUpdate = sinon.spy();
+                const toggle = sinon.spy();
+                const setProperty = sinon.spy();
+
+                const s = new Scrollable({onUpdate});
+                s.updateScrollbars();
+                expect(onUpdate.callCount).toEqual(0);
+                expect(toggle.callCount).toEqual(0);
+
+                s.container.current = {parentElement: {style: {setProperty}, classList: {toggle}}};
+
+                // setState spy
+                const setState = jest.fn();
+                const setStateSpy = jest.spyOn(s, 'setState');
+                setStateSpy.mockImplementation(state => setState(state()));
+
+                s.updateScrollbars();
+
+                expect(onUpdate.callCount).toEqual(1);
+                expect(global.window.requestAnimationFrame.callCount).toEqual(1);
+                global.window.requestAnimationFrame.args[0][0]();
+                expect(toggle.callCount).toEqual(2);
+                expect(setProperty.callCount).toEqual(4);
+                expect(setState).toHaveBeenCalledTimes(1);
+            });
+
+            it('should not add CSS variables on the component', () => {
+                global.window.requestAnimationFrame.resetHistory();
+                const toggle = sinon.spy();
+                const containerSetProperty = sinon.spy();
+
+                const s = new Scrollable({onUpdate: noop, cssVarsOnTracks:true});
+                s.container.current = {parentElement: {style: {setProperty: containerSetProperty}, classList: {toggle}}};
+                s.event = {next: {top:5, left:10}, prev: {top:0, left:0}};
+
+                // setState spy
+                const setState = jest.fn();
+                const setStateSpy = jest.spyOn(s, 'setState');
+                setStateSpy.mockImplementation(state => setState(state()));
+
+                s.updateScrollbars();
+
+                expect(global.window.requestAnimationFrame.callCount).toEqual(1);
+                global.window.requestAnimationFrame.args[0][0]();
+                expect(toggle.callCount).toEqual(2);
+                expect(containerSetProperty.callCount).toEqual(2);
+
+                // expect(s.setState.calledWith( sinon.match(newState) )).toEqual(true);
+                expect(setState).toHaveBeenCalledWith(
+                    expect.objectContaining({
+                        scrollTop : s.event.next.top,
+                        scrollLeft: s.event.next.left,
+                    })
+                );
+            });
+        });
+
+        // makes sure the change was detected the the re-calc in requestAnimationFrame is fired
         it('ResizeUpdate', () => {
-            const s = new Scrollable({onScroll: sinon.spy()});
-            s.container = {current: {clientHeight: 100, clientWidth: 100, scrollHeight: 200, scrollWidth: 200, scrollTop: 50, scrollLeft: 50}};
-            s.vertical = {current: {update: sinon.spy()}};
-            s.horizontal = {current: {update: sinon.spy()}};
+            global.window.requestAnimationFrame.resetHistory();
+            const s = new Scrollable({onScroll: sinon.spy(), onUpdate: sinon.spy()});
+            const parentElement = {classList: {toggle: sinon.spy()}, style: {setProperty: sinon.spy()}};
+            s.container = {current: {parentElement, clientHeight: 100, clientWidth: 100, scrollHeight: 200, scrollWidth: 200, scrollTop: 50, scrollLeft: 50}};
 
             s.updateScrollbars();
-            expect(s.vertical.current.update.callCount).to.eql(1);
-            expect(s.horizontal.current.update.callCount).to.eql(1);
-            expect(s.props.onScroll.callCount).to.eql(1);
+            expect(global.window.requestAnimationFrame.callCount).toEqual(1);
+        });
 
-            s.container = {current: {clientHeight: 100, clientWidth: 100, scrollHeight: 500, scrollWidth: 200, scrollTop: 50, scrollLeft: 50}};
-            expect(s.vertical.current.update.callCount).to.eql(1);
-            expect(s.horizontal.current.update.callCount).to.eql(1);
-            expect(s.props.onScroll.callCount).to.eql(1);
-
-            s.container = {current: {clientHeight: 100, clientWidth: 100, scrollHeight: 500, scrollWidth: 500, scrollTop: 50, scrollLeft: 50}};
-            expect(s.vertical.current.update.callCount).to.eql(1);
-            expect(s.horizontal.current.update.callCount).to.eql(1);
-            expect(s.props.onScroll.callCount).to.eql(1);
+        it('onTransitionEnd()', () => {
+            const s = new Scrollable({});
+            s.updateScrollbars = sinon.spy();
+            s.handleOnTransitionEnd({propertyName: 'foo'});
+            expect(s.updateScrollbars.callCount).toEqual(0);
+            s.handleOnTransitionEnd({propertyName: 'height'});
+            expect(s.updateScrollbars.callCount).toEqual(1);
+            s.handleOnTransitionEnd({propertyName: 'width'});
+            expect(s.updateScrollbars.callCount).toEqual(2);
         });
     });
 
     describe('Utils', () => {
-        it('getThumbLength()', () => {
-            expect(getThumbLength(100, 100, 100)).to.eql(100);
-            expect(getThumbLength(100, 100, 200)).to.eql(50);
-            expect(getThumbLength(100, 100, 300)).to.eql(33);
-            expect(getThumbLength(200, 100, 300)).to.eql(67);
-            expect(getThumbLength(100, 100, 20000)).to.eql(MIN_THUMB_LENGTH);
-        });
-        it('getThumbPosition()', () => {
-            expect(getThumbPosition(100, 100, 200, 0)).to.eql(0);
-            expect(getThumbPosition(100, 100, 200, 100)).to.eql(50);
-            expect(getThumbPosition(200, 100, 200, 100)).to.eql(100);
+        it('normalizeScrollPosition()', () => {
+            expect(normalizeScrollPosition(100, 100, 0)).toEqual(0);
+            expect(normalizeScrollPosition(101, 100, 0.5)).toEqual(0.5);
+            expect(normalizeScrollPosition(200, 100, 0)).toEqual(0);
+            expect(normalizeScrollPosition(200, 100, 50)).toEqual(0.5);
+            expect(normalizeScrollPosition(200, 100, 33)).toEqual(0.33);
+            expect(normalizeScrollPosition(2000, 1000, 333)).toEqual(0.333);
         });
     });
 });

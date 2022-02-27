@@ -14,18 +14,16 @@
  * limitations under the License.
  */
 
-import {number, bool, func, node} from 'prop-types';
+import {bool, func, node} from 'prop-types';
 import {noop} from 'utility/memory';
 
 export const propTypes = {
     expanded: bool,
     onTransitionEnd: func,
-    duration: number,
     children: node.isRequired,
 };
 
 export const defaultProps = {
     expanded: false,
-    duration: 300,
     onTransitionEnd: noop,
 };

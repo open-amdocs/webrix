@@ -1,69 +1,82 @@
 import React from 'react';
-import {mount} from 'enzyme';
-import {expect} from 'chai';
-import sinon from 'sinon';
+import {mount, shallow} from 'enzyme';
 import {noop} from 'utility/memory';
-import HorizontalScrollbar from './HorizontalScrollbar';
-import {onUpdate} from './HorizontalScrollbar.utils';
+import {move} from './HorizontalScrollbar.operations';
+import {CSS_VARS} from '../../Scrollable.constants';
+import HorizontalScrollbar, {__RewireAPI__ as rewire} from './HorizontalScrollbar';
 
 describe('<HorizontalScrollbar/>', () => {
 
     describe('HTML structure', () => {
         it('should render a Scrollbar', () => {
             const wrapper = mount(<HorizontalScrollbar/>);
-            expect(wrapper.find('.scrollbar-thumb')).to.have.length(2);
-            expect(wrapper.find('.scrollbar-thumb-inner')).to.have.length(1);
+            expect(wrapper.find('.scrollbar-thumb')).toHaveLength(2);
+            expect(wrapper.find('.scrollbar-thumb-inner')).toHaveLength(1);
+            expect(wrapper.find('.scrollbar-track').prop('style')).toBeUndefined();
+        });
+
+        it('should have correct style with CSS variable', () => {
+            const context = {
+                container: {},
+                scrollLeft: 10,
+                cssVarsOnTracks: true,
+            };
+            rewire.__Rewire__('useContext', () => context);
+
+            const wrapper = shallow(<HorizontalScrollbar/>);
+            expect(wrapper.find('.scrollbar-track').prop('style')).toEqual({[CSS_VARS.scrollLeft]: context.scrollLeft});
         });
     });
 
     describe('Events', () => {
         it('handleOnClick()', () => {
             const container = {current: {style: {}, scrollLeft: 0, scrollWidth: 200}};
-            const s = new HorizontalScrollbar({container});
-            s.thumb = {current: {contains: () => true}};
-            s.handleOnClick({});
-            expect(container.current.scrollLeft).to.eql(0);
+            const ref = {current: {contains: () => false, getBoundingClientRect: () => ({left: 0, width: 100})}};
+            rewire.__Rewire__('useRef', () => ref);
+            rewire.__Rewire__('useContext', () => ({container}));
+            const wrapper = shallow(<HorizontalScrollbar/>);
 
-            s.track = {current: {getBoundingClientRect: () => ({left: 0, width: 100})}};
-            s.thumb.current.contains = () => false;
-            s.handleOnClick({clientX: 100});
-            expect(container.current.scrollLeft).to.eql(200);
+            wrapper.find('.scrollbar-track').prop('onClick')({clientX: 0, stopPropagation: noop});
+            expect(container.current.scrollLeft).toEqual(0);
+
+            wrapper.find('.scrollbar-track').prop('onClick')({clientX: 50, stopPropagation: noop});
+            expect(container.current.scrollLeft).toEqual(100);
+
+            rewire.__ResetDependency__('useRef');
+            rewire.__ResetDependency__('useContext');
         });
-        it('handleOnBeginMove()', () => {
-            const s = new HorizontalScrollbar({container: {current: {scrollLeft: 50}}});
-            s.handleOnBeginMove({stopPropagation: noop, preventDefault: noop});
-            expect(s.initialScroll).to.eql(s.props.container.current.scrollLeft);
-        });
-        it('handleOnMove()', () => {
-            const s = new HorizontalScrollbar({});
-            s.props.container = {current: {clientWidth: 100, scrollWidth: 400}};
-            s.thumb = {current: {getBoundingClientRect: () => ({width: 40})}};
-            s.initialMousePos = 25;
-            s.initialScroll = 20;
-            s.handleOnMove({dx: 75});
-            expect(s.props.container.current.scrollLeft).to.eql(395);
+
+        it('handleOnClick() on thumb', () => {
+            const container = {current: {style: {}, scrollLeft: 0, scrollHeight: 200}};
+            const ref = {current: {contains: () => true, getBoundingClientRect: () => ({left: 0, width: 100})}};
+            rewire.__Rewire__('useRef', () => ref);
+            rewire.__Rewire__('useContext', () => ({container}));
+            const wrapper = shallow(<HorizontalScrollbar/>);
+
+            wrapper.find('.scrollbar-track').prop('onClick')({clientX: 50, stopPropagation: noop});
+            expect(container.current.scrollLeft).toEqual(0);
+
+            rewire.__ResetDependency__('useRef');
+            rewire.__ResetDependency__('useContext');
         });
     });
 
-    describe('Class Methods', () => {
-        it('update()', () => {
-            const s = new HorizontalScrollbar({});
-            s.props.container = {current: {clientWidth: 10, scrollWidth: 20}};
-            s.props.onUpdate = sinon.spy();
-            s.track = {current: {classList: {add: sinon.spy()}, style: {}}};
-            s.update();
-            expect(s.track.current.classList.add.calledOnce).to.eql(true);
-            expect(s.props.onUpdate.calledOnce).to.eql(true);
-        });
-    });
+    describe('Operations', () => {
+        it('move()', () => {
+            const container = {current: {clientWidth: 100, scrollWidth: 400}};
+            const thumb = {current: {}};
+            const track = {current: {}};
+            const shared = {};
+            const props = move(container, thumb, track);
 
-    describe('Utils', () => {
-        it('onUpdate()', () => {
-            const track = {style: {}, clientHeight: 5, clientWidth: 100};
-            const thumb = {style: {}};
-            const container = {scrollWidth: 200, scrollLeft: 50, clientWidth: 100};
-            onUpdate(track, thumb, container);
-            expect(thumb.style).to.eql({left: '25px', width: '50px'});
+            props.onBeginMove({stopPropagation: noop, preventDefault: noop}, shared);
+            expect(shared.initial).toEqual(container.current.scrollLeft);
+
+            thumb.current.clientWidth = 40;
+            track.current.clientWidth = 100;
+            shared.initial = 20;
+            props.onMove({dx: 75}, shared);
+            expect(container.current.scrollLeft).toEqual(395)
         });
     });
 });

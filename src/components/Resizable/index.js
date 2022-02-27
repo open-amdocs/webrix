@@ -16,7 +16,11 @@
 
 import Resizable from './Resizable';
 import Resizers from './Resizable.resizers';
+import {useResize} from './Resizable.hooks';
+import * as Operations from './Resizable.operations';
 
 Resizable.Resizer = Resizers;
+Resizable.useResize = useResize;
+Resizable.Operations = Operations;
 
 export default Resizable;

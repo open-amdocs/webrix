@@ -45,3 +45,35 @@ export const clamp = (num, min, max, cyclic = false) => {
     }
     return Math.min(Math.max(num, min), max);
 };
+
+/**
+ * Map the given number from one range to another.
+ *
+ * @param value {number} The number to map
+ * @param imin {number} The input range minimum
+ * @param imax {number} The input range maximum
+ * @param omin {number} The output range minimum
+ * @param omax {number} The output range maximum
+ * @returns {number}
+ */
+export const map = (value, imin, imax, omin, omax) => (
+    (value - imin) / (imax - imin) * (omax - omin) + omin
+);
+
+/**
+ * Round the given number to the given interval.
+ *
+ * @param v {number} The number to round
+ * @param i {number} The interval
+ * @returns {number}
+ */
+export const interval = (v, i) => Math.round(v / i) * i;
+
+/**
+ * Limit the number of decimal places of the given number.
+ *
+ * @param v {number} The number to limit
+ * @param p {number} The number of decimal places
+ * @returns {number}
+ */
+export const decimals = (v, p) => Math.round(v * Math.pow(10, p)) / Math.pow(10, p);

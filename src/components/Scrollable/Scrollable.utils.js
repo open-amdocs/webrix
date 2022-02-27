@@ -13,35 +13,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-import {MIN_THUMB_LENGTH} from './Scrollable.constants';
-
-/**
- * Compute the thumb length based on the given track and scroll lengths
- *
- * @param trackLength {number} The track length
- * @param clientLength {number} The scrollable container's client length (clientWidth/clientHeight)
- * @param scrollLength {number} The scrollable container's scroll length (scrollWidth/scrollHeight)
- * @param minLength {number} The min length of the thumb in pixels
- * @return {number} The thumb length
- */
-export const getThumbLength = (trackLength, clientLength, scrollLength, minLength = MIN_THUMB_LENGTH) => {
-    const length = Math.round((clientLength / scrollLength) * trackLength);
-    return Math.max(minLength, length);
-};
+import {decimals} from 'utility/number';
 
 /**
- * Compute the thumb position based on the given track and scroll lengths
+ * This function normalizes the scroll position to a number between 0 and 1.
+ * The precision of the returned value is relative to the difference between the scrollLength
+ * and the clientLength.
  *
- * @param trackLength {number} The track length
- * @param clientLength {number} The scrollable container's client length (clientWidth/clientHeight)
- * @param scrollLength {number} The scrollable container's scroll length (scrollWidth/scrollHeight)
- * @param scrollPos {number} The scrollable container's scroll position (scrollTop/scrollWidth)
- * @param minLength {number} The min length of the thumb in pixels
- * @return {number} The thumb position
+ * @param scrollLength
+ * @param clientLength
+ * @param scrollOffset
+ * @returns {number}
  */
-export const getThumbPosition = (trackLength, clientLength, scrollLength, scrollPos, minLength = MIN_THUMB_LENGTH) => {
-    const length = getThumbLength(trackLength, clientLength, scrollLength, minLength);
-    const ratio = (trackLength - length) / (scrollLength - clientLength);
-    return Math.round(scrollPos * ratio);
-};
+export const normalizeScrollPosition = (scrollLength, clientLength, scrollOffset) => {
+    const diff = Math.max(1, scrollLength - clientLength); // Enforce a min value of 1 to avoid division by 0
+    const normalized = Math.min(1, scrollOffset / diff); // Avoid a ratio greater than 1
+    // The returned value number of decimals is based on the number of digits in 'diff'.
+    // For example, if normalized = 0.123456 and diff = 100, then the returned
+    // value will be 0.123 (since diff has 3 digits). This is done to avoid have over precised
+    // numbers, which may cause the scrollbars to be glitchy.
+    return decimals(normalized, Math.floor(Math.log10(diff)) + 1);
+}

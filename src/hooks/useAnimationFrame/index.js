@@ -14,11 +14,6 @@
  * limitations under the License.
  */
 
-import {getThumbPosition, getThumbLength} from '../../Scrollable.utils';
+import useAnimationFrame from './useAnimationFrame';
 
-export const onUpdate = (track, thumb, container) => {
-    const {clientHeight, scrollHeight, scrollTop} = container;
-    const {clientHeight: trackHeight} = track;
-    thumb.style.height = `${getThumbLength(trackHeight, clientHeight, scrollHeight)}px`;
-    thumb.style.top = `${getThumbPosition(trackHeight, clientHeight, scrollHeight, scrollTop)}px`;
-};
+export default useAnimationFrame;

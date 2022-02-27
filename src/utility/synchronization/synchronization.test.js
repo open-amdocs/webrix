@@ -1,4 +1,3 @@
-import {expect} from 'chai';
 import sinon from 'sinon';
 import {debounce, throttle} from './synchronization';
 
@@ -12,7 +11,7 @@ describe('Synchronization', () => {
         db();
         db();
         await waitFor(200);
-        expect(spy.callCount).to.eql(1);
+        expect(spy.callCount).toEqual(1);
     });
 
     it('throttle()', async () => {
@@ -20,12 +19,12 @@ describe('Synchronization', () => {
         const db = throttle(spy, 100);
         db();
         db();
-        expect(spy.callCount).to.eql(1);
+        expect(spy.callCount).toEqual(1);
         await waitFor(200);
-        expect(spy.callCount).to.eql(2);
+        expect(spy.callCount).toEqual(1);
         db();
-        expect(spy.callCount).to.eql(3);
+        expect(spy.callCount).toEqual(2);
         await waitFor(200);
-        expect(spy.callCount).to.eql(3);
+        expect(spy.callCount).toEqual(2);
     });
 });

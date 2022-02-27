@@ -5,8 +5,7 @@
         "@babel/plugin-proposal-function-bind",
         "@babel/plugin-transform-runtime",
         "@babel/plugin-proposal-optional-chaining",
-        ["@babel/plugin-proposal-decorators", {"legacy": true}],
-        ["@babel/plugin-proposal-class-properties", {"loose": true}],
+
         ["module-resolver", {
             "root": ["./src"],
             "alias": {
@@ -15,5 +14,12 @@
                 "tools": "./src/tools"
             }
         }]
-    ]
+    ],
+    "env": {
+        "test": {
+            "plugins": [
+                "babel-plugin-rewire"
+            ]
+        }
+    }
 }

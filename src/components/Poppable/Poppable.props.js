@@ -16,13 +16,14 @@
 
 import {node, func, shape, number, instanceOf, oneOfType} from 'prop-types';
 import {noop} from 'utility/memory';
+import {DOMRect, Element, _window, _document} from 'utility/mocks';
 import strategy from './strategies';
 import {HIDDEN_PLACEMENT} from './Poppable.constants';
 
 export const propTypes = {
     container: oneOfType([
         func,
-        shape({current: oneOfType([instanceOf(Element), instanceOf(window.constructor)])}),
+        shape({current: oneOfType([instanceOf(Element), instanceOf(_window.constructor)])}),
     ]),
     reference: oneOfType([
         func,
@@ -41,8 +42,8 @@ export const propTypes = {
 };
 
 export const defaultProps = {
-    container: {current: window},
-    reference: {current: document.body},
+    container: _window,
+    reference: _document.body,
     placements: () => [{top: 0, left: 0}],
     placement: HIDDEN_PLACEMENT,
     overflow: strategy,

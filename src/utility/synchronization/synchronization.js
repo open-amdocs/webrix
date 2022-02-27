@@ -54,20 +54,16 @@ export const debounce = (callback, wait) => {
  * @return {Function}
  */
 export const throttle = (callback, threshold) => {
-    let nextCall;
     let wait = false;
     let timeout;
     return (...args) => {
         if (!wait) {
             callback(...args);
             wait = true;
+            clearTimeout(timeout);
             timeout = setTimeout(() => {
-                nextCall && nextCall();
-                nextCall = null;
                 wait = false;
             }, threshold);
-        } else {
-            nextCall = () => callback(...args);
         }
         return timeout;
     };

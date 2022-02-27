@@ -21,15 +21,19 @@ import {noop} from 'utility/memory';
 export const propTypes = {
     style: shape({}),
     onScroll: func,
+    onUpdate: func,
     scrollOnDOMChange: bool,
     children: node,
     element: node,
+    cssVarsOnTracks: bool, // temporary workaround for Blink bug: https://bugs.chromium.org/p/chromium/issues/detail?id=1266517
 };
 
 export const defaultProps = {
     style: null,
     onScroll: noop,
+    onUpdate: noop,
     scrollOnDOMChange: true,
     children: null,
     element: <div/>,
+    cssVarsOnTracks: false,
 };
