@@ -17,20 +17,22 @@
 import {useRef, useCallback} from 'react';
 
 export const useResize = ops => {
-    const _ops = useRef([...ops]);
+    const opsRef = useRef(ops);
     const shared = useRef({});
 
+    opsRef.current = ops;
+
     const onBeginResize = useCallback(e => {
-        _ops.current.forEach(({onBeginResize}) => onBeginResize(e, shared.current));
-    }, [_ops]);
+        opsRef.current.forEach(({onBeginResize}) => onBeginResize(e, shared.current));
+    }, []);
 
     const onResize = useCallback(e => {
-        _ops.current.forEach(({onResize}) => onResize(e, shared.current));
-    }, [_ops]);
+        opsRef.current.forEach(({onResize}) => onResize(e, shared.current));
+    }, []);
 
     const onEndResize = useCallback(e => {
-        _ops.current.forEach(({onEndResize}) => onEndResize(e, shared.current));
-    }, [_ops]);
+        opsRef.current.forEach(({onEndResize}) => onEndResize(e, shared.current));
+    }, []);
 
     return {onBeginResize, onResize, onEndResize};
 };
