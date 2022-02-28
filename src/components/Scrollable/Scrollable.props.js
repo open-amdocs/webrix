@@ -15,11 +15,11 @@
  */
 
 import React from 'react';
-import {func, shape, node, bool} from 'prop-types';
+import {func, node, bool, string} from 'prop-types';
 import {noop} from 'utility/memory';
 
 export const propTypes = {
-    style: shape({}),
+    className: string,
     onScroll: func,
     onUpdate: func,
     scrollOnDOMChange: bool,
@@ -29,7 +29,7 @@ export const propTypes = {
 };
 
 export const defaultProps = {
-    style: null,
+    className: null,
     onScroll: noop,
     onUpdate: noop,
     scrollOnDOMChange: true,
