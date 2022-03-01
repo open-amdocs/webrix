@@ -15,5 +15,4 @@
  */
 
 import {useMounted} from './useMounted';
-export {useUnmounted} from './useMounted';
 export default useMounted;

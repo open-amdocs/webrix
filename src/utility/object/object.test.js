@@ -1,4 +1,4 @@
-import {get, set, isEqual, omit, clone} from './object';
+import {get, set, isEqual, omit, clone, EqualityIterators} from './object';
 
 describe('Object', () => {
 
@@ -84,6 +84,32 @@ describe('Object', () => {
         expect(isEqual(parent1, parent2)).toEqual(true);
         parent2.ccc = 6;
         expect(isEqual(parent1, parent2)).toEqual(false);
+    });
+
+    it('isEqual() with shallow comparison', () => {
+        expect(isEqual(1, 1, EqualityIterators.SHALLOW)).toEqual(true);
+        expect(isEqual(true, false, EqualityIterators.SHALLOW)).toEqual(false);
+        expect(isEqual('hello', 'hello', EqualityIterators.SHALLOW)).toEqual(true);
+        expect(isEqual([1, 2, 3], [1, 2, 3], EqualityIterators.SHALLOW)).toEqual(true);
+        expect(isEqual([1, 2, 3], [3, 2, 1], EqualityIterators.SHALLOW)).toEqual(false);
+        expect(isEqual([{id: 1}], [{id: 2}], EqualityIterators.SHALLOW)).toEqual(false);
+        expect(isEqual({foo: 'bar'}, {foo: 'bar'}, EqualityIterators.SHALLOW)).toEqual(true);
+        expect(isEqual({foo: 'bar'}, {bar: 'foo'}, EqualityIterators.SHALLOW)).toEqual(false);
+        expect(isEqual({foo: [1, 2, {a: 1}]}, {foo: [1, 2, {a: 1}]}, EqualityIterators.SHALLOW)).toEqual(false);
+        expect(isEqual({foo: [1, 2, {a: 1}]}, {foo: [1, 2, {a: 2}]}, EqualityIterators.SHALLOW)).toEqual(false);
+
+        /* Check Circular Traversal */
+        const sub1 = {foo: [1, 2, {a: 1}]};
+        const sub2 = {foo: [1, 2, {a: 1}]};
+        const parent1 = {foo: [1, 2, {a: 1}], sub1, sub2};
+        const parent2 = {foo: [1, 2, {a: 1}], sub1, sub2};
+        parent1.aaa = parent2;
+        parent1.bbb = parent1;
+        parent2.aaa = parent1;
+        parent2.bbb = parent2;
+        expect(isEqual(parent1, parent2, EqualityIterators.SHALLOW)).toEqual(false);
+        parent2.ccc = 6;
+        expect(isEqual(parent1, parent2, EqualityIterators.SHALLOW)).toEqual(false);
     });
 
     it('clone()', () => {

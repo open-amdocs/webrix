@@ -2,7 +2,7 @@ export {default as useAnimationFrame} from './useAnimationFrame';
 export {default as useBooleanState, useVisibilityState, useFocusabilityState} from './useBooleanState';
 export {default as useBoundingRectObserver} from './useBoundingRectObserver';
 export {default as useClickOutside, ClickOutside, ClickOutsideOverride} from './useClickOutside';
-export {default as useMounted, useUnmounted} from './useMounted';
+export {default as useMounted} from './useMounted';
 export {default as useDebounce} from './useDebounce';
 export {default as useDimensions} from './useDimensions';
 export {default as useEventListener} from './useEventListener';
