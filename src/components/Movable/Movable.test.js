@@ -32,6 +32,7 @@ describe('<Movable/>', () => {
             expect(stopPropagation.calledOnce).toEqual(true);
             expect(preventDefault.calledOnce).toEqual(true);
         });
+
         it('onMove()', () => {
             const handleOnMove = sinon.spy();
             const wrapper = mount(<Movable onMove={handleOnMove}/>);
@@ -78,6 +79,7 @@ describe('<Movable/>', () => {
             expect(event.dx).toEqual(-10);
             expect(event.dy).toEqual(-10);
         });
+
         it('onEndMove()', () => {
             const handleOnEndMove = sinon.spy();
             const wrapper = mount(<Movable onEndMove={handleOnEndMove}/>);
