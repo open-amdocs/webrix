@@ -39,7 +39,7 @@ describe('<Movable/>', () => {
             const handlers = {};
             let event;
 
-            document.addEventListener = (type, handler) => handlers[type] = handler;
+            document.addEventListener = (type, handler) => {handlers[type] = handler};
             wrapper.simulate('mousedown', {clientX: 10, clientY: 10});
             wrapper.simulate('touchstart', {changedTouches: [{clientX: 10, clientY: 10}]});
 
@@ -85,7 +85,7 @@ describe('<Movable/>', () => {
             const wrapper = mount(<Movable onEndMove={handleOnEndMove}/>);
             const handlers = {};
 
-            document.addEventListener = (type, handler) => handlers[type] = handler;
+            document.addEventListener = (type, handler) => {handlers[type] = handler};
             document.removeEventListener = sinon.spy();
 
             wrapper.simulate('mousedown', {clientX: 10, clientY: 10});
