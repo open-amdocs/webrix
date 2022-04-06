@@ -20,13 +20,6 @@ export const useMounted = () => {
     const mounted = useRef(false);
     useEffect(() => {
         mounted.current = true;
-        return () => mounted.current = false;
     }, []);
     return mounted.current;
-};
-
-export const useUnmounted = () => {
-    const unmounted = useRef(false);
-    useEffect(() => () => {unmounted.current = true}, []);
-    return unmounted.current;
 };

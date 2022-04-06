@@ -1,16 +1,16 @@
 import React from 'react';
 import {act} from 'react-dom/test-utils';
 import {mount} from 'enzyme';
-import useDimensions, {__RewireAPI__ as rewireAPI} from './useDimensions';
+import useResizeObserver, {__RewireAPI__ as rewireAPI} from './useResizeObserver';
 
 const Elem = () => {
-    const {width, height} = useDimensions({current: {}});
+    const {width, height} = useResizeObserver({current: {}});
     return (
         <div>{width},{height}</div>
     );
 };
 
-describe('useDimensions()', () => {
+describe('useResizeObserver()', () => {
     it('Should return the previous value', async () => {
         let wrapper = null;
         let observed = 0, disconnected = 0;

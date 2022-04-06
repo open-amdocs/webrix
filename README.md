@@ -88,7 +88,7 @@ import {Movable} from 'webrix';
 * [useDebounce()](https://webrix.amdocs.com/docs/hooks/usedebounce)
 * [useThrottle()](https://webrix.amdocs.com/docs/hooks/usethrottle)
 * [useObject()](https://webrix.amdocs.com/docs/hooks/useobject)
-* [useDimensions()](https://webrix.amdocs.com/docs/hooks/usedimensions)
+* [useResizeObserver()](https://webrix.amdocs.com/docs/hooks/useResizeObserver)
 * [useAnimationFrame()](https://webrix.amdocs.com/docs/hooks/useanimationframe)
 * [useBoundingRectObserver()](https://webrix.amdocs.com/docs/hooks/useboundingrectobserver)
 * [useEventListener()](https://webrix.amdocs.com/docs/hooks/useeventlistener)
@@ -97,3 +97,4 @@ import {Movable} from 'webrix';
 
 * [<ResizeObserver\/>](https://webrix.amdocs.com/docs/tools/resizeobserver)
 * [<Puppeteer\/>](https://webrix.amdocs.com/docs/tools/puppeteer)
+* [<ClickOutside\/>](https://webrix.amdocs.com/docs/tools/clickoutside)
