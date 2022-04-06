@@ -14,26 +14,6 @@
  * limitations under the License.
  */
 
-import React from 'react';
-import {func, node, bool, string} from 'prop-types';
-import {noop} from 'utility/memory';
+import useResizeObserver from './useResizeObserver';
 
-export const propTypes = {
-    className: string,
-    onScroll: func,
-    onUpdate: func,
-    scrollOnDOMChange: bool,
-    children: node,
-    element: node,
-    cssVarsOnTracks: bool, // temporary workaround for Blink bug: https://bugs.chromium.org/p/chromium/issues/detail?id=1266517
-};
-
-export const defaultProps = {
-    className: null,
-    onScroll: noop,
-    onUpdate: noop,
-    scrollOnDOMChange: true,
-    children: null,
-    element: <div/>,
-    cssVarsOnTracks: false,
-};
+export default useResizeObserver;

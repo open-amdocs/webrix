@@ -2,9 +2,8 @@ import React from 'react';
 // https://reactjs.org/docs/hooks-faq.html#how-to-test-components-that-use-hooks
 import {act} from 'react-dom/test-utils';
 import sinon from 'sinon';
-import {mount, shallow} from 'enzyme';
-import OverrideContext from './useClickOutside.context';
-import {useClickOutside, ClickOutside, ClickOutsideOverride} from './useClickOutside';
+import {mount} from 'enzyme';
+import {useClickOutside} from './useClickOutside';
 
 const Elem = callback => {
     useClickOutside(callback);
@@ -32,16 +31,5 @@ describe('useClickOutside()', () => {
         expect(elem.find('div'));
         elem.simulate('click');
         expect(callback.callCount).toEqual(0);
-    });
-
-    it('<ClickOutside/>', () => {
-        const wrapper = shallow(<ClickOutside><div/></ClickOutside>);
-        expect(() => shallow(<ClickOutside/>)).toThrow();
-        expect(typeof wrapper.find('div').prop('onMouseDownCapture')).toBe('function');
-    });
-
-    it('<ClickOutsideOverride/>', () => {
-        const wrapper = shallow(<ClickOutsideOverride/>);
-        expect(wrapper.find(OverrideContext.Provider)).toHaveLength(1);
     });
 });

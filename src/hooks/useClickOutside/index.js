@@ -15,5 +15,4 @@
  */
 
 import {useClickOutside} from './useClickOutside';
-export {ClickOutside, ClickOutsideOverride} from './useClickOutside';
 export default useClickOutside;
