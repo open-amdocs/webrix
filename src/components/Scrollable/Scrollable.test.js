@@ -13,7 +13,7 @@ describe('<Scrollable/>', () => {
     describe('HTML structure', () => {
         it('should render a Scrollbar', () => {
             const wrapper = mount(<Scrollable/>);
-            expect(wrapper.find('.scrollbar')).toHaveLength(1);
+            expect(wrapper.find('.scrollable')).toHaveLength(1);
             expect(wrapper.find('ResizeObserver')).toHaveLength(1);
             expect(wrapper.find('VerticalScrollbar')).toHaveLength(1);
             expect(wrapper.find('HorizontalScrollbar')).toHaveLength(1);
@@ -26,7 +26,7 @@ describe('<Scrollable/>', () => {
                     <Scrollable.HorizontalScrollbar><div className='hsb-child'></div></Scrollable.HorizontalScrollbar>
                 </Scrollable>
             );
-            expect(wrapper.find('.scrollbar')).toHaveLength(1);
+            expect(wrapper.find('.scrollable')).toHaveLength(1);
             expect(wrapper.find('ResizeObserver')).toHaveLength(1);
             expect(wrapper.find('.vsb-child')).toHaveLength(1);
             expect(wrapper.find('.hsb-child')).toHaveLength(1);
