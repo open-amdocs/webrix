@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import React, {useContext, useMemo, useRef} from 'react';
+import React, {useContext, useRef} from 'react';
 import Movable from 'components/Movable';
 import Context from '../../Scrollable.context';
 import {CSS_VARS} from '../../Scrollable.constants';
@@ -25,7 +25,7 @@ const HorizontalScrollbar = () => {
     const track = useRef();
     const thumb = useRef();
     const {container, scrollLeft, cssVarsOnTracks} = useContext(Context);
-    const props = Movable.useMove(useMemo(() => [move(container, thumb, track)], [container]));
+    const props = Movable.useMove([move(container, thumb, track)]);
 
     const handleOnClick = e => {
         e.stopPropagation();
