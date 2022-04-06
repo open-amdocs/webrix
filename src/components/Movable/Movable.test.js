@@ -32,13 +32,14 @@ describe('<Movable/>', () => {
             expect(stopPropagation.calledOnce).toEqual(true);
             expect(preventDefault.calledOnce).toEqual(true);
         });
+
         it('onMove()', () => {
             const handleOnMove = sinon.spy();
             const wrapper = mount(<Movable onMove={handleOnMove}/>);
             const handlers = {};
             let event;
 
-            document.addEventListener = (type, handler) => handlers[type] = handler;
+            document.addEventListener = (type, handler) => {handlers[type] = handler};
             wrapper.simulate('mousedown', {clientX: 10, clientY: 10});
             wrapper.simulate('touchstart', {changedTouches: [{clientX: 10, clientY: 10}]});
 
@@ -78,12 +79,13 @@ describe('<Movable/>', () => {
             expect(event.dx).toEqual(-10);
             expect(event.dy).toEqual(-10);
         });
+
         it('onEndMove()', () => {
             const handleOnEndMove = sinon.spy();
             const wrapper = mount(<Movable onEndMove={handleOnEndMove}/>);
             const handlers = {};
 
-            document.addEventListener = (type, handler) => handlers[type] = handler;
+            document.addEventListener = (type, handler) => {handlers[type] = handler};
             document.removeEventListener = sinon.spy();
 
             wrapper.simulate('mousedown', {clientX: 10, clientY: 10});

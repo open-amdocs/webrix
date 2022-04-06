@@ -17,19 +17,22 @@
 import {useRef, useCallback} from 'react';
 
 export const useMove = ops => {
+    const opsRef = useRef(ops);
     const shared = useRef({});
 
+    opsRef.current = ops;
+
     const onBeginMove = useCallback(e => {
-        ops.forEach(({onBeginMove}) => onBeginMove(e, shared.current));
-    }, [ops]);
+        opsRef.current.forEach(({onBeginMove}) => onBeginMove(e, shared.current));
+    }, []);
 
     const onMove = useCallback(e => {
-        ops.forEach(({onMove}) => onMove(e, shared.current));
-    }, [ops]);
+        opsRef.current.forEach(({onMove}) => onMove(e, shared.current));
+    }, []);
 
     const onEndMove = useCallback(e => {
-        ops.forEach(({onEndMove}) => onEndMove(e, shared.current))
-    }, [ops]);
+        opsRef.current.forEach(({onEndMove}) => onEndMove(e, shared.current))
+    }, []);
 
     return {onBeginMove, onMove, onEndMove};
 };
