@@ -174,7 +174,7 @@ describe('<Scrollable/>', () => {
             });
         });
 
-        // makes sure the change was detected the the re-calc in requestAnimationFrame is fired
+        // makes sure the change was detected the re-calc in requestAnimationFrame is fired
         it('ResizeUpdate', () => {
             global.window.requestAnimationFrame.resetHistory();
             const s = new Scrollable({onScroll: sinon.spy(), onUpdate: sinon.spy()});
