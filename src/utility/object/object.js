@@ -43,7 +43,6 @@ import {getType, isObject, isArray, isString, isUndefined} from '../types';
  * get(obj, 'b[0]'); // 1
  * get(obj, 'b[5]'); // undefined
  * get(obj, 'b[5]', 'hello'); // 'hello' (If the value is unable to be found, return the third param)
- * 
  *
  * @param {Object|Array} object The initial object
  * @param {string} path The path leading to the property we want to grab values from within the object
@@ -177,12 +176,11 @@ export const isEqual = (a, b, iterator = EqualityIterators.DEEP) => {
  * @param {object} obj The object to be cloned.
  * @returns {object} A deep clone of the given object.
  */
-export const clone = obj => (
+export const clone = obj =>
     Object.keys(obj).reduce((acc, key) => {
         acc[key] = isObject(obj[key]) || isArray(obj[key]) ? clone(obj[key]) : obj[key];
         return acc;
-    }, isArray(obj) ? [] : {})
-);
+    }, isArray(obj) ? [] : {});
 
 /**
  * Delete a property from the given object/array at the given path.
@@ -198,8 +196,9 @@ export const clone = obj => (
  * @return {object|array} Returns a new version of the object, now altered.
  */
 export const omit = (obj, ...keys) => (
-    keys.length ? keys
-        .filter(key => isString(key))
-        .reduce((newObj, path) => set(newObj, path, undefined, true), clone(obj))
-        : obj
+    obj && keys?.reduce((acc, path) =>
+        isString(path)
+            ? set(acc, path, undefined, true)
+            : acc
+    , clone(obj))
 );

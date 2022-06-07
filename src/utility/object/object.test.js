@@ -131,8 +131,10 @@ describe('Object', () => {
         const obj = {a: 1, b: 2, c: {d: {e: 3}}, f: [{g: 4}, {h: 5}]};
 
         expect(omit()).toEqual(undefined);
+        expect(omit(null, 'a')).toEqual(null);
         expect(omit({})).toEqual({});
         expect(omit(obj)).toEqual(obj);
+        expect(omit(obj, 1)).toEqual(obj); // should return the same object (first argument) because the key is not of type String
         expect(omit(obj, 'a')).not.toHaveProperty('a');
         expect(omit(obj, 'a', 'b')).toEqual({c: {d: {e: 3}}, f: [{g: 4}, {h: 5}]});
         expect(omit(obj, 'a', 'b', 'c.d')).toEqual({c: {}, f: [{g: 4}, {h: 5}]});
