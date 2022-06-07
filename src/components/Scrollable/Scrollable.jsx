@@ -115,7 +115,9 @@ export default class Scrollable extends React.PureComponent {
 
         const nextEvent = this.event.next,
             prevEvent = this.event.prev,
-            changed = nextEvent.scrollHeight !== prevEvent.scrollHeight ||
+            changed = nextEvent.clientHeight !== prevEvent.clientHeight ||
+                      nextEvent.scrollHeight !== prevEvent.scrollHeight ||
+                      nextEvent.clientWidth !== prevEvent.clientWidth ||
                       nextEvent.scrollWidth !== prevEvent.scrollWidth ||
                       nextEvent.top !== prevEvent.top ||
                       nextEvent.left !== prevEvent.left;
@@ -167,14 +169,16 @@ export default class Scrollable extends React.PureComponent {
     };
 
     render() {
-        const {children, element, className} = this.props;
+        // (props should not contain ilegal HTML attributes)
+        // eslint-disable-next-line no-unused-vars
+        const {children, element, className, cssVarsOnTracks, scrollOnDOMChange, onUpdate, ...props} = this.props;
         const vsb = findChildByType(children, VerticalScrollbarPlaceholder);
         const hsb = findChildByType(children, HorizontalScrollbarPlaceholder);
         const content = React.Children.toArray(children).filter(child => ![VerticalScrollbarPlaceholder, HorizontalScrollbarPlaceholder].includes(child.type));
 
         return (
             <ResizeObserver onResize={this.updateScrollbars}>
-                <div {...this.props} className={classNames('scrollable', className)} onTransitionEnd={this.handleOnTransitionEnd}>
+                <div {...props} className={classNames('scrollable', className)} onTransitionEnd={this.handleOnTransitionEnd}>
                     {React.cloneElement(element, this.getElementProps(), content)}
                     <Context.Provider value={this.state}>
                         {vsb ? vsb.props.children : <VerticalScrollbar/>}
