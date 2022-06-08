@@ -1,17 +1,22 @@
 @mixin tracks($isVertical) {
-  .scrollbar {
-    .scrollable.#{if($isVertical, "vertically", "horizontally")}-scrollable &{
-      visibility: visible;
-      pointer-events: auto;
-    }
+  .scrollbar-track {
+    // .scrollable.#{if($isVertical, "vertically", "horizontally")}-scrollable &{
+    //   visibility: visible;
+    //   pointer-events: auto;
+    // }
 
-    .#{if($isVertical, "vertical", "horizontal")}-scrollbar-track {
+    &.#{if($isVertical, "vertical", "horizontal")}-scrollbar-track {
       position: absolute;
 
       #{if($isVertical, width, height)}: var(--scrollable-track-thickness, 12px);
       #{if($isVertical, height, width)}: 100%;
       #{if($isVertical, right, bottom)}: 0;
       #{if($isVertical, top, left)}: 0;
+
+      .scrollable.#{if($isVertical, "vertically", "horizontally")}-scrollable &{
+        visibility: visible;
+        pointer-events: auto;
+      }
 
       .scrollbar-thumb {
         --ratio: var(--scrollable-#{if($isVertical, "vertical", "horizontal")}-ratio, 1);
