@@ -19,6 +19,8 @@ import classNames from 'classnames';
 import {propTypes, defaultProps} from './Collapsible.props';
 import './Collapsible.scss';
 
+export const NAMESPACE = 'collapsible';
+
 export const Collapsible = ({expanded, children, onTransitionEnd, ...props}) => {
     const [{motion, height}, setState] = useState({motion: '', height: expanded ? 'auto' : 0});
     const hasChildren = !!React.Children.count(children);
@@ -50,16 +52,18 @@ export const Collapsible = ({expanded, children, onTransitionEnd, ...props}) => 
             setState(state => ({...state, height: 0}))
     }, [motion]);
 
+    const className = classNames(
+        NAMESPACE, // base namespace selector
+        {
+            [`${NAMESPACE}--${motion}`]: motion, // temporary state for transitions (BEM modifier name)
+            [`${NAMESPACE}--expanded`]: expanded && !motion,
+        },
+        props.className
+    );
+
     return (
-        <div {...props} className={classNames('collapsible', motion, {expanded: expanded && !motion}, props.className)}>
-            {hasChildren && (
-                <div
-                    className='content-wrapper'
-                    onTransitionEnd={handleOnTransitionEnd}
-                    style={{height}}>
-                    <div className='content' ref={contentRef}>{children}</div>
-                </div>
-            )}
+        <div {...props} className={className} style={{...props.style, height}} onTransitionEnd={handleOnTransitionEnd}>
+            {hasChildren && <div className={`${NAMESPACE}__content`} ref={contentRef}>{children}</div>}
         </div>
     );
 };
