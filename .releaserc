@@ -2,6 +2,7 @@
   "branches": [
     {"name": "master"},
     {"name": "next", "prerelease": true},
-    {"name": "1.x", "range": "1.x", "channel": "1.x"}
+    {"name": "1.x", "range": "1.x", "channel": "1.x"},
+    {"name": "2.x", "range": "2.x", "channel": "2.x"}
   ]
 }
