@@ -3,22 +3,16 @@
   --delay: calc(var(--duration) * .5);
   --expanded: initial;
 
-  // display: flex;
-  // flex-direction: column;
-  // justify-content: center;
-  // overflow: hidden;
+  transition:
+    height    calc(var(--duration) * .75) cubic-bezier(.7, 0, .3, 1) calc(var(--delay) * (var(--expanded, 2) - 1)),
+    opacity   calc(var(--duration) * .5)  ease-out                   calc(var(--delay) * var(--expanded, 0)),
+    transform calc(var(--duration) * 1)   ease-out;
+  overflow: hidden;
+  opacity: var(--expanded, 0);
+  transform: var(--expanded, translateX(-40px)); // Slide from left
 
-  // > .content-wrapper {
-    transition:
-      height    calc(var(--duration) * .75) cubic-bezier(.7, 0, .3, 1) calc(var(--delay) * (var(--expanded, 2) - 1)),
-      opacity   calc(var(--duration) * .5)  ease-out                   calc(var(--delay) * var(--expanded, 0)),
-      transform calc(var(--duration) * 1)   ease-out;
-    overflow: hidden;
-    opacity: var(--expanded, 0);
-    transform: var(--expanded, translateX(-40px)); // Slide from left
-  // }
-
-  &--expanded, &--expanding {
+  &--expanded,
+  &--expanding {
     --expanded: 1;
   }
 }
