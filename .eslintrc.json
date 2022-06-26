@@ -53,7 +53,7 @@
       "max-lines-per-function": ["error", { "max": 40, "skipComments": true, "skipBlankLines": true }]
     }
   },{
-    "files": ["index.js"],
+    "files": ["index.js", "./rollup/*"],
     "rules": {
       "notice/notice": 0
     }
