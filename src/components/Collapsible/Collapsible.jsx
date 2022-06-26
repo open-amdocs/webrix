@@ -19,7 +19,7 @@ import classNames from 'classnames';
 import {propTypes, defaultProps} from './Collapsible.props';
 import './Collapsible.scss';
 
-export const NAMESPACE = 'collapsible';
+export const NAMESPACE = '{{PREFIX}}collapsible';
 
 export const Collapsible = ({expanded, children, onTransitionEnd, ...props}) => {
     const [{motion, height}, setState] = useState({motion: '', height: expanded ? 'auto' : 0});
