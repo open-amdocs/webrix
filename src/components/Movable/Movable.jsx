@@ -15,18 +15,23 @@
  */
 
 import React, {forwardRef, memo} from 'react';
-import cls from 'classnames';
+import cx from 'classnames';
 import {mouseTracker, touchTracker, moveTracker} from './Movable.utils';
 import {propTypes, defaultProps} from './Movable.props';
 import './Movable.scss';
 
+export const NAMESPACE = '{{PREFIX}}movable';
+
 export const Movable = forwardRef(({onBeginMove, onMove, onEndMove, ...props}, ref) => {
     const tracker = moveTracker(onBeginMove, onMove, onEndMove);
-    const handleOnMouseDown = mouseTracker(tracker);
-    const handleOnTouchStart = touchTracker(tracker);
 
     return (
-        <div {...props} ref={ref} onMouseDown={handleOnMouseDown} onTouchStart={handleOnTouchStart} className={cls('movable', props.className)}/>
+        <div
+            {...props}
+            ref={ref}
+            onMouseDown={mouseTracker(tracker)}
+            onTouchStart={touchTracker(tracker)}
+            className={cx(NAMESPACE, props.className)}/>
     );
 });
 

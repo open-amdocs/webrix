@@ -3,6 +3,7 @@ import {act} from 'react-dom/test-utils';
 import {shallow, mount} from 'enzyme';
 import sinon from 'sinon';
 import * as number from 'utility/number';
+import {NAMESPACE} from './Movable';
 import Movable from './';
 
 describe('<Movable/>', () => {
@@ -11,6 +12,7 @@ describe('<Movable/>', () => {
         it('should render a Movable', () => {
             const wrapper = shallow(<Movable className='mock'/>);
             expect(wrapper.find('.mock')).toHaveLength(1);
+            expect(wrapper.find(`.${NAMESPACE}`)).toHaveLength(1);
         });
     });
 
