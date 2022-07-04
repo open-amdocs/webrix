@@ -115,7 +115,9 @@ export default class Scrollable extends React.PureComponent {
 
         const nextEvent = this.event.next,
             prevEvent = this.event.prev,
-            changed = nextEvent.scrollHeight !== prevEvent.scrollHeight ||
+            changed = nextEvent.clientHeight !== prevEvent.clientHeight ||
+                      nextEvent.scrollHeight !== prevEvent.scrollHeight ||
+                      nextEvent.clientWidth !== prevEvent.clientWidth ||
                       nextEvent.scrollWidth !== prevEvent.scrollWidth ||
                       nextEvent.top !== prevEvent.top ||
                       nextEvent.left !== prevEvent.left;
