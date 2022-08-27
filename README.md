@@ -51,7 +51,7 @@ npm i webrix
 yarn add webrix
 ```
 
-Webrix requires has peer dependencies for `react`, `react-dom` and `prop-types`, so be sure to install them as well:
+Webrix has peer dependencies for `react`, `react-dom` and `prop-types`, so be sure to install them as well:
 
 ```bash
 npm i react react-dom prop-types
