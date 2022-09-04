@@ -8,10 +8,16 @@
     "./src/**/*.test.js",
   ],
   "compilerOptions": {
+    "baseUrl": ".",
     "allowJs": true,
     "declaration": true,
     "emitDeclarationOnly": true,
     "outDir": "build",
-    "isolatedModules": true
+    "isolatedModules": true,
+    "paths": {
+      "utility/*": ["./src/utility/*"],
+      "hooks/*": ["./src/hooks/*"],
+      "tools/*": ["./src/tools/*"]
+    }
   }
 }
