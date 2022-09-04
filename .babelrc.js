@@ -1,4 +1,4 @@
-{
+module.exports = {
     "presets": ["@babel/preset-env", "@babel/preset-react"],
     "plugins": [
         "@babel/plugin-proposal-export-default-from",
@@ -13,6 +13,17 @@
                 "hooks": "./src/hooks",
                 "tools": "./src/tools"
             }
+        }],
+
+        ["search-and-replace", {
+            // for jest to compile, first babel needs to search-&-replace all the prefixes constants
+            "rules": [
+                {
+                    "search": /{{PREFIX}}/,
+                    "searchTemplateStrings": true,
+                    "replace": "wx-"
+                }
+            ]
         }]
     ],
     "env": {
