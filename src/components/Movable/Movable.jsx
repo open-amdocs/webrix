@@ -35,8 +35,8 @@ export const Movable = forwardRef(({onBeginMove, onMove, onEndMove, ...props}, r
     );
 });
 
-Movable.displayName = 'Movable';
 Movable.propTypes = propTypes;
 Movable.defaultProps = defaultProps;
+Movable.displayName = NAMESPACE.replace(/({{PREFIX}}.)/, v => v.toUpperCase());
 
 export default memo(Movable);
