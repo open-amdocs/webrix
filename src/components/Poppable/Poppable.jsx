@@ -15,7 +15,7 @@
  */
 
 import React, {useRef, forwardRef, memo, useCallback} from 'react';
-import classNames from 'classnames';
+import cx from 'classnames';
 import {copyComponentRef} from 'utility/react';
 import puppet from 'tools/Puppeteer/Puppet.hoc';
 import Puppeteer from 'tools/Puppeteer/Puppeteer';
@@ -26,6 +26,8 @@ import PoppableContext from './Poppable.context';
 import {propTypes, defaultProps} from './Poppable.props';
 import './Poppable.scss';
 
+export const NAMESPACE = '{{PREFIX}}poppable';
+
 export const Poppable = forwardRef(({children, container, reference, placements, default: _default, onPlacement, placement, overflow, className, style, ...props}, ref) => {
     const target = useRef();
     const handleOnContextMenu = useCallback(e => e.stopPropagation(), []); // prevent onContextMenu event bubbling from the react portal to the react tree
@@ -33,8 +35,8 @@ export const Poppable = forwardRef(({children, container, reference, placements,
     usePosition({target, container, reference, placements, default: _default, onPlacement, strategy: overflow});
 
     return (
-        <Puppeteer.Break namespace='poppable'>
-            <Stackable {...props} className={classNames('poppable', {[`placement-${placement.name}`]: placement.name}, className, getClassNames(rects.tbr, rects.rbr))} style={{...style, ...placement}}
+        <Puppeteer.Break namespace={NAMESPACE}>
+            <Stackable {...props} className={cx(NAMESPACE, {[`placement-${placement.name}`]: placement.name}, className, getClassNames(rects.tbr, rects.rbr))} style={{...style, ...placement}}
                 ref={copyComponentRef(ref, target)} parent={reference} onContextMenu={handleOnContextMenu}>
                 <PoppableContext.Provider value={rects}>
                     {children}
@@ -46,6 +48,6 @@ export const Poppable = forwardRef(({children, container, reference, placements,
 
 Poppable.propTypes = propTypes;
 Poppable.defaultProps = defaultProps;
-Poppable.displayName = 'Poppable.Manual';
+Poppable.displayName = NAMESPACE.replace(/({{PREFIX}}.)/, v => v.toUpperCase()) + '.Manual';
 
-export default memo(puppet('poppable')(Poppable));
+export default memo(puppet(NAMESPACE)(Poppable));

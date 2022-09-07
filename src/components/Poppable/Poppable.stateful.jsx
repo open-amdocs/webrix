@@ -15,7 +15,7 @@
  */
 
 import React, {useState, memo, forwardRef} from 'react';
-import Poppable from './Poppable';
+import Poppable, {NAMESPACE} from './Poppable';
 import {propTypes, defaultProps} from './Poppable.props';
 
 export const StatefulPoppable = forwardRef((props, ref) => {
@@ -26,8 +26,8 @@ export const StatefulPoppable = forwardRef((props, ref) => {
     );
 });
 
-StatefulPoppable.displayName = 'Poppable';
 StatefulPoppable.propTypes = propTypes;
 StatefulPoppable.defaultProps = defaultProps;
+StatefulPoppable.displayName = NAMESPACE.replace(/({{PREFIX}}.)/, v => v.toUpperCase());
 
 export default memo(StatefulPoppable);
