@@ -15,14 +15,16 @@
  */
 
 import React, {useCallback, memo} from 'react';
-import {propTypes} from './Resizable.props';
 import Movable from '../Movable';
+import {NAMESPACE} from './Resizable';
+import {propTypes} from './Resizable.props';
 
 const INITIAL = {top: 0, left: 0, width: 0, height: 0};
+const getDisplayName = (name) => NAMESPACE.replace(/({{PREFIX}}.)/, v => v.toUpperCase()) + `.Resizer.${name}`;
 
 const Resizer = ({direction, onBeginResize, onResize, onEndResize}) => (
     <Movable
-        className={`resizable ${direction}-resizer`}
+        className={`${NAMESPACE} ${direction}-resizer`}
         onBeginMove={onBeginResize}
         onMove={onResize}
         onEndMove={onEndResize}/>
@@ -30,141 +32,65 @@ const Resizer = ({direction, onBeginResize, onResize, onEndResize}) => (
 
 Resizer.propTypes = propTypes;
 
-const Top = memo(props => {
-    const {onResize} = props;
-    const handleOnResize = useCallback(({dy, cy}) => (
-        onResize({
-            delta: {...INITIAL, top: dy, height: -dy},
-            change: {...INITIAL, top: cy, height: -cy},
-        })
-    ), [onResize]);
-    return (
-        <Resizer {...props} onResize={handleOnResize} direction='top'/>
-    );
-});
+const createResizer = (name, getResizeProps) => {
+    const Comp = memo(props => {
+        const {onResize} = props;
+        const handleOnResize = useCallback((arg) => onResize(getResizeProps(arg)), [onResize]);
+        return <Resizer {...props} onResize={handleOnResize} direction={name.toLowerCase()}/>;
+    });
 
-Top.propTypes = propTypes;
-Top.displayName = 'Resizable.Resizer.Top';
+    Comp.propTypes = propTypes;
+    Comp.displayName = getDisplayName(name.replace(/-/g, ''));
 
-const Left = memo(props => {
-    const {onResize} = props;
-    const handleOnResize = useCallback(({dx, cx}) => (
-        onResize({
-            delta: {...INITIAL, left: dx, width: -dx},
-            change: {...INITIAL, left: cx, width: -cx},
-        })
-    ), [onResize]);
-    return (
-        <Resizer {...props} onResize={handleOnResize} direction='left'/>
-    );
-});
+    return Comp;
+};
 
-Left.propTypes = propTypes;
-Left.displayName = 'Resizable.Resizer.Left';
+const Top = createResizer('Top', ({dy, cy}) => ({
+    delta: {...INITIAL, top: dy, height: -dy},
+    change: {...INITIAL, top: cy, height: -cy},
+}));
 
-const Bottom = memo(props => {
-    const {onResize} = props;
-    const handleOnResize = useCallback(({dy, cy}) => (
-        onResize({
-            delta: {...INITIAL, height: dy},
-            change: {...INITIAL, height: cy},
-        })
-    ), [onResize]);
-    return (
-        <Resizer {...props} onResize={handleOnResize} direction='bottom'/>
-    );
-});
+const Left = createResizer('Left', ({dx, cx}) => ({
+    delta: {...INITIAL, left: dx, width: -dx},
+    change: {...INITIAL, left: cx, width: -cx},
+}));
 
-Bottom.propTypes = propTypes;
-Bottom.displayName = 'Resizable.Resizer.Bottom';
+const Bottom = createResizer('Bottom', ({dy, cy}) => ({
+    delta: {...INITIAL, height: dy},
+    change: {...INITIAL, height: cy},
+}));
 
-const Right = memo(props => {
-    const {onResize} = props;
-    const handleOnResize = useCallback(({dx, cx}) => (
-        onResize({
-            delta: {...INITIAL, width: dx},
-            change: {...INITIAL, width: cx},
-        })
-    ), [onResize]);
-    return (
-        <Resizer {...props} onResize={handleOnResize} direction='right'/>
-    );
-});
+const Right = createResizer('Right', ({dx, cx}) => ({
+    delta: {...INITIAL, width: dx},
+    change: {...INITIAL, width: cx},
+}));
 
-Right.propTypes = propTypes;
-Right.displayName = 'Resizable.Resizer.Right';
+const TopLeft = createResizer('Top-Left', ({dx, dy, cx, cy}) => ({
+    delta: {left: dx, width: -dx, top: dy, height: -dy},
+    change: {left: cx, width: -cx, top: cy, height: -cy},
+}));
 
-const TopLeft = memo(props => {
-    const {onResize} = props;
-    const handleOnResize = useCallback(({dx, dy, cx, cy}) => (
-        onResize({
-            delta: {left: dx, width: -dx, top: dy, height: -dy},
-            change: {left: cx, width: -cx, top: cy, height: -cy},
-        })
-    ), [onResize]);
-    return (
-        <Resizer {...props} onResize={handleOnResize} direction='top-left'/>
-    );
-});
+const TopRight = createResizer('Top-Right', ({dx, dy, cx, cy}) => ({
+    delta: {...INITIAL, width: dx, top: dy, height: -dy},
+    change: {...INITIAL, width: cx, top: cy, height: -cy},
+}));
 
-TopLeft.propTypes = propTypes;
-TopLeft.displayName = 'Resizable.Resizer.TopLeft';
+const BottomLeft = createResizer('Bottom-Left', ({dx, dy, cx, cy}) => ({
+    delta: {...INITIAL, left: dx, width: -dx, height: dy},
+    change: {...INITIAL, left: cx, width: -cx, height: cy},
+}));
 
-const TopRight = memo(props => {
-    const {onResize} = props;
-    const handleOnResize = useCallback(({dx, dy, cx, cy}) => (
-        onResize({
-            delta: {...INITIAL, width: dx, top: dy, height: -dy},
-            change: {...INITIAL, width: cx, top: cy, height: -cy},
-        })
-    ), [onResize]);
-    return (
-        <Resizer {...props} onResize={handleOnResize} direction='top-right'/>
-    );
-});
-
-TopRight.propTypes = propTypes;
-TopRight.displayName = 'Resizable.Resizer.TopRight';
-
-const BottomLeft = memo(props => {
-    const {onResize} = props;
-    const handleOnResize = useCallback(({dx, dy, cx, cy}) => (
-        onResize({
-            delta: {...INITIAL, left: dx, width: -dx, height: dy},
-            change: {...INITIAL, left: cx, width: -cx, height: cy},
-        })
-    ), [onResize]);
-    return (
-        <Resizer {...props} onResize={handleOnResize} direction='bottom-left'/>
-    );
-});
-
-BottomLeft.propTypes = propTypes;
-BottomLeft.displayName = 'Resizable.Resizer.BottomLeft';
-
-const BottomRight = memo(props => {
-    const {onResize} = props;
-    const handleOnResize = useCallback(({dx, dy, cx, cy}) => (
-        onResize({
-            delta: {...INITIAL, width: dx, height: dy},
-            change: {...INITIAL, width: cx, height: cy},
-        })
-    ), [onResize]);
-    return (
-        <Resizer {...props} onResize={handleOnResize} direction='bottom-right'/>
-    );
-});
-
-BottomRight.propTypes = propTypes;
-BottomRight.displayName = 'Resizable.Resizer.BottomRight';
+const BottomRight = createResizer('Bottom-Right', ({dx, dy, cx, cy}) => ({
+    delta: {...INITIAL, width: dx, height: dy},
+    change: {...INITIAL, width: cx, height: cy},
+}));
 
 const All = memo(props => (
-    [Top, Left, Bottom, Right, TopLeft, TopRight, BottomLeft, BottomRight].map((Resizer, i) => (
-        <Resizer key={i} {...props}/>
-    ))
+    [Top, Left, Bottom, Right, TopLeft, TopRight, BottomLeft, BottomRight]
+        .map((Resizer, i) => <Resizer key={i} {...props}/>)
 ));
 
 All.propTypes = propTypes;
-All.displayName = 'Resizable.Resizer.All';
+All.displayName = getDisplayName('All');
 
 export default {Top, Left, Bottom, Right, TopLeft, TopRight, BottomLeft, BottomRight, All};
