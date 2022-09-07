@@ -70,5 +70,6 @@ export const Collapsible = ({expanded, children, onTransitionEnd, ...props}) => 
 
 Collapsible.propTypes = propTypes;
 Collapsible.defaultProps = defaultProps;
+Collapsible.displayName = NAMESPACE.replace(/({{PREFIX}}.)/, v => v.toUpperCase());
 
 export default Collapsible;
