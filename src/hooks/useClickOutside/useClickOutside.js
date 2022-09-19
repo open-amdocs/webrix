@@ -33,25 +33,29 @@ import OverrideContext from './useClickOutside.context';
  * So once a click is detected in the component tree of the target component, we set a flag, which the
  * document event handler is checking against. When set to true, the click is considered to be "inside"
  * and so it is ignored.
- * 
+ *
  * This solution is further improved by separating the "click" event into "mousedown" and "mouseup",
- * allowing us to cover cases where the mouse is clicked inside the element, but released outside the 
+ * allowing us to cover cases where the mouse is clicked inside the element, but released outside the
  * element (for example, when dragging). In such cases the click is still considered as an inside click,
  * since it originated inside the element.
  *
  * @param {Function} callback
  */
-export const useClickOutside = callback => {
+export const useClickOutside = (callback, options) => {
+    const {target = _document, condition} = (options || {});
     const isClickedInside = useRef(false);
-    const isClickedOutside = useContext(OverrideContext);
+    let isClickedOutside = useContext(OverrideContext);
+
+    if (condition)
+        isClickedOutside = condition;
 
     useEventListener('mousedown', e => {
         isClickedInside.current = !isClickedOutside(isClickedInside.current, e)
-    }, {current: _document});
+    }, {current: target});
 
     useEventListener('mouseup', e => {
         isClickedInside.current ? isClickedInside.current = false : callback(e)
-    }, {current: _document});
+    }, {current: target});
 
     return useCallback(() => {
         isClickedInside.current = true;
