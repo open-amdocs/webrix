@@ -13,14 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-import Stackable from './Stackable';
-import {getAncestors} from './Stackable.utils';
+import React from 'react';
+import propTypes from 'prop-types';
+import {DEFAULT_Z_INDEX} from './Stackable.constants';
 import StackableContext from './Stackable.context';
-import StackableZIndexProvider from './Stackable.zIndex';
 
-Stackable.getAncestors = getAncestors;
-Stackable.context = StackableContext;
-Stackable.zIndex = StackableZIndexProvider;
+const StackableZIndexProvider = ({children, zIndex}) => (
+    <StackableContext.Provider value={{zIndex: zIndex || DEFAULT_Z_INDEX}}>
+        {children}
+    </StackableContext.Provider>
+);
 
-export default Stackable;
+StackableZIndexProvider.propTypes = {
+    children: propTypes.Node,
+    zIndex: propTypes.number,
+};
+
+export default StackableZIndexProvider;
