@@ -110,21 +110,25 @@ export default class Scrollable extends React.PureComponent {
         };
     };
 
-    updateScrollbars = () => {
-        this.event.next = this.getEvent();
+    shouldUpdateScrollbars(event) {
+        const {next, prev} = event,
+            changed = next.clientHeight !== prev.clientHeight ||
+                      next.scrollHeight !== prev.scrollHeight ||
+                      next.clientWidth !== prev.clientWidth ||
+                      next.scrollWidth !== prev.scrollWidth ||
+                      next.top !== prev.top ||
+                      next.left !== prev.left;
 
-        const nextEvent = this.event.next,
-            prevEvent = this.event.prev,
-            changed = nextEvent.clientHeight !== prevEvent.clientHeight ||
-                      nextEvent.scrollHeight !== prevEvent.scrollHeight ||
-                      nextEvent.clientWidth !== prevEvent.clientWidth ||
-                      nextEvent.scrollWidth !== prevEvent.scrollWidth ||
-                      nextEvent.top !== prevEvent.top ||
-                      nextEvent.left !== prevEvent.left;
+        return changed;
+    }
+
+    updateScrollbars = () => {
+        const nextEvent = this.event.next = this.getEvent(),
+            changed = this.shouldUpdateScrollbars(this.event);
 
         // Ensures that updates (which are a potentially expensive operation)
         // are only executed if the applicable scroll properties have changed
-        if (changed) {
+        if (changed && this.container.current) {
             this.props.onUpdate(nextEvent);
             const el = this.container.current.parentElement;
             const vRatio = nextEvent.clientHeight / nextEvent.scrollHeight;
