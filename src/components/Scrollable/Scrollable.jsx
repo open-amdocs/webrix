@@ -85,7 +85,7 @@ export default class Scrollable extends React.PureComponent {
                 container.parentElement.classList.remove('scrolling');
             }, SCROLLING_CLASS_REMOVAL_DELAY);
         }
-    };
+    }
 
     getEvent = () => {
         const container = this.container.current;
@@ -108,7 +108,7 @@ export default class Scrollable extends React.PureComponent {
             clientHeight,
             clientWidth,
         };
-    };
+    }
 
     shouldUpdateScrollbars(event) {
         const {next, prev} = event,
@@ -151,7 +151,7 @@ export default class Scrollable extends React.PureComponent {
         }
 
         this.event.prev = nextEvent;
-    };
+    }
 
     getElementProps = () => {
         const {element} = this.props;
@@ -160,7 +160,7 @@ export default class Scrollable extends React.PureComponent {
             ref: copyComponentRef(element.ref, this.container),
             onScroll: this.handleOnScroll,
         }
-    };
+    }
 
     handleOnTransitionEnd = e => {
         // Sometimes internal dimension changes don't occur immediately due to transitions/animations.
@@ -170,7 +170,7 @@ export default class Scrollable extends React.PureComponent {
         if (['height', 'width'].includes(e.propertyName)) {
             this.updateScrollbars();
         }
-    };
+    }
 
     render() {
         const {children, style, element} = this.props;
