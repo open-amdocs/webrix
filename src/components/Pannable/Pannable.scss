@@ -10,7 +10,7 @@
     cursor: -webkit-grabbing;
   }
 
-  .movable {
+  .{{PREFIX}}movable {
     width: fit-content;
     height: fit-content;
   }
