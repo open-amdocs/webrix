@@ -15,7 +15,7 @@ describe('<Resizable>', () => {
                 </Resizable>
             );
 
-            expect(wrapper.find(Movable).filter('.' + NAMESPACE)).toHaveLength(8);
+            expect(wrapper.find(Movable).filter(`.${NAMESPACE}`)).toHaveLength(8);
         });
     });
     describe('Methods', () => {
@@ -41,7 +41,7 @@ describe('<Resizable>', () => {
                 </Resizable>
             );
 
-            wrapper.find(Movable).filter('.' + NAMESPACE).forEach(el => {
+            wrapper.find(Movable).filter(`.${NAMESPACE}`).forEach(el => {
                 onBeginResize.resetHistory();
                 onResize.resetHistory();
                 onEndResize.resetHistory();
