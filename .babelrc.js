@@ -14,17 +14,6 @@ module.exports = {
                 "tools": "./src/tools"
             }
         }],
-
-        ["search-and-replace", {
-            // for jest to compile, first babel needs to search-&-replace all the prefixes constants
-            "rules": [
-                {
-                    "search": /{{PREFIX}}/,
-                    "searchTemplateStrings": true,
-                    "replace": "wx-"
-                }
-            ]
-        }]
     ],
     "env": {
         "test": {

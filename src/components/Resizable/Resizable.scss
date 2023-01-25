@@ -3,7 +3,7 @@
 $size: 20px;
 $offset: math.div($size, -2);
 
-.{{PREFIX}}resizable {
+.wx-resizable {
   position: absolute;
   width: $size;
   height: $size;

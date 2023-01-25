@@ -18,7 +18,7 @@ import React, {memo} from 'react';
 import {propTypes, defaultProps} from './Resizable.props';
 import './Resizable.scss';
 
-export const NAMESPACE = '{{PREFIX}}resizable';
+export const NAMESPACE = 'wx-resizable';
 
 export const Resizable = ({onBeginResize, onResize, onEndResize, children}) => (
     React.Children.toArray(children).map(child => (
@@ -28,6 +28,6 @@ export const Resizable = ({onBeginResize, onResize, onEndResize, children}) => (
 
 Resizable.propTypes = propTypes;
 Resizable.defaultProps = defaultProps;
-Resizable.displayName = NAMESPACE.replace(/({{PREFIX}}.)/, v => v.toUpperCase());
+Resizable.displayName = NAMESPACE.replace(/(wx-.)/, v => v.toUpperCase());
 
 export default memo(Resizable);

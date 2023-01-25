@@ -26,7 +26,7 @@ import {propTypes, defaultProps} from './Scrollable.props';
 import {SCROLLING_CLASS_REMOVAL_DELAY, CSS_VARS} from './Scrollable.constants';
 import './Scrollable.scss';
 
-export const NAMESPACE = '{{PREFIX}}scrollable';
+export const NAMESPACE = 'wx-scrollable';
 
 export default class Scrollable extends React.PureComponent {
     static propTypes = propTypes;

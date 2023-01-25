@@ -1,17 +1,17 @@
-.{{PREFIX}}poppable {
-  &.vafter .{{PREFIX}}poppable-triangle {
+.wx-poppable {
+  &.vafter .wx-poppable-triangle {
     border-bottom-color: var(--triangle-color, black);
   }
 
-  &.vbefore .{{PREFIX}}poppable-triangle {
+  &.vbefore .wx-poppable-triangle {
     border-top-color: var(--triangle-color, black);
   }
 
-  &.hbefore .{{PREFIX}}poppable-triangle {
+  &.hbefore .wx-poppable-triangle {
     border-left-color: var(--triangle-color, black);
   }
 
-  &.hafter .{{PREFIX}}poppable-triangle {
+  &.hafter .wx-poppable-triangle {
     border-right-color: var(--triangle-color, black);
   }
 

@@ -26,7 +26,7 @@ import PoppableContext from './Poppable.context';
 import {propTypes, defaultProps} from './Poppable.props';
 import './Poppable.scss';
 
-export const NAMESPACE = '{{PREFIX}}poppable';
+export const NAMESPACE = 'wx-poppable';
 
 export const Poppable = forwardRef(({children, container, reference, placements, default: _default, onPlacement, placement, overflow, className, style, ...props}, ref) => {
     const target = useRef();
@@ -48,6 +48,6 @@ export const Poppable = forwardRef(({children, container, reference, placements,
 
 Poppable.propTypes = propTypes;
 Poppable.defaultProps = defaultProps;
-Poppable.displayName = NAMESPACE.replace(/({{PREFIX}}.)/, v => v.toUpperCase()) + '.Manual';
+Poppable.displayName = NAMESPACE.replace(/(wx-.)/, v => v.toUpperCase()) + '.Manual';
 
 export default memo(puppet(NAMESPACE)(Poppable));

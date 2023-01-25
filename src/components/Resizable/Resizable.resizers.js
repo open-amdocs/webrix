@@ -20,7 +20,7 @@ import {NAMESPACE} from './Resizable';
 import {propTypes} from './Resizable.props';
 
 const INITIAL = {top: 0, left: 0, width: 0, height: 0};
-const getDisplayName = (name) => NAMESPACE.replace(/({{PREFIX}}.)/, v => v.toUpperCase()) + `.Resizer.${name}`;
+const getDisplayName = (name) => NAMESPACE.replace(/(wx-.)/, v => v.toUpperCase()) + `.Resizer.${name}`;
 
 const Resizer = ({direction, onBeginResize, onResize, onEndResize}) => (
     <Movable

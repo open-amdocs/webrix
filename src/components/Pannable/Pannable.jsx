@@ -22,7 +22,7 @@ import Scrollable from '../Scrollable';
 import {propTypes, defaultProps} from './Pannable.props';
 import './Pannable.scss';
 
-export const NAMESPACE = '{{PREFIX}}pannable';
+export const NAMESPACE = 'wx-pannable';
 
 export const Pannable = forwardRef(({children, className, ...props}, ref) => {
     const scrollRef = useRef();

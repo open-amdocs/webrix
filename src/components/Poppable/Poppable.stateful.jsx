@@ -28,6 +28,6 @@ export const StatefulPoppable = forwardRef((props, ref) => {
 
 StatefulPoppable.propTypes = propTypes;
 StatefulPoppable.defaultProps = defaultProps;
-StatefulPoppable.displayName = NAMESPACE.replace(/({{PREFIX}}.)/, v => v.toUpperCase());
+StatefulPoppable.displayName = NAMESPACE.replace(/(wx-.)/, v => v.toUpperCase());
 
 export default memo(StatefulPoppable);

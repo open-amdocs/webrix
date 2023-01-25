@@ -1,4 +1,4 @@
-.{{PREFIX}}pannable {
+.wx-pannable {
   height: 100%;
   cursor: grab;
   cursor: -moz-grab;
@@ -10,7 +10,7 @@
     cursor: -webkit-grabbing;
   }
 
-  .{{PREFIX}}movable {
+  .wx-movable {
     width: fit-content;
     height: fit-content;
   }

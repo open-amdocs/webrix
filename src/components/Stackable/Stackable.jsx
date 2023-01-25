@@ -22,7 +22,7 @@ import {DEFAULT_Z_INDEX} from './Stackable.constants';
 import {defaultProps, propTypes} from './Stackable.props';
 import './Stackable.scss';
 
-export const NAMESPACE = '{{PREFIX}}stackable';
+export const NAMESPACE = 'wx-stackable';
 
 const Stackable = forwardRef(({zIndex: zIndexProp, target, parent, children, style, className, ...props}, ref) => {
     const {depth, ancestors: _ancestors, zIndex: zIndexContext} = useContext(StackableContext);

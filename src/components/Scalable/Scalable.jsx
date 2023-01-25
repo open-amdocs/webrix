@@ -21,7 +21,7 @@ import ResizeObserver from 'tools/ResizeObserver';
 import {propTypes, defaultProps} from './Scalable.props';
 import './Scalable.scss';
 
-export const NAMESPACE = '{{PREFIX}}scalable';
+export const NAMESPACE = 'wx-scalable';
 
 export const Scalable = forwardRef(({scalex, scaley, className, children, ...props}, ref) => {
     const inner = useRef();

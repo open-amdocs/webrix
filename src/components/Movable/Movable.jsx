@@ -20,7 +20,7 @@ import {mouseTracker, touchTracker, moveTracker} from './Movable.utils';
 import {propTypes, defaultProps} from './Movable.props';
 import './Movable.scss';
 
-export const NAMESPACE = '{{PREFIX}}movable';
+export const NAMESPACE = 'wx-movable';
 
 export const Movable = forwardRef(({onBeginMove, onMove, onEndMove, ...props}, ref) => {
     const tracker = moveTracker(onBeginMove, onMove, onEndMove);
@@ -37,6 +37,6 @@ export const Movable = forwardRef(({onBeginMove, onMove, onEndMove, ...props}, r
 
 Movable.propTypes = propTypes;
 Movable.defaultProps = defaultProps;
-Movable.displayName = NAMESPACE.replace(/({{PREFIX}}.)/, v => v.toUpperCase());
+Movable.displayName = NAMESPACE.replace(/(wx-.)/, v => v.toUpperCase());
 
 export default memo(Movable);
