@@ -15,11 +15,13 @@
  */
 
 import React, {memo, forwardRef, useRef, useEffect, useCallback} from 'react';
-import classNames from 'classnames';
+import cx from 'classnames';
 import {copyComponentRef} from 'utility/react';
 import ResizeObserver from 'tools/ResizeObserver';
 import {propTypes, defaultProps} from './Scalable.props';
 import './Scalable.scss';
+
+export const NAMESPACE = 'wx-scalable';
 
 export const Scalable = forwardRef(({scalex, scaley, className, children, ...props}, ref) => {
     const inner = useRef();
@@ -36,9 +38,9 @@ export const Scalable = forwardRef(({scalex, scaley, className, children, ...pro
     }, [updateDimensions]);
 
     return (
-        <div {...props} ref={copyComponentRef(ref, outer)} className={classNames('scalable', className)}>
+        <div {...props} ref={copyComponentRef(ref, outer)} className={cx(NAMESPACE, className)}>
             <ResizeObserver onResize={updateDimensions}>
-                <div className='scalable-inner' style={{transform: `scale(${scalex}, ${scaley})`}} ref={inner}>
+                <div className={`${NAMESPACE}-inner`} style={{transform: `scale(${scalex}, ${scaley})`}} ref={inner}>
                     {children}
                 </div>
             </ResizeObserver>

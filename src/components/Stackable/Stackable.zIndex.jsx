@@ -13,8 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import React from 'react';
+import propTypes from 'prop-types';
+import {DEFAULT_Z_INDEX} from './Stackable.constants';
+import StackableContext from './Stackable.context';
 
-import {NAMESPACE} from './Stackable';
+const StackableZIndexProvider = ({children, zIndex}) => (
+    <StackableContext.Provider value={{zIndex: zIndex || DEFAULT_Z_INDEX}}>
+        {children}
+    </StackableContext.Provider>
+);
 
-export const getAncestors = element =>
-    element.closest('.' + NAMESPACE)?.dataset.ancestors || '';
+StackableZIndexProvider.propTypes = {
+    children: propTypes.Node,
+    zIndex: propTypes.number,
+};
+
+export default StackableZIndexProvider;

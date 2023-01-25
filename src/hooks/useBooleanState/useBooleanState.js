@@ -27,7 +27,7 @@ export const useBooleanState = (initial = false) => {
     const [value, setValue] = useState(initial);
     const setTrue = useCallback(() => setValue(true), [setValue]);
     const setFalse = useCallback(() => setValue(false), [setValue]);
-    const toggle = useCallback(() => setValue(!value), [setValue, value]);
+    const toggle = useCallback(() => setValue(v => !v), [setValue]);
     return {value, setTrue, setFalse, toggle, setValue};
 };
 

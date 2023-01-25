@@ -16,7 +16,11 @@
 
 import Stackable from './Stackable';
 import {getAncestors} from './Stackable.utils';
+import StackableContext from './Stackable.context';
+import StackableZIndexProvider from './Stackable.zIndex';
 
 Stackable.getAncestors = getAncestors;
+Stackable.context = StackableContext;
+Stackable.zIndex = StackableZIndexProvider;
 
 export default Stackable;

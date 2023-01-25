@@ -1,20 +1,24 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {act} from 'react-dom/test-utils';
-import {shallow} from 'enzyme';
+import {mount} from 'enzyme';
 import usePrevious from './usePrevious';
 
+let prev;
 const Elem = ({next}) => {
-    const prev = usePrevious(next);
-    const [counter, setCounter] = useState(0);
-    return (
-        <div className={`prev ${counter}`} onClick={() => setCounter(counter + 1)}>{prev}</div>
-    );
+    prev = usePrevious(next);
+    return null;
 };
 
 describe('usePrevious()', () => {
     it('Should return the previous value', () => {
         let wrapper = null;
-        act(() => {wrapper = shallow(<Elem next={1}/>)});
-        expect(wrapper.find('.prev').text()).toEqual('1');
+        act(() => {wrapper = mount(<Elem next={1}/>)});
+        expect(prev).toEqual(1);
+
+        wrapper.setProps({next: 2});
+        expect(prev).toEqual(1);
+
+        wrapper.setProps({next: 3});
+        expect(prev).toEqual(2);
     });
 });

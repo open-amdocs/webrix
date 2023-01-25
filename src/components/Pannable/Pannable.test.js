@@ -2,7 +2,7 @@ import React from 'react';
 import {mount, shallow} from 'enzyme';
 import sinon from 'sinon';
 import Movable from '../Movable';
-import Pannable, {__RewireAPI__ as rewireAPI} from './Pannable';
+import Pannable, {__RewireAPI__ as rewireAPI, NAMESPACE} from './Pannable';
 import Scrollable from '../Scrollable';
 
 const TestPannable = ({remove}) => {
@@ -19,6 +19,9 @@ describe('Pannable', () => {
             const wrapper = shallow(<Pannable/>);
             expect(wrapper.find(Scrollable)).toHaveLength(1);
             expect(wrapper.find(Movable)).toHaveLength(1);
+            // should have namespaced class
+            expect(wrapper.find(`.${NAMESPACE}`)).toHaveLength(1);
+
         });
     });
 

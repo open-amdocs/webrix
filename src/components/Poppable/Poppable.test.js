@@ -1,6 +1,6 @@
 import React from 'react';
 import {mount} from 'enzyme';
-import Poppable from './Poppable';
+import Poppable, {NAMESPACE} from './Poppable';
 import defaultStrategy, {reposition, hide, trap} from './strategies';
 import {sortPlacements, filterPlacements} from './strategies/reposition';
 import {getBoundingRects} from './Poppable.utils';
@@ -13,9 +13,9 @@ describe('<Poppable/>', () => {
         beforeAll(() => {jest.useFakeTimers()});
         afterAll(() => {jest.useRealTimers()});
 
-        it('should render a Poppable', () => {
+        it('should render a Poppable (with correct namespace)', () => {
             const wrapper = mount(<Poppable/>);
-            expect(wrapper.find('.poppable').hostNodes()).toHaveLength(1);
+            expect(wrapper.find('.' + NAMESPACE).hostNodes()).toHaveLength(1);
         });
     });
 
