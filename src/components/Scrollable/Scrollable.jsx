@@ -15,7 +15,7 @@
  */
 
 import React from 'react';
-import classNames from 'classnames';
+import cx from 'classnames';
 import {copyComponentRef, findChildByType} from 'utility/react';
 import {requestAnimationFrame} from 'utility/mocks';
 import {normalizeScrollPosition} from './Scrollable.utils';
@@ -25,6 +25,8 @@ import Context from './Scrollable.context';
 import {propTypes, defaultProps} from './Scrollable.props';
 import {SCROLLING_CLASS_REMOVAL_DELAY, CSS_VARS} from './Scrollable.constants';
 import './Scrollable.scss';
+
+export const NAMESPACE = 'wx-scrollable';
 
 export default class Scrollable extends React.PureComponent {
     static propTypes = propTypes;
@@ -152,7 +154,7 @@ export default class Scrollable extends React.PureComponent {
     getElementProps = () => {
         const {element} = this.props;
         return {
-            className: classNames('scrollable-inner', element.props.className),
+            className: cx(`${NAMESPACE}-inner`, element.props.className),
             ref: copyComponentRef(element.ref, this.container),
             onScroll: this.handleOnScroll,
         }
@@ -178,7 +180,7 @@ export default class Scrollable extends React.PureComponent {
 
         return (
             <ResizeObserver onResize={this.updateScrollbars}>
-                <div {...props} className={classNames('scrollable', className)} onTransitionEnd={this.handleOnTransitionEnd}>
+                <div {...props} className={cx(NAMESPACE, className)} onTransitionEnd={this.handleOnTransitionEnd}>
                     {React.cloneElement(element, this.getElementProps(), content)}
                     <Context.Provider value={this.state}>
                         {vsb ? vsb.props.children : <VerticalScrollbar/>}

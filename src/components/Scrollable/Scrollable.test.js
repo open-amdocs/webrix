@@ -3,17 +3,20 @@ import {mount} from 'enzyme';
 import sinon from 'sinon';
 import {noop} from 'utility/memory';
 import Scrollable from './';
+import {NAMESPACE} from './Scrollable';
 import {normalizeScrollPosition} from './Scrollable.utils';
 import {SCROLLING_CLASS_REMOVAL_DELAY} from './Scrollable.constants';
 
 const waitFor = delay => new Promise(resolve => setTimeout(resolve, delay));
+
+const SELECTOR = '.' + NAMESPACE;
 
 describe('<Scrollable/>', () => {
 
     describe('HTML structure', () => {
         it('should render a Scrollbar', () => {
             const wrapper = mount(<Scrollable/>);
-            expect(wrapper.find('.scrollable')).toHaveLength(1);
+            expect(wrapper.find(SELECTOR)).toHaveLength(1);
             expect(wrapper.find('ResizeObserver')).toHaveLength(1);
             expect(wrapper.find('VerticalScrollbar')).toHaveLength(1);
             expect(wrapper.find('HorizontalScrollbar')).toHaveLength(1);
@@ -26,7 +29,7 @@ describe('<Scrollable/>', () => {
                     <Scrollable.HorizontalScrollbar><div className='hsb-child'></div></Scrollable.HorizontalScrollbar>
                 </Scrollable>
             );
-            expect(wrapper.find('.scrollable')).toHaveLength(1);
+            expect(wrapper.find(SELECTOR)).toHaveLength(1);
             expect(wrapper.find('ResizeObserver')).toHaveLength(1);
             expect(wrapper.find('.vsb-child')).toHaveLength(1);
             expect(wrapper.find('.hsb-child')).toHaveLength(1);

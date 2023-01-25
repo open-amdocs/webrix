@@ -15,12 +15,14 @@
  */
 
 import React, {forwardRef, useCallback, useRef, useMemo} from 'react';
-import cls from 'classnames';
+import cx from 'classnames';
 import {copyComponentRef} from 'utility/react';
 import Movable from '../Movable';
 import Scrollable from '../Scrollable';
 import {propTypes, defaultProps} from './Pannable.props';
 import './Pannable.scss';
+
+export const NAMESPACE = 'wx-pannable';
 
 export const Pannable = forwardRef(({children, className, ...props}, ref) => {
     const scrollRef = useRef();
@@ -50,7 +52,7 @@ export const Pannable = forwardRef(({children, className, ...props}, ref) => {
     }, [pannableRef]);
 
     return (
-        <div {...props} className={cls('pannable', className)} ref={copyComponentRef(ref, pannableRef)}>
+        <div {...props} className={cx(NAMESPACE, className)} ref={copyComponentRef(ref, pannableRef)}>
             <Scrollable ref={scrollRef}>
                 <Movable
                     onMove={handleOnMove}

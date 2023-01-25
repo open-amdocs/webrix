@@ -3,6 +3,7 @@ import {act} from 'react-dom/test-utils';
 import {shallow, mount} from 'enzyme';
 import sinon from 'sinon';
 import * as number from 'utility/number';
+import {NAMESPACE} from './Movable';
 import Movable from './';
 
 describe('<Movable/>', () => {
@@ -11,6 +12,7 @@ describe('<Movable/>', () => {
         it('should render a Movable', () => {
             const wrapper = shallow(<Movable className='mock'/>);
             expect(wrapper.find('.mock')).toHaveLength(1);
+            expect(wrapper.find(`.${NAMESPACE}`)).toHaveLength(1);
         });
     });
 
@@ -119,8 +121,8 @@ describe('<Movable/>', () => {
                 };
 
                 act(() => {wrapper = mount(<Elem/>)});
-                wrapper.find('Movable').prop('onBeginMove')();
-                wrapper.find('Movable').prop('onMove')({dx: 10, dy: 10});
+                wrapper.find(Movable).prop('onBeginMove')();
+                wrapper.find(Movable).prop('onMove')({dx: 10, dy: 10});
                 expect(onMove.callCount).toEqual(2);
                 expect(onMove.calledWith({top: 10, left: 10})).toEqual(true);
 
@@ -141,15 +143,15 @@ describe('<Movable/>', () => {
                 };
 
                 act(() => {wrapper = mount(<Elem/>)});
-                wrapper.find('Movable').prop('onBeginMove')({x: 10, y: 10});
+                wrapper.find(Movable).prop('onBeginMove')({x: 10, y: 10});
                 expect(onMove.callCount).toEqual(1);
                 expect(onMove.calledWith({top: 10, left: 10})).toEqual(true);
 
-                wrapper.find('Movable').prop('onMove')({x: 10.5, y: 10.5});
+                wrapper.find(Movable).prop('onMove')({x: 10.5, y: 10.5});
                 expect(onMove.callCount).toEqual(2);
                 expect(onMove.calledWith({top: 10, left: 10})).toEqual(true);
 
-                wrapper.find('Movable').prop('onMove')({x: 30, y: 30});
+                wrapper.find(Movable).prop('onMove')({x: 30, y: 30});
                 expect(onMove.callCount).toEqual(3);
                 expect(onMove.calledWith({top: 20, left: 20})).toEqual(true);
 

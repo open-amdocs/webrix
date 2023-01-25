@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-export const getAncestors = element => {
-    const stackable = element.closest('.stackable');
-    return stackable ? stackable.getAttribute('data-ancestors') : '';
-};
+import {NAMESPACE} from './Stackable';
+
+export const getAncestors = element =>
+    element.closest('.' + NAMESPACE)?.dataset.ancestors || '';

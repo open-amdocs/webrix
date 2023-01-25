@@ -2,17 +2,20 @@ import React, {useRef} from 'react';
 import {act} from 'react-dom/test-utils';
 import {mount} from 'enzyme';
 import sinon from 'sinon';
+import Movable from '../Movable/Movable';
+import {NAMESPACE} from './Resizable';
 import Resizable from './';
 
 describe('<Resizable>', () => {
     describe('HTML structure', () => {
-        it('should render Resizable', () => {
+        it('should render Resizable with 8 Resizer components for 4 sides & 4 corners', () => {
             const wrapper = mount(
                 <Resizable>
                     <Resizable.Resizer.All/>
                 </Resizable>
             );
-            expect(wrapper.find('Movable.resizable')).toHaveLength(8);
+
+            expect(wrapper.find(Movable).filter(`.${NAMESPACE}`)).toHaveLength(8);
         });
     });
     describe('Methods', () => {
@@ -38,7 +41,7 @@ describe('<Resizable>', () => {
                 </Resizable>
             );
 
-            wrapper.find('Movable.resizable').forEach(el => {
+            wrapper.find(Movable).filter(`.${NAMESPACE}`).forEach(el => {
                 onBeginResize.resetHistory();
                 onResize.resetHistory();
                 onEndResize.resetHistory();
@@ -74,20 +77,20 @@ describe('<Resizable>', () => {
             act(() => {
                 wrapper = mount(<Elem/>)
             });
-            wrapper.find('Resizable').prop('onBeginResize')();
-            wrapper.find('Resizable').prop('onResize')({delta: r(0, 0, 0, 0)});
+            wrapper.find(Resizable).prop('onBeginResize')();
+            wrapper.find(Resizable).prop('onResize')({delta: r(0, 0, 0, 0)});
             expect(onResize.callCount).toEqual(1);
             expect(onResize.calledWith(r(0, 0, 20, 20))).toEqual(true);
 
-            wrapper.find('Resizable').prop('onResize')({delta: r(10, 10, -10, -10)});
+            wrapper.find(Resizable).prop('onResize')({delta: r(10, 10, -10, -10)});
             expect(onResize.callCount).toEqual(2);
             expect(onResize.calledWith(r(10, 10, 10, 10))).toEqual(true);
 
-            wrapper.find('Resizable').prop('onResize')({delta: r(0, 0, 10, 10)});
+            wrapper.find(Resizable).prop('onResize')({delta: r(0, 0, 10, 10)});
             expect(onResize.callCount).toEqual(3);
             expect(onResize.calledWith(r(0, 0, 30, 30))).toEqual(true);
 
-            wrapper.find('Resizable').prop('onResize')({delta: r(30, 30, -30, -30)});
+            wrapper.find(Resizable).prop('onResize')({delta: r(30, 30, -30, -30)});
             expect(onResize.callCount).toEqual(4);
             expect(onResize.calledWith(r(20, 20, 0, 0))).toEqual(true);
         });

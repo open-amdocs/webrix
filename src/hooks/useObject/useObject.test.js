@@ -3,11 +3,11 @@ import {act} from 'react-dom/test-utils';
 import {shallow} from 'enzyme';
 import useObject from './useObject';
 
+let obj;
+
 const Elem = ({object}) => {
-    const obj = useObject(object);
-    return (
-        <div object={obj}/>
-    );
+    obj = useObject(object);
+    return null;
 };
 
 describe('useObject()', () => {
@@ -16,11 +16,11 @@ describe('useObject()', () => {
         const object = {foo: 'bar'};
         act(() => {wrapper = shallow(<Elem object={object}/>)});
 
-        expect(wrapper.find('div').prop('object') === object).toEqual(true);
+        expect(obj === object).toEqual(true);
         wrapper.setProps({object: {foo: 'bar'}});
-        expect(wrapper.find('div').prop('object') === object).toEqual(true);
+        expect(obj === object).toEqual(true);
         wrapper.setProps({object: {foo: 'bars'}});
-        expect(wrapper.find('div').prop('object')).toEqual({foo: 'bars'});
-        expect(wrapper.find('div').prop('object') === object).toEqual(false);
+        expect(obj).toEqual({foo: 'bars'});
+        expect(obj === object).toEqual(false);
     });
 });

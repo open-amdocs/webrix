@@ -16,6 +16,7 @@
 
 import React, {useContext} from 'react';
 import {number} from 'prop-types';
+import {NAMESPACE} from '../../Poppable';
 import PoppableContext from '../../Poppable.context';
 import {ready, getLeft, getTop} from './Triangle.utils';
 import './Triangle.scss';
@@ -23,7 +24,7 @@ import './Triangle.scss';
 const Arrow = ({size}) => {
     const {tbr, rbr} = useContext(PoppableContext);
     return !ready(tbr, rbr) ? null : (
-        <div className='poppable-triangle' style={{
+        <div className={`${NAMESPACE}-triangle`} style={{
             top: getTop(tbr, rbr, size),
             left: getLeft(tbr, rbr, size),
             borderWidth: size,

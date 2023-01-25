@@ -16,17 +16,19 @@
 
 import React, {useContext, forwardRef, useEffect, useState} from 'react';
 import ReactDOM from 'react-dom';
-import classNames from 'classnames';
+import cx from 'classnames';
 import StackableContext from './Stackable.context';
 import {DEFAULT_Z_INDEX} from './Stackable.constants';
 import {defaultProps, propTypes} from './Stackable.props';
 import './Stackable.scss';
 
+export const NAMESPACE = 'wx-stackable';
+
 const Stackable = forwardRef(({zIndex: zIndexProp, target, parent, children, style, className, ...props}, ref) => {
     const {depth, ancestors: _ancestors, zIndex: zIndexContext} = useContext(StackableContext);
     const zIndex = zIndexProp ?? zIndexContext ?? DEFAULT_Z_INDEX;
     const [ancestors, setAncestors] = useState('');
-    const cls = classNames(`stackable depth-${depth}`, className);
+    const cls = cx(`${NAMESPACE} depth-${depth}`, className);
 
     useEffect(() => {
         let ancestors = '';
@@ -43,7 +45,7 @@ const Stackable = forwardRef(({zIndex: zIndexProp, target, parent, children, sty
 
     return ReactDOM.createPortal(
         <StackableContext.Provider value={{zIndex: zIndex + 1, depth: depth + 1, ancestors: `${ancestors} .${cls.split(' ').join('.')}`}}>
-            <div {...props} data-ancestors={ancestors} className={classNames(`stackable depth-${depth}`, className)} style={{...style, zIndex}} ref={ref}>
+            <div {...props} data-ancestors={ancestors} className={cx(`${NAMESPACE} depth-${depth}`, className)} style={{...style, zIndex}} ref={ref}>
                 {children}
             </div>
         </StackableContext.Provider>,
