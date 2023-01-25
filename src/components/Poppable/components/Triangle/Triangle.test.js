@@ -3,6 +3,7 @@ import {mount} from 'enzyme';
 import PoppableContext from '../../Poppable.context';
 import Triangle from './Triangle';
 import {getTop, getLeft} from './Triangle.utils';
+import {NAMESPACE} from './../../Poppable';
 
 describe('<Triangle/>', () => {
     describe('HTML structure', () => {
@@ -12,7 +13,7 @@ describe('<Triangle/>', () => {
                     <Triangle/>
                 </PoppableContext.Provider>
             );
-            expect(wrapper.find('.poppable-triangle')).toHaveLength(1);
+            expect(wrapper.find('.' + NAMESPACE +'-triangle')).toHaveLength(1);
         });
         it('shouldn\'t render Arrow', () => {
             const wrapper = mount(
