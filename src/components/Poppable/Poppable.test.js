@@ -1,8 +1,11 @@
 import React from 'react';
+import sinon from 'sinon';
 import {mount} from 'enzyme';
 import Poppable, {NAMESPACE} from './Poppable';
+import PoppableStateful from './Poppable.stateful';
 import defaultStrategy, {reposition, hide, trap} from './strategies';
 import {sortPlacements, filterPlacements} from './strategies/reposition';
+import {usePosition} from './Poppable.hooks';
 import {getBoundingRects} from './Poppable.utils';
 import {vbefore, vcenter, vafter, hbefore, hcenter, hafter} from './Poppable.placements';
 import {HIDDEN_PLACEMENT} from './Poppable.constants';
@@ -19,9 +22,39 @@ describe('<Poppable/>', () => {
         });
     });
 
+    describe('Stateful', () => {
+        it('should render a stateful Poppable', () => {
+            const wrapper = mount(<PoppableStateful/>);
+            expect(wrapper.find('.' + NAMESPACE).hostNodes()).toHaveLength(1);
+        });
+    });
+
     describe('Hooks', () => {
-        it.todo('updatePosition()');
-        it.todo('usePositioning()');
+        global.window.requestAnimationFrame.resetHistory();
+
+        const Elem = (props) => {
+            usePosition(props);
+            return null;
+        };
+
+        describe('usePosition', () => {
+            const props = {
+                target: new DOMRect(10, 10),
+                container: new DOMRect(),
+                reference: new DOMRect(30, 30),
+                placements: () => [{top: 0, left: 0}],
+                default: 0,
+                onPlacement: sinon.spy(),
+                strategy: defaultStrategy,
+            };
+
+            mount(<Elem {...props}/>);
+
+            const lastCall = global.window.requestAnimationFrame.lastCall;
+            lastCall.args[0]();
+
+            expect(props.onPlacement.calledWith({top: 0, left: 0, name: 'hidden'})).toEqual(true);
+        });
     });
 
     describe('Utils', () => {
