@@ -1,31 +1,87 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {act} from 'react-dom/test-utils';
 import {mount} from 'enzyme';
 import useTimeout from './useTimeout';
 
 const waitFor = delay => new Promise(resolve => setTimeout(resolve, delay));
+let spy = 1, stopSpy;
 
-const Elem = () => {
-    const [classname, setClassname] = useState('first');
-    const {start} = useTimeout(() => {
-        setClassname('second');
-    }, 0);
-    return (
-        <div className={classname} onClick={start}/>
-    );
+const Timeout = ({delay, recurring}) => {
+    const {start, stop} = useTimeout(() => { spy += 1 }, delay, recurring);
+    start();
+    stopSpy = stop;
+    return null;
 };
 
 describe('useTimeout()', () => {
-    it('Should return the previous value', async () => {
+    beforeEach(() => {
+        spy = 1;
+    });
+
+    it('Should execute the timeout callback once, when no other prameters specified', async () => {
         await act(async () => {
-            const wrapper = mount(<Elem/>);
-            expect(wrapper.find('.first').length).toEqual(1);
-            expect(wrapper.find('.second').length).toEqual(0);
-            wrapper.find('.first').simulate('click');
+            const wrapper = mount(<Timeout />);
+
+            expect(spy).toEqual(1);
+
+            await waitFor(0); // make sure the timeout has had enough time to fire
+            wrapper.update();
+            expect(spy).toEqual(2);
+        });
+    });
+
+    it('Should execute the timeout callback once', async () => {
+        await act(async () => {
+            const DELAY = 100;
+            const wrapper = mount(<Timeout delay={DELAY}/>);
+
+            expect(spy).toEqual(1);
+
+            await waitFor(DELAY/2);
+
+            // should remain "1" as the timeout has yet to be executed
+            expect(spy).toEqual(1);
+
+            await waitFor(DELAY/2);
+
+            wrapper.update();
+            expect(spy).toEqual(2);
+        });
+    });
+
+    it('Should not be recurring by default (called only once)', async () => {
+        await act(async () => {
+            const wrapper = await mount(<Timeout/>);
+
+            expect(spy).toEqual(1);
+
             await waitFor(0);
             wrapper.update();
-            expect(wrapper.find('.first').length).toEqual(0);
-            expect(wrapper.find('.second').length).toEqual(1);
+            expect(spy).toEqual(2);
+
+            // wait some more time to make sure the timeout is not recurring
+            await waitFor(50);
+            wrapper.update();
+            expect(spy).toEqual(2);
+        });
+    });
+
+    it('Should stop recurring', async () => {
+        await act(async () => {
+            const DELAY = 50;
+            const wrapper = await mount(<Timeout delay={DELAY} recurring={true}/>);
+
+            expect(spy).toEqual(1);
+
+            await waitFor(DELAY * 3);
+            wrapper.update();
+            expect(spy).toEqual(3);
+
+            stopSpy();
+            await waitFor(DELAY * 2);
+            wrapper.update();
+            // should remain unchanged since last time
+            expect(spy).toEqual(3);
         });
     });
 });

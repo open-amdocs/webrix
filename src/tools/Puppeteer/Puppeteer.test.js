@@ -17,6 +17,7 @@ describe('Puppeteer', () => {
         expect(wrapper.find('puppet()')).toHaveLength(1);
         expect(wrapper.find('div').text()).toEqual('foobar');
     });
+
     it('should override the puppet\'s props based on namespace', () => {
         const Container = ({children, value}) => (
             <Puppeteer namespace='a' props={{
@@ -37,6 +38,7 @@ describe('Puppeteer', () => {
         expect(wrapper.find('.a').text()).toEqual('foobar');
         expect(wrapper.find('.b').text()).toEqual('bar');
     });
+
     it('should override the puppet\'s props for global namespace', () => {
         const Container = ({children, value}) => (
             <Puppeteer props={{
@@ -50,6 +52,7 @@ describe('Puppeteer', () => {
         expect(wrapper.find('puppet()')).toHaveLength(1);
         expect(wrapper.find('div').text()).toEqual('foobar');
     });
+
     it('should break the overriding of the puppet\'s props', () => {
         const Container = ({children, value}) => (
             <Puppeteer props={{
@@ -77,5 +80,21 @@ describe('Puppeteer', () => {
         )});
         wrapper.update();
         expect(wrapper.find('div').text()).toEqual('bar');
+    });
+
+    it('should inherit props when nesting Puppeteered components', () => {
+        const Container = ({children, value}) => (
+            <Puppeteer props={{ value: props => value + props.value}} namespace='hello'>{children}</Puppeteer>
+        );
+        const Puppet = puppet('hello')(({value}) => <div>{value}</div>);
+        const wrapper = mount(
+            <Container value='foo'>
+                <Container value='bar'>
+                    <Puppet value='baz'/>
+                </Container>
+            </Container>
+        );
+
+        expect(wrapper.find('div').text()).toEqual('barfoobaz');
     });
 });

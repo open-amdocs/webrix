@@ -19,16 +19,15 @@ describe('<Resizable>', () => {
         });
     });
     describe('Methods', () => {
-        let addEventListener;
+        const _addEventListener = document.addEventListener;
         const events = {};
 
         beforeAll(() => {
-            addEventListener = document.addEventListener;
             document.addEventListener = (type, callback) => events[type] = callback;
         });
 
         afterAll(() => {
-            document.addEventListener = addEventListener;
+            document.addEventListener = _addEventListener;
         });
 
         it('onBeginResize onResize onEndResize', () => {

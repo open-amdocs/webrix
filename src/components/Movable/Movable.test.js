@@ -7,6 +7,7 @@ import {NAMESPACE} from './Movable';
 import Movable from './';
 
 describe('<Movable/>', () => {
+    const _addEventListener = document.addEventListener;
 
     describe('HTML structure', () => {
         it('should render a Movable', () => {
@@ -23,16 +24,19 @@ describe('<Movable/>', () => {
             const preventDefault = sinon.spy();
             const wrapper = mount(<Movable onBeginMove={handleOnBeginMove}/>);
 
-            document.addEventListener = sinon.spy();
+            const addEventListenerSpy = sinon.spy(document, 'addEventListener');
+
             wrapper.simulate('mousedown', {stopPropagation, preventDefault});
             expect(handleOnBeginMove.calledOnce).toEqual(true);
-            expect(document.addEventListener.callCount).toEqual(2);
+            expect(addEventListenerSpy.callCount).toEqual(2);
 
             const event = handleOnBeginMove.args[0][0];
             event.stopPropagation();
             event.preventDefault();
             expect(stopPropagation.calledOnce).toEqual(true);
             expect(preventDefault.calledOnce).toEqual(true);
+
+            addEventListenerSpy.restore();
         });
 
         it('onMove()', () => {
@@ -41,7 +45,9 @@ describe('<Movable/>', () => {
             const handlers = {};
             let event;
 
+            const _addEventListener = document.addEventListener;
             document.addEventListener = (type, handler) => {handlers[type] = handler};
+
             wrapper.simulate('mousedown', {clientX: 10, clientY: 10});
             wrapper.simulate('touchstart', {changedTouches: [{clientX: 10, clientY: 10}]});
 
@@ -80,6 +86,8 @@ describe('<Movable/>', () => {
             expect(event.cy).toEqual(-30);
             expect(event.dx).toEqual(-10);
             expect(event.dy).toEqual(-10);
+
+            document.addEventListener = _addEventListener;
         });
 
         it('onEndMove()', () => {
@@ -102,6 +110,8 @@ describe('<Movable/>', () => {
             expect(event.cy).toEqual(10);
             expect(event.dx).toEqual(10);
             expect(event.dy).toEqual(10);
+
+            document.addEventListener = _addEventListener;
         });
     });
 

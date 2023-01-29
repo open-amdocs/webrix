@@ -4,19 +4,18 @@ import {mount} from 'enzyme';
 import {useMounted} from './useMounted';
 
 describe('useMounted()', () => {
-    it('Should return the previous value', () => {
-        const Elem = () => {
-            const mounted = useMounted();
-            return (
-                <div className={`${mounted ? '' : 'un'}mounted`}/>
-            );
-        };
+    let mounted;
+
+    const Elem = () => {
+        mounted = useMounted();
+        return null;
+    };
+
+    it('Should be false on first render cycle and true afterwards', () => {
         let wrapper = null;
         act(() => {wrapper = mount(<Elem/>)});
-        expect(wrapper.find('.unmounted').length).toEqual(1);
-        expect(wrapper.find('.mounted').length).toEqual(0);
+        expect(mounted).toBeFalsy();
         wrapper.setProps({foo: 'bar'}); // Force an update...
-        expect(wrapper.find('.mounted').length).toEqual(1);
-        expect(wrapper.find('.unmounted').length).toEqual(0);
+        expect(mounted).toBeTruthy();
     });
 });

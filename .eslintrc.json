@@ -44,30 +44,39 @@
     "indent": ["error", 4],
     "quotes": ["error", "single", { "avoidEscape": true }],
     "jsx-quotes": ["error", "prefer-single"],
-    "prefer-const": ["error"],
-    "notice/notice": ["error", {"templateFile":"notice.js"}]
+    "prefer-const": ["error"]
   },
-  "overrides": [{
-    "files": ["*.jsx"],
-    "rules": {
-      "max-lines-per-function": ["error", { "max": 40, "skipComments": true, "skipBlankLines": true }]
+  "overrides": [
+    {
+      "files": ["./src/**/*.js", "./src/**/*.jsx"],
+      "rules": {
+        "notice/notice": ["error", {"templateFile":"notice.js"}]
+      }
+    },
+    {
+      "files": ["*.jsx"],
+      "rules": {
+        "max-lines-per-function": ["error", { "max": 40, "skipComments": true, "skipBlankLines": true }]
+      }
+    },
+    {
+      "files": ["index.js"],
+      "rules": {
+        "notice/notice": 0
+      }
+    },
+    {
+      "files": ["*.test.js"],
+      "rules": {
+        "max-lines": 0,
+        "max-lines-per-function": 0,
+        "react/display-name": 0,
+        "no-nested-ternary": 0,
+        "complexity": 0,
+        "react/prop-types": 0,
+        "react/jsx-key": 0,
+        "notice/notice": 0
+      }
     }
-  },{
-    "files": ["index.js"],
-    "rules": {
-      "notice/notice": 0
-    }
-  },{
-    "files": ["*.test.js"],
-    "rules": {
-      "max-lines": 0,
-      "max-lines-per-function": 0,
-      "react/display-name": 0,
-      "no-nested-ternary": 0,
-      "complexity": 0,
-      "react/prop-types": 0,
-      "react/jsx-key": 0,
-      "notice/notice": 0
-    }
-  }]
+  ]
 }
