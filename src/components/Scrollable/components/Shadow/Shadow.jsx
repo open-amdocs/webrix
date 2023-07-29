@@ -25,7 +25,8 @@ export const ScrollShadow = forwardRef(({children}, ref) => {
     const {onUpdate} = scrollbar.props;
     const shadow = useRef();
     const handleOnUpdate = useCallback(e => {
-        shadow.current.style.boxShadow = getBoxShadow(e);
+        if (shadow.current)
+            shadow.current.style.boxShadow = getBoxShadow(e);
         onUpdate(e);
     }, [onUpdate]);
 
