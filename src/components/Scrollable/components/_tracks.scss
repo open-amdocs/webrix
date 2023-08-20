@@ -1,11 +1,11 @@
 @mixin tracks($isVertical) {
   .scrollbar {
-    &.#{if($isVertical, "vertically", "horizontally")}-scrollable .#{if($isVertical, "vertical", "horizontal")}-scrollbar-track {
+    &.#{if($isVertical, "vertically", "horizontally")}-scrollable > .#{if($isVertical, "vertical", "horizontal")}-scrollbar-track {
       visibility: visible;
       pointer-events: auto;
     }
 
-    .#{if($isVertical, "vertical", "horizontal")}-scrollbar-track {
+    > .#{if($isVertical, "vertical", "horizontal")}-scrollbar-track {
       position: absolute;
 
       #{if($isVertical, width, height)}: var(--scrollable-track-thickness, 12px);
