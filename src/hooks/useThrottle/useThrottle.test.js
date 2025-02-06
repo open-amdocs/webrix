@@ -19,8 +19,7 @@ const Elem = () => {
 
 describe('useThrottle()', () => {
     it('Should delay calls', async () => {
-        let wrapper = null;
-        act(() => {wrapper = mount(<Elem/>)});
+        const wrapper = mount(<Elem/>);
         expect(wrapper.find('.counter').text()).toEqual('0');
 
         wrapper.find('.counter').simulate('click');
@@ -39,9 +38,8 @@ describe('useThrottle()', () => {
         act(() => {wrapper.unmount()});
     });
     it('Should cleanup', async () => {
-        let wrapper = null;
         const spy = sinon.spy(global, 'clearTimeout');
-        act(() => {wrapper = mount(<Elem/>)});
+        const wrapper = mount(<Elem/>);
         act(() => {wrapper.unmount()});
         expect(spy.callCount).toEqual(1);
         spy.restore();

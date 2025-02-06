@@ -104,7 +104,6 @@ describe('<Movable/>', () => {
     describe('Hooks', () => {
         describe('useMove()', () => {
             it('move()', () => {
-                let wrapper;
                 const onMove = sinon.spy();
                 const {useMove} = Movable;
                 const {move, update} = Movable.Operations;
@@ -116,7 +115,7 @@ describe('<Movable/>', () => {
                     return <Movable {...props} ref={undefined}/>;
                 };
 
-                act(() => {wrapper = mount(<Elem/>)});
+                const wrapper = mount(<Elem/>);
                 wrapper.find('Movable').prop('onBeginMove')();
                 wrapper.find('Movable').prop('onMove')({dx: 10, dy: 10});
                 expect(onMove.callCount).toEqual(2);
@@ -126,7 +125,6 @@ describe('<Movable/>', () => {
             });
 
             it('trackpad()', () => {
-                let wrapper;
                 const onMove = sinon.spy();
                 const {useMove} = Movable;
                 const {trackpad, update} = Movable.Operations;
@@ -138,7 +136,7 @@ describe('<Movable/>', () => {
                     return <Movable {...props} ref={undefined}/>;
                 };
 
-                act(() => {wrapper = mount(<Elem/>)});
+                const wrapper = mount(<Elem/>);
                 wrapper.find('Movable').prop('onBeginMove')({x: 10, y: 10});
                 expect(onMove.callCount).toEqual(1);
                 expect(onMove.calledWith({top: 10, left: 10})).toEqual(true);

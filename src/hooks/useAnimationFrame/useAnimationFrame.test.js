@@ -19,9 +19,8 @@ describe('useAnimationFrame()', () => {
         global.window.requestAnimationFrame.resetHistory();
         global.window.cancelAnimationFrame.resetHistory();
 
-        let wrapper = null;
         const onChange = sinon.spy();
-        act(() => {wrapper = mount(<Elem onChange={onChange}/>)});
+        const wrapper = mount(<Elem onChange={onChange}/>);
 
         // Verify a requestAnimationFrame() call is made
         wrapper.find('.start').prop('onClick')();
@@ -36,8 +35,7 @@ describe('useAnimationFrame()', () => {
     });
     it('Should cleanup', () => {
         global.window.cancelAnimationFrame.resetHistory();
-        let wrapper = null;
-        act(() => {wrapper = mount(<Elem onChange={() => null}/>)});
+        const wrapper = mount(<Elem onChange={() => null}/>);
 
         // Verify a single cancelAnimationFrame() call is made initially
         wrapper.find('.start').prop('onClick')();
@@ -53,9 +51,8 @@ describe('useAnimationFrame()', () => {
     });
     it('Should call requestAnimationFrame recursively',  () => {
         global.window.requestAnimationFrame.resetHistory();
-        let wrapper = null;
         const onChange = sinon.spy();
-        act(() => {wrapper = mount(<Elem onChange={onChange} recurring/>)});
+        const wrapper = mount(<Elem onChange={onChange} recurring/>);
 
         // Verify a single cancelAnimationFrame() call is made initially
         wrapper.find('.start').prop('onClick')();

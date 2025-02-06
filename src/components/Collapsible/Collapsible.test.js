@@ -34,17 +34,20 @@ describe('<Collapsible/>', () => {
 
     describe('Events', () => {
         it('should trigger onTransitionEnd for transform', () => {
+            const onTransitionEnd = sinon.spy();
+            const wrapper = mount(<Collapsible onTransitionEnd={onTransitionEnd}><div/></Collapsible>);
+
+            wrapper.find('.content-wrapper').prop('onTransitionEnd')({propertyName: 'transform'});
+
+            expect(onTransitionEnd.callCount).toEqual(1);
+
             act(() => {
-                const onTransitionEnd = sinon.spy();
-                const wrapper = mount(<Collapsible onTransitionEnd={onTransitionEnd}><div/></Collapsible>);
-
-                wrapper.find('.content-wrapper').prop('onTransitionEnd')({propertyName: 'transform'});
-                expect(onTransitionEnd.callCount).toEqual(1);
-
                 wrapper.find('.content-wrapper').prop('onTransitionEnd')({propertyName: 'width'});
-                expect(onTransitionEnd.callCount).toEqual(1);
-                wrapper.unmount();
             });
+
+            expect(onTransitionEnd.callCount).toEqual(1);
+            wrapper.unmount();
+
         });
         it('should toggle from collapsed to expanded', async () => {
             const wrapper = mount(<Collapsible>foo</Collapsible>);

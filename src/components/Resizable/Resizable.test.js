@@ -1,5 +1,4 @@
 import React, {useRef} from 'react';
-import {act} from 'react-dom/test-utils';
 import {mount} from 'enzyme';
 import sinon from 'sinon';
 import Resizable from './';
@@ -56,7 +55,6 @@ describe('<Resizable>', () => {
 
     describe('Hooks', () => {
         it('useResize()', () => {
-            let wrapper;
             const onResize = sinon.spy();
             const {useResize} = Resizable;
             const {resize, lock, update} = Resizable.Operations;
@@ -71,9 +69,7 @@ describe('<Resizable>', () => {
                 return <Resizable {...props}/>;
             };
 
-            act(() => {
-                wrapper = mount(<Elem/>)
-            });
+            const wrapper = mount(<Elem/>)
             wrapper.find('Resizable').prop('onBeginResize')();
             wrapper.find('Resizable').prop('onResize')({delta: r(0, 0, 0, 0)});
             expect(onResize.callCount).toEqual(1);

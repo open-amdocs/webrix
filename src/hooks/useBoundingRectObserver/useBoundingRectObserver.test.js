@@ -17,12 +17,11 @@ const Elem = ({onChange, refs}) => {
 describe('useBoundingRectObserver()', () => {
     it('Should call requestAnimationFrame', () => {
         global.window.requestAnimationFrame.resetHistory();
-        let wrapper = null;
         const onChange = sinon.spy();
-        act(() => {wrapper = mount(<Elem refs={[new DOMRect()]} onChange={onChange}/>)});
+        const wrapper = mount(<Elem refs={[new DOMRect()]} onChange={onChange}/>);
 
         // Verify that requestAnimationFrame() and onChange() are called, passing the DOMRect
-        wrapper.find('.start').prop('onClick')();
+        act(() => {wrapper.find('.start').prop('onClick')()});
         expect(global.window.requestAnimationFrame.callCount).toEqual(1);
         global.window.requestAnimationFrame.args[0][0]();
         expect(onChange.callCount).toEqual(1);
