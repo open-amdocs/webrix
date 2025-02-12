@@ -8,7 +8,7 @@
     "./src/**/*.test.js",
   ],
   "compilerOptions": {
-	"skipLibCheck": true,
+    "skipLibCheck": true,
     "allowJs": true,
     "declaration": true,
     "emitDeclarationOnly": true,
