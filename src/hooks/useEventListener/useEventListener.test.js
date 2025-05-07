@@ -6,7 +6,6 @@ import useEventListener from './useEventListener';
 
 describe('useEventListener()', () => {
     it('Should add an event listener', () => {
-        let wrapper;
         const addEventListener = sinon.spy();
         const removeEventListener = sinon.spy();
         const onClick = sinon.spy();
@@ -15,7 +14,7 @@ describe('useEventListener()', () => {
             return null;
         };
 
-        act(() => {wrapper = mount(<Component/>)});
+        const wrapper = mount(<Component/>);
         expect(addEventListener.callCount).toEqual(1);
         expect(removeEventListener.callCount).toEqual(0);
 

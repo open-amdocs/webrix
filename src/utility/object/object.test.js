@@ -1,7 +1,6 @@
 import {get, set, isEqual, omit, clone} from './object';
 
 describe('Object', () => {
-
     it('get()', () => {
         const data = {foo: [{bar: {foobar: 'foobar', empty: null}}]};
 

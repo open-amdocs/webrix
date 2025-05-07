@@ -14,6 +14,7 @@ describe('Number', () => {
         expect(clamp(0, 0, 10, true)).toBe(0);
         expect(clamp(-5, 0, 10, true)).toBe(10);
     });
+	
     it('map()', () => {
         expect(map(5, 0, 10, 0, 20)).toBe(10);
         expect(map(10, 0, 10, 0, 20)).toBe(20);
@@ -21,12 +22,14 @@ describe('Number', () => {
         expect(map(-5, 0, 10, 0, 20)).toBe(-10);
         expect(map(10, 0, 10, 10, 0)).toBe(0);
     });
+	
     it('interval()', () => {
         expect(interval(5, 1)).toBe(5);
         expect(interval(5, 4)).toBe(4);
         expect(interval(0.5, 0.1)).toBe(0.5);
         expect(interval(0.5, 0.3)).toBe(0.6);
     });
+	
     it('decimals()', () => {
         expect(decimals(0.0001, 4)).toBe(0.0001);
         expect(decimals(0.0001, 3)).toBe(0);

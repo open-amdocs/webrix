@@ -18,34 +18,34 @@ const Elem = () => {
 
 describe('useDebounce()', () => {
     it('Should delay calls', async () => {
+        const wrapper = mount(<Elem/>);
+        expect(wrapper.find('.counter').text()).toEqual('0');
+
         await act(async () => {
-            const wrapper = mount(<Elem/>);
-            expect(wrapper.find('.counter').text()).toEqual('0');
-
             wrapper.find('.counter').simulate('click');
             expect(wrapper.find('.counter').text()).toEqual('0');
             await waitFor(DELAY);
-            wrapper.update();
-            expect(wrapper.find('.counter').text()).toEqual('1');
-
-            wrapper.find('.counter').simulate('click');
-            wrapper.find('.counter').simulate('click');
-            wrapper.find('.counter').simulate('click');
-            expect(wrapper.find('.counter').text()).toEqual('1');
-            await waitFor(DELAY);
-            wrapper.update();
-            expect(wrapper.find('.counter').text()).toEqual('2');
-            wrapper.unmount();
         });
+
+        expect(wrapper.find('.counter').text()).toEqual('1');
+
+        await act(async () => {
+            wrapper.find('.counter').simulate('click');
+            wrapper.find('.counter').simulate('click');
+            wrapper.find('.counter').simulate('click');
+            expect(wrapper.find('.counter').text()).toEqual('1');
+            await waitFor(DELAY);
+        });
+
+        expect(wrapper.find('.counter').text()).toEqual('2');
+        wrapper.unmount();
     });
     it('Should cleanup', async () => {
-        await act(async () => {
-            const spy = sinon.spy(global, 'clearTimeout');
-            const wrapper = mount(<Elem/>);
-            wrapper.unmount();
-            await waitFor(0); // Wait for unmounting
-            expect(spy.callCount).toEqual(1);
-            spy.restore();
-        });
+        const spy = sinon.spy(global, 'clearTimeout');
+        const wrapper = mount(<Elem/>);
+        wrapper.unmount();
+        await waitFor(0); // Wait for unmounting
+        expect(spy.callCount).toEqual(1);
+        spy.restore();
     });
 });

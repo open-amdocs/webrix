@@ -6,7 +6,6 @@ import {CSS_VARS} from '../../Scrollable.constants';
 import HorizontalScrollbar, {__RewireAPI__ as rewire} from './HorizontalScrollbar';
 
 describe('<HorizontalScrollbar/>', () => {
-
     describe('HTML structure', () => {
         it('should render a Scrollbar', () => {
             const wrapper = mount(<HorizontalScrollbar/>);

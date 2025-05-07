@@ -9,7 +9,6 @@ import {SCROLLING_CLASS_REMOVAL_DELAY} from './Scrollable.constants';
 const waitFor = delay => new Promise(resolve => setTimeout(resolve, delay));
 
 describe('<Scrollable/>', () => {
-
     describe('HTML structure', () => {
         it('should render a Scrollbar', () => {
             const wrapper = mount(<Scrollable/>);

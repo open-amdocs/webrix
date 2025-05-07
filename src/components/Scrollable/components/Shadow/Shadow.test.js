@@ -23,7 +23,6 @@ import {getShadowCoefficient, getBoxShadow} from './Shadow.utils';
 import {SHADOW_THRESHOLD} from './Shadow.constants';
 
 describe('<Scrollbar.Shadow/>', () => {
-
     describe('HTML structure', () => {
         it('should render a ScrollShadow', () => {
             const wrapper = shallow(<ScrollShadow><div className='child'/></ScrollShadow>);
@@ -48,6 +47,7 @@ describe('<Scrollbar.Shadow/>', () => {
             expect(getShadowCoefficient(30)).toEqual(30 / SHADOW_THRESHOLD);
             expect(getShadowCoefficient(SHADOW_THRESHOLD + 10)).toEqual(1);
         });
+
         it('getBoxShadow()', () => {
             const boxshadow = getBoxShadow({scrollTop: 0, scrollLeft: 0, scrollHeight: 100, scrollWidth: 100, clientHeight: 100, clientWidth: 100});
             expect(boxshadow.split(',').length).toEqual(40);

@@ -11,11 +11,14 @@ describe('useMounted()', () => {
                 <div className={`${mounted ? '' : 'un'}mounted`}/>
             );
         };
-        let wrapper = null;
-        act(() => {wrapper = mount(<Elem/>)});
+        const wrapper = mount(<Elem/>);
         expect(wrapper.find('.unmounted').length).toEqual(1);
         expect(wrapper.find('.mounted').length).toEqual(0);
-        wrapper.setProps({foo: 'bar'}); // Force an update...
+
+        act(() => {
+            wrapper.setProps({foo: 'bar'}); // Force an update...
+        });
+
         expect(wrapper.find('.mounted').length).toEqual(1);
         expect(wrapper.find('.unmounted').length).toEqual(0);
     });
@@ -29,8 +32,7 @@ describe('useUnmounted()', () => {
                 <div className={`${unmounted ? 'un' : ''}mounted`}/>
             );
         };
-        let wrapper = null;
-        act(() => {wrapper = mount(<Elem/>)});
+        const wrapper = mount(<Elem/>);
         expect(wrapper.find('.unmounted').length).toEqual(0);
         expect(wrapper.find('.mounted').length).toEqual(1);
         wrapper.setProps({foo: 'bar'}); // Force an update...

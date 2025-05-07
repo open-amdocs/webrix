@@ -1,7 +1,6 @@
 import {getCenterPoint, getRelativePosition, equal, contained, intersect, union, area, add, readResizeObserverEntry} from './rect';
 
 describe('rect', () => {
-
     it('getCenterPoint()', () => {
         expect(getCenterPoint(new DOMRect(0, 0, 20, 20))).toEqual([10, 10]);
         expect(getCenterPoint(new DOMRect(10, 10, 20, 20))).toEqual([20, 20]);

@@ -11,10 +11,12 @@ describe('Scalable', () => {
             expect(wrapper.find('.scalable-inner').length).toEqual(1);
             expect(wrapper.find('.scalable-inner').get(0).props.style.transform).toEqual('scale(1, 1)');
         });
+		
         it('should render scaled Scalable', () => {
             const wrapper = shallow(<Scalable scalex={2} scaley={3}/>);
             expect(wrapper.find('.scalable-inner').get(0).props.style.transform).toEqual('scale(2, 3)');
         });
+		
         it('should scale', () => {
             const ref = {current: {style: {}, clientHeight: 100, clientWidth: 100}};
             rewire.__Rewire__('useRef', () => ref);

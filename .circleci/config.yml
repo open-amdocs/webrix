@@ -1,7 +1,7 @@
 version: 2.1
 
 orbs:
-  node: circleci/node@4.1.0
+  node: circleci/node@7.1.0
   codecov: codecov/codecov@1.0.5
 
 jobs:
@@ -11,6 +11,9 @@ jobs:
       name: node/default
     steps:
       - checkout
+      - node/install:
+          node-version: '18.20.5'
+      - run: node --version
       - persist_to_workspace:
           root: .
           paths:
@@ -22,6 +25,9 @@ jobs:
     steps:
       - attach_workspace:
           at: .
+      - node/install:
+          node-version: '18.20.5'
+      - run: node --version
       - node/install-packages
       - run: npm run lint
 
@@ -31,6 +37,9 @@ jobs:
     steps:
       - attach_workspace:
           at: .
+      - node/install:
+          node-version: '18.20.5'
+      - run: node --version
       - node/install-packages
       - run: npm run test:coverage -- --max-workers=2 # See https://discuss.circleci.com/t/babel-7-jest-results-in-timeout/25383/6
       - codecov/upload:
@@ -42,6 +51,9 @@ jobs:
     steps:
       - attach_workspace:
           at: .
+      - node/install:
+          node-version: '18.20.5'
+      - run: node --version
       - node/install-packages
       - run: npm run build:prod
       - persist_to_workspace:
@@ -57,6 +69,9 @@ jobs:
     steps:
       - attach_workspace:
           at: .
+      - node/install:
+          node-version: '18.20.5'
+      - run: node --version
       - node/install-packages:
           override-ci-command: npm install --legacy-peer-deps
       - run: npm run cleanup

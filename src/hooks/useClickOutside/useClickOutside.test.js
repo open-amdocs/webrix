@@ -15,12 +15,11 @@ describe('useClickOutside()', () => {
     it('Should add an event listener to the document', () => {
         document.addEventListener = sinon.spy();
         document.removeEventListener = sinon.spy();
-        let elem;
-        act(() => {elem = mount(<Elem/>)});
-        expect(document.addEventListener.callCount).toEqual(4); // 2 calls are done regardless, not sure why, but it only happens during testing
+        const wrapper = mount(<Elem/>);
+        expect(document.addEventListener.callCount).toEqual(3); // 2 calls are done regardless, not sure why, but it only happens during testing
         expect(document.addEventListener.calledWith('mousedown')).toEqual(true);
         expect(document.addEventListener.calledWith('mouseup')).toEqual(true);
-        act(() => {elem.unmount()});
+        act(() => {wrapper.unmount()});
         expect(document.removeEventListener.calledTwice).toEqual(true);
         expect(document.removeEventListener.calledWith('mousedown')).toEqual(true);
         expect(document.removeEventListener.calledWith('mouseup')).toEqual(true);

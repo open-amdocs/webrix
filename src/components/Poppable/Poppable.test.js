@@ -8,7 +8,6 @@ import {vbefore, vcenter, vafter, hbefore, hcenter, hafter} from './Poppable.pla
 import {HIDDEN_PLACEMENT} from './Poppable.constants';
 
 describe('<Poppable/>', () => {
-
     describe('HTML structure', () => {
         beforeAll(() => {jest.useFakeTimers()});
         afterAll(() => {jest.useRealTimers()});
@@ -42,6 +41,7 @@ describe('<Poppable/>', () => {
             expect(hide({tbr, cbr: r(0, 0, 100, 100), rbr: r(50, 50, 100, 100)})).toEqual(tbr);
             expect(hide({tbr, cbr: r(0, 0, 100, 100), rbr: r(101, 101, 100, 100)})).toEqual(HIDDEN_PLACEMENT);
         });
+
         it('trap()', () => {
             const r = (...args) => new DOMRect(...args);
             const cbr = r(0, 0, 100, 100);
@@ -50,6 +50,7 @@ describe('<Poppable/>', () => {
             expect(trap({tbr: r(100, 100, 50, 50), cbr})).toEqual(r(50, 50, 50, 50));
             expect(trap({tbr: r(-100, -100, 50, 50), cbr})).toEqual(r(0, 0, 50, 50));
         });
+
         describe('reposition()', () => {
             it('sortPlacements()', () => {
                 const r = (...args) => new DOMRect(...args);
@@ -63,12 +64,14 @@ describe('<Poppable/>', () => {
                     sortPlacements([{top: 15, left: 15}, {top: 10, left: 10}], r(0, 0, 0, 0), r(0, 0, 10, 10), r(0, 0, 20, 20))
                 ).toEqual([{top: 10, left: 10}, {top: 15, left: 15}]);
             });
+
             it('filterPlacements()', () => {
                 const r = (...args) => new DOMRect(...args);
                 expect(filterPlacements([{top: 0, left: 0}, {top: 100, left: 100}], r(0, 0, 50, 50), r(0, 0, 100, 100))).toHaveLength(2);
                 expect(filterPlacements([{top: 0, left: 0}, {top: 100, left: 100}], r(0, 0, 50, 50), r(0, 0, 50, 50))).toHaveLength(1);
                 expect(filterPlacements([{top: -51, left: -51}, {top: -100, left: -100}], r(0, 0, 50, 50), r(0, 0, 100, 100))).toHaveLength(0);
             });
+
             it('reposition()', () => {
                 const rbr = {top: 40, left: 40, width: 20, height: 20};
                 const tbr = {width: 20, height: 20};
@@ -77,6 +80,7 @@ describe('<Poppable/>', () => {
                 expect(reposition({rbr, tbr, cbr}, {placements, default: 0})).toEqual(new DOMRect(20, 20, tbr.width, tbr.height));
             });
         });
+
         it('Default Strategy', () => {
             expect(defaultStrategy({
                 rbr: new DOMRect(-20, -20, 20, 20),

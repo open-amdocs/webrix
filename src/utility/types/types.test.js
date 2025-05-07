@@ -10,6 +10,7 @@ describe('Types', () => {
         expect(getType([])).toEqual('array');
         expect(getType(12)).toEqual('number');
     });
+	
     it('isType()', () => {
         expect(isType('', Types.STRING, Types.NUMBER)).toEqual(true);
         expect(isType('', Types.NUMBER)).toEqual(false);
@@ -23,39 +24,48 @@ describe('Types', () => {
         expect(isType([], Types.ARRAY)).toEqual(true);
         expect(isType(true, Types.BOOLEAN)).toEqual(true);
     });
+	
     it('isArray()', () => {
         expect(isArray([])).toEqual(true);
         expect(isArray({})).toEqual(false);
     });
+	
     it('isBoolean()', () => {
         expect(isBoolean(true)).toEqual(true);
         expect(isBoolean({})).toEqual(false);
     });
+	
     it('isNull()', () => {
         expect(isNull(null)).toEqual(true);
         expect(isNull({})).toEqual(false);
     });
+	
     it('isNumber()', () => {
         expect(isNumber(0)).toEqual(true);
         expect(isNumber({})).toEqual(false);
         expect(isNumber(NaN)).toEqual(false);
     });
+	
     it('isObject()', () => {
         expect(isObject({})).toEqual(true);
         expect(isObject([])).toEqual(false);
     });
+	
     it('isString()', () => {
         expect(isString('')).toEqual(true);
         expect(isString({})).toEqual(false);
     });
+	
     it('isUndefined()', () => {
         expect(isUndefined(undefined)).toEqual(true);
         expect(isUndefined({})).toEqual(false);
     });
+	
     it('isDate()', () => {
         expect(isDate(new Date())).toEqual(true);
         expect(isDate({})).toEqual(false);
     });
+	
     it('isEmpty()', () => {
         expect(isEmpty(undefined)).toEqual(true);
         expect(isEmpty({})).toEqual(true);
@@ -66,6 +76,7 @@ describe('Types', () => {
         expect(isEmpty([1,2,3])).toEqual(false);
         expect(isEmpty('foobar')).toEqual(false);
     });
+	
     it('toArray()', () => {
         expect(toArray(undefined)).toEqual([]);
         expect(toArray(null)).toEqual([]);
