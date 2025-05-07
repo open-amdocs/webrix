@@ -14,6 +14,7 @@ describe('<Resizable>', () => {
             expect(wrapper.find('Movable.resizable')).toHaveLength(8);
         });
     });
+	
     describe('Methods', () => {
         let addEventListener;
         const events = {};
@@ -102,6 +103,7 @@ describe('<Resizable>', () => {
             contain({}).onResize({delta: r(0, 0, 0, 0)}, shared);
             expect(shared.next).toEqual(r(10, 10, 10, 10));
         });
+		
         it('min()', () => {
             const {min} = Resizable.Operations;
             const shared = {};
@@ -114,6 +116,7 @@ describe('<Resizable>', () => {
             min(40, 40).onResize({}, shared);
             expect(shared.next).toEqual({width: 40, height: 40});
         });
+		
         it('max()', () => {
             const {max} = Resizable.Operations;
             const shared = {};
@@ -126,6 +129,7 @@ describe('<Resizable>', () => {
             max(20, 20).onResize({}, shared);
             expect(shared.next).toEqual({width: 20, height: 20});
         });
+		
         it('snap()', () => {
             const {snap} = Resizable.Operations;
             const shared = {};
@@ -150,6 +154,7 @@ describe('<Resizable>', () => {
             snap(20, 20, 0.3).onResize({}, shared);
             expect(shared.next).toEqual({width: 24, height: 24});
         });
+		
         it('ratio()', () => {
             const {ratio} = Resizable.Operations;
             const shared = {};
@@ -162,6 +167,7 @@ describe('<Resizable>', () => {
             ratio(2).onResize({}, shared);
             expect(shared.next).toEqual({width: 90, height: 45});
         });
+		
         it('relative()', () => {
             const {relative} = Resizable.Operations;
             const shared = {};
@@ -181,6 +187,7 @@ describe('<Resizable>', () => {
             relative({}).onResize({}, shared);
             expect(shared.next).toEqual({top: 0, left: 0});
         });
+		
         it('upadate()', () => {
             const {update} = Resizable.Operations;
             const spy = sinon.spy();

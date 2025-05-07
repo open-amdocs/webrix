@@ -29,6 +29,7 @@ describe('Pannable', () => {
             expect(wrapper.find(Scrollable).instance().container.current.scrollTop).toEqual(-2);
             expect(wrapper.find(Scrollable).instance().container.current.scrollLeft).toEqual(-1);
         });
+		
         it('handleOnBeginMove()', () => {
             const add = sinon.spy();
             rewireAPI.__Rewire__('copyComponentRef', (external, internal) => () => internal.current = {classList: {add}});
@@ -39,6 +40,7 @@ describe('Pannable', () => {
             expect(add.callCount).toEqual(1);
             rewireAPI.__ResetDependency__('copyComponentRef');
         });
+		
         it('handleOnEndMove()', () => {
             const remove = sinon.spy();
             rewireAPI.__Rewire__('copyComponentRef', (external, internal) => () => internal.current = {classList: {remove}});

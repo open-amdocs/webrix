@@ -7,7 +7,6 @@ import Context from './Stackable.context';
 import {getAncestors} from './Stackable.utils';
 
 describe('<Stackable/>', () => {
-
     describe('HTML structure', () => {
         it('should render a Stackable', () => {
             const wrapper = mount(<Stackable/>);

@@ -8,10 +8,12 @@ describe('Range', () => {
         expect(intersection([0, 10], [10, 20])).toEqual([10, 10]);
         expect(intersection([0, 10], [20, 30])).toEqual([]);
     });
+
     it('midpoint()', () => {
         expect(midpoint([0, 10])).toEqual(5);
         expect(midpoint([10, 20])).toEqual(15);
     });
+
     it('inRange()', () => {
         expect(inRange(5, 0, 10)).toBe(true);
         expect(inRange(5, 10, 0)).toBe(true);

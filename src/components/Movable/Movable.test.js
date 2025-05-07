@@ -6,7 +6,6 @@ import * as number from 'utility/number';
 import Movable from './';
 
 describe('<Movable/>', () => {
-
     describe('HTML structure', () => {
         it('should render a Movable', () => {
             const wrapper = shallow(<Movable className='mock'/>);
@@ -32,6 +31,7 @@ describe('<Movable/>', () => {
             expect(stopPropagation.calledOnce).toEqual(true);
             expect(preventDefault.calledOnce).toEqual(true);
         });
+
         it('onMove()', () => {
             const handleOnMove = sinon.spy();
             const wrapper = mount(<Movable onMove={handleOnMove}/>);
@@ -78,6 +78,7 @@ describe('<Movable/>', () => {
             expect(event.dx).toEqual(-10);
             expect(event.dy).toEqual(-10);
         });
+
         it('onEndMove()', () => {
             const handleOnEndMove = sinon.spy();
             const wrapper = mount(<Movable onEndMove={handleOnEndMove}/>);
@@ -268,18 +269,22 @@ describe('<Movable/>', () => {
             const args = [0, 10, 0, 20];
             expect(Movable.Transformers.map(...args)(5)).toEqual(number.map(5, ...args));
         });
+
         it('clamp()', () => {
             const args = [0, 10];
             expect(Movable.Transformers.clamp(...args)(5)).toEqual(number.clamp(5, ...args));
         });
+
         it('interval()', () => {
             const args = [4];
             expect(Movable.Transformers.interval(...args)(5)).toEqual(number.interval(5, ...args));
         });
+
         it('decimals()', () => {
             const args = [2];
             expect(Movable.Transformers.decimals(...args)(4.1234)).toEqual(number.decimals(4.1234, ...args));
         });
+
         it('angle()', () => {
             expect(
                 Movable.Transformers.angle({center: {x: 50, y: 50}, angle: {from: 0, range: 360}, output: {min: 0, max: 360}})({top: 0, left: 50})

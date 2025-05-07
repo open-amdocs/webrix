@@ -17,6 +17,7 @@ describe('<Collapsible/>', () => {
             expect(wrapper.find('.collapsible')).toHaveLength(1);
             wrapper.unmount();
         });
+
         it('should render an expanded Collapsible', () => {
             const wrapper = mount(<Collapsible expanded>foo</Collapsible>);
             expect(wrapper.find('.collapsible.expanded')).toHaveLength(1);
@@ -49,6 +50,7 @@ describe('<Collapsible/>', () => {
             wrapper.unmount();
 
         });
+
         it('should toggle from collapsed to expanded', async () => {
             const wrapper = mount(<Collapsible>foo</Collapsible>);
             expect(wrapper.find('.collapsible.expanded')).toHaveLength(0);
@@ -63,6 +65,7 @@ describe('<Collapsible/>', () => {
             expect(wrapper.find('.collapsible.expanding')).toHaveLength(0); // expading class should be removed once transition is done
             wrapper.unmount();
         });
+
         it('should toggle from expanded to collapsed', async () => {
             const wrapper = mount(<Collapsible expanded>foo</Collapsible>);
             expect(wrapper.find('.collapsible.expanded')).toHaveLength(1);
